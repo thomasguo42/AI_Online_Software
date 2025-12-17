@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparing Detection - Fencing Analysis Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+        .waiting-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 3rem;
+            max-width: 520px;
+            text-align: center;
+        }
+        .waiting-icon {
+            font-size: 3.5rem;
+            color: #6c5ce7;
+            margin-bottom: 1.5rem;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: 999px;
+            padding: 0.5rem 1.25rem;
+            background: rgba(108, 92, 231, 0.12);
+            color: #4c3bcf;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .status-text {
+            font-size: 1rem;
+            color: #495057;
+            margin-bottom: 1.5rem;
+        }
+        .progress-info {
+            background: rgba(108, 92, 231, 0.08);
+            border-radius: 15px;
+            padding: 1.25rem;
+            font-size: 0.95rem;
+            color: #5c4ecb;
+            margin-bottom: 1.5rem;
+        }
+        .btn-return {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="waiting-card">
+        <div class="waiting-icon">
+            <i class="fas fa-person-running"></i>
+        </div>
+        <div class="status-pill">
+            <i class="fas fa-hourglass-half"></i>
+            <span id="status-label">Extracting first frame detection...</span>
+        </div>
+        <p class="status-text" id="status-text">
+            We are identifying fencers in the video, please wait patiently. You will be automatically redirected to the fencer selection page when complete.
+        </p>
+        <div class="progress-info" id="progress-info">
+            <i class="fas fa-info-circle me-2"></i>No need to refresh the page, we automatically check progress every few seconds.
+        </div>
+        <a href="{{ upload_url }}" class="btn btn-danger btn-return" id="return-button">
+            <i class="fas fa-undo me-2"></i>Return to Upload Page
+        </a>
+    </div>
+
+    <script>
+        const statusUrl = '{{ status_url }}';
+        const selectUrl = '{{ select_url }}';
+        const resultsUrl = '{{ results_url }}';
+        const uploadUrl = '{{ upload_url }}';
+        const statusLabel = document.getElementById('status-label');
+        const statusText = document.getElementById('status-text');
+        const progressInfo = document.getElementById('progress-info');
+        const returnButton = document.getElementById('return-button');
+
+        let polling = true;
+
+        function handleStatus(status) {
+            switch (status) {
+                case 'awaiting_selection':
+                case 'awaiting_multi_video_setup':
+                    window.location.href = selectUrl;
+                    return true;
+                case 'processing':
+                case 'results_submitted':
+                case 'completed':
+                    window.location.href = resultsUrl;
+                    return true;
+                case 'error':
+                    statusLabel.textContent = 'Detection Failed';
+                    statusText.textContent = 'Problem encountered during initial detection, please return to upload page and try again.';
+                    progressInfo.textContent = 'If the problem persists, please contact administrator.';
+                    returnButton.style.display = 'inline-flex';
+                    returnButton.href = uploadUrl;
+                    polling = false;
+                    return true;
+                default:
+                    statusLabel.textContent = 'Extracting first frame detection...';
+                    statusText.textContent = 'We are identifying fencers in the video, please wait patiently. You will be automatically redirected to the fencer selection page when complete.';
+                    return false;
+            }
+        }
+
+        function pollStatus() {
+            if (!polling) {
+                return;
+            }
+            fetch(statusUrl, { credentials: 'same-origin' })
+                .then(response => response.json())
+                .then(data => {
+                    const next = handleStatus(data.status);
+                    if (!next) {
+                        setTimeout(pollStatus, 3000);
+                    }
+                })
+                .catch(() => {
+                    statusText.textContent = 'Problem connecting to server, will retry shortly.';
+                    setTimeout(pollStatus, 5000);
+                });
+        }
+
+        setTimeout(pollStatus, 1500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - Fencing Analysis Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .page-container {
+            padding: 2rem 0;
+        }
+        .page-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .page-title {
+            color: #1f2937;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+        .page-subtitle {
+            color: #495057;
+            font-size: 1.1rem;
+        }
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .card-header-elegant {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            padding: 1.5rem;
+            border: none;
+        }
+        .card-body-elegant {
+            padding: 2rem;
+        }
+        .bout-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .bout-header {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+        }
+        .bout-body {
+            padding: 2rem;
+        }
+        .btn-elegant {
+            border-radius: 12px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.25rem;
+            text-decoration: none;
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+        }
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+            color: white;
+        }
+        .btn-nav {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+        }
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(232, 67, 147, 0.3);
+            color: white;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+            color: white;
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+            color: white;
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+        }
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(225, 112, 85, 0.3);
+            color: white;
+        }
+        .video-container {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .video-container video {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .tags-section {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid rgba(162, 155, 254, 0.2);
+        }
+        .tags-container {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .fencer-tags {
+            flex: 1;
+            min-width: 250px;
+        }
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .tag {
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%);
+            color: #0066cc;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 102, 204, 0.2);
+            transition: all 0.3s ease;
+        }
+        .tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 102, 204, 0.2);
+        }
+        .tag.left-tag {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0fff4 100%);
+            color: #2d5d2d;
+            border-color: rgba(45, 93, 45, 0.2);
+        }
+        .tag.right-tag {
+            background: linear-gradient(135deg, #ffe8e8 0%, #fff5f5 100%);
+            color: #5d2d2d;
+            border-color: rgba(93, 45, 45, 0.2);
+        }
+        .analysis-text {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border: 2px solid rgba(162, 155, 254, 0.2);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #a29bfe;
+            box-shadow: 0 0 0 0.2rem rgba(162, 155, 254, 0.25);
+        }
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .chart-item {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .chart-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .analysis-plot img {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .analysis-plot img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .individual-graph-card {
+            background: white;
+            transition: all 0.3s ease;
+        }
+        .individual-graph-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
+        }
+        .individual-graph-card img {
+            max-height: 300px;
+            object-fit: contain;
+        }
+        .analysis-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+        
+        /* Professional Report Styles */
+        .professional-report {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border: 1px solid rgba(162, 155, 254, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .report-header {
+            border-bottom: 3px solid #a29bfe;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .report-title {
+            color: #2d3436;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .report-subtitle {
+            color: #636e72;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .report-status-badge {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+            display: inline-block;
+        }
+        
+        /* Executive Summary Card */
+        .executive-summary-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 2px solid rgba(162, 155, 254, 0.15);
+        }
+        
+        .summary-header {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            font-weight: 600;
+        }
+        
+        .summary-content {
+            padding: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(162, 155, 254, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .stat-icon.performance {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+        }
+        
+        .stat-icon.analysis {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+        }
+        
+        .stat-icon.insights {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: #636e72;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Analysis Content */
+        .analysis-content-professional {
+            background: rgba(248, 249, 255, 0.6);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(162, 155, 254, 0.1);
+            margin: 2rem 0;
+        }
+        
+        .content-header h5 {
+            color: #2d3436;
+            font-weight: 700;
+        }
+        
+        .formatted-analysis {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid #a29bfe;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            line-height: 1.8;
+            font-size: 1rem;
+            color: #2d3436;
+        }
+        
+        /* Key Insights Grid */
+        .key-insights-section {
+            margin-top: 2rem;
+        }
+        
+        .insights-header h5 {
+            color: #2d3436;
+            font-weight: 700;
+        }
+        
+        .insight-card {
+            background: white;
+            border-radius: 18px;
+            padding: 1.8rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid rgba(162, 155, 254, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+        
+        .insight-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        
+        .insight-card.tactical {
+            border-left: 5px solid #fd79a8;
+        }
+        
+        .insight-card.performance {
+            border-left: 5px solid #74b9ff;
+        }
+        
+        .insight-card.competitive {
+            border-left: 5px solid #fdcb6e;
+        }
+        
+        .insight-card.actionable {
+            border-left: 5px solid #00b894;
+        }
+        
+        .insight-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        
+        .insight-card.tactical .insight-icon {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+        }
+        
+        .insight-card.performance .insight-icon {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+        }
+        
+        .insight-card.competitive .insight-icon {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+        }
+        
+        .insight-card.actionable .insight-icon {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+        
+        .insight-content h6 {
+            color: #2d3436;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .insight-content p {
+            color: #636e72;
+            margin-bottom: 0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* Report Footer */
+        .report-footer {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            border: 1px solid rgba(162, 155, 254, 0.15);
+            margin-top: 2rem;
+        }
+        
+        .footer-content p {
+            color: #636e72;
+            margin-bottom: 0;
+        }
+        
+        .powered-by {
+            color: #a29bfe;
+            font-weight: 600;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .professional-report {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .report-title {
+                font-size: 1.5rem;
+            }
+            
+            .stat-card {
+                margin-bottom: 1rem;
+            }
+            
+            .insight-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        .judgement-card {
+            background: linear-gradient(135deg, #dcedc1 0%, #c5f2c7 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 2px solid rgba(0, 184, 148, 0.2);
+        }
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+        .result-left {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+        .result-right {
+            background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+            color: white;
+        }
+        .result-skip {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+        .result-unset {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+        }
+        .alert-elegant {
+            border-radius: 15px;
+            border: none;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .alert-warning {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+        }
+        .alert-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+        }
+        .association-form {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(162, 155, 254, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-chart-line me-3"></i>Analysis Results
+                </h1>
+                <p class="page-subtitle">
+                    <i class="fas fa-video me-2"></i>
+                    {% if upload.is_multi_video %}
+                        {{ upload.match_title if upload.match_title else 'Multi-Video Match' }}
+                    {% else %}
+                        {{ upload.video_path.split('/')[-1] }}
+                    {% endif %}
+                    {% if upload.weapon_type %}
+                        <span class="badge rounded-pill ms-2" style="background: linear-gradient(135deg, {% if upload.weapon_type == 'saber' %}#e17055 0%, #d63031 100%{% elif upload.weapon_type == 'foil' %}#74b9ff 0%, #0984e3 100%{% else %}#6c757d 0%, #495057 100%{% endif %}; color: white;">
+                            <i class="fas fa-{% if upload.weapon_type == 'saber' %}cut{% elif upload.weapon_type == 'foil' %}arrow-up{% else %}sword{% endif %} me-1"></i>{{ upload.weapon_type.title() }}
+                        </span>
+                    {% endif %}
+                    {% if upload.match_datetime %}
+                        <span class="ms-3">
+                            <i class="fas fa-calendar-alt me-1"></i>{{ upload.match_datetime.strftime('%Y-%m-%d %H:%M') }}
+                        </span>
+                    {% endif %}
+                </p>
+                <div class="d-flex justify-content-center gap-2 mt-2">
+                    <a href="{{ url_for('results', upload_id=upload.id) }}" class="btn btn-elegant btn-back btn-sm">
+                        <i class="fas fa-list"></i> Classic View
+                    </a>
+                    <a href="{{ url_for('video_view', upload_id=upload.id) }}" class="btn btn-elegant btn-warning btn-sm">
+                        <i class="fas fa-chart-radar"></i> Video Type Analysis
+                    </a>
+                </div>
+                
+                {% if upload.status == 'awaiting_user_input' or upload.status == 'results_submitted' %}
+                                     <div class="mt-3">
+                     <a href="{{ url_for('select_bout_winners', upload_id=upload.id) }}" class="btn btn-elegant btn-nav">
+                         <i class="fas fa-trophy"></i>Select Bout Winners
+                     </a>
+                 </div>
+             {% endif %}
+
+             {% if upload.status == 'completed' or upload.status == 'error' %}
+                 <div class="mt-3">
+                     <form action="{{ url_for('reanalyze_video', upload_id=upload.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to re-analyze this video? This will clear existing tags and regenerate them.');">
+                         <button type="submit" class="btn btn-elegant btn-warning">
+                             <i class="fas fa-sync-alt"></i>Regenerate Tags
+                         </button>
+                     </form>
+                 </div>
+             {% endif %}
+            </div>
+            
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-elegant alert-{{ 'danger' if category == 'error' else 'warning' }}">
+                            <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }} me-2"></i>{{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Download Section -->
+            <div class="main-card">
+                <div class="card-header-elegant">
+                    <h3 class="mb-0">
+                        <i class="fas fa-download me-2"></i>Download Initial Results
+                    </h3>
+                </div>
+                <div class="card-body-elegant">
+                    <div class="download-grid">
+                        <a href="{{ url_for('result_file', filename=upload.user_id ~ '/' ~ upload.id ~ '/csv/left_xdata.csv') }}" class="btn btn-elegant btn-download">
+                            <i class="fas fa-file-csv"></i>Left X Data CSV
+                        </a>
+                        <a href="{{ url_for('result_file', filename=upload.user_id ~ '/' ~ upload.id ~ '/csv/left_ydata.csv') }}" class="btn btn-elegant btn-download">
+                            <i class="fas fa-file-csv"></i>Left Y Data CSV
+                        </a>
+                        <a href="{{ url_for('result_file', filename=upload.user_id ~ '/' ~ upload.id ~ '/csv/right_xdata.csv') }}" class="btn btn-elegant btn-download">
+                            <i class="fas fa-file-csv"></i>Right X Data CSV
+                        </a>
+                        <a href="{{ url_for('result_file', filename=upload.user_id ~ '/' ~ upload.id ~ '/csv/right_ydata.csv') }}" class="btn btn-elegant btn-download">
+                            <i class="fas fa-file-csv"></i>Right Y Data CSV
+                        </a>
+                        <a href="{{ url_for('result_file', filename=upload.user_id ~ '/' ~ upload.id ~ '/csv/meta.csv') }}" class="btn btn-elegant btn-download">
+                            <i class="fas fa-file-csv"></i>Metadata CSV
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bout Results Section -->
+            <div class="main-card">
+                <div class="card-header-elegant">
+                    <h3 class="mb-0">
+                        <i class="fas fa-swords me-2"></i>Bout Results
+                    </h3>
+                </div>
+                <div class="card-body-elegant">
+                    {% for bout in bouts %}
+                        <div class="bout-card">
+                            <div class="bout-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h4 class="mb-0">
+                                        <i class="fas fa-swords me-2"></i>Bout {{ bout.idx }}
+                                    </h4>
+                                    <div class="result-badge
+                                        {% if bout.result == 'skip' %}result-skip
+                                        {% elif bout.result == 'left' %}result-left
+                                        {% elif bout.result == 'right' %}result-right
+                                        {% else %}result-unset{% endif %}">
+                                        <i class="fas fa-
+                                            {% if bout.result == 'skip' %}ban
+                                            {% elif bout.result == 'left' %}arrow-left
+                                            {% elif bout.result == 'right' %}arrow-right
+                                            {% elif bout.result == 'question'%}question{% endif %}"></i>
+                                        {% if bout.result == 'skip' %}
+                                            Skip
+                                        {% elif bout.result == 'left' %}
+                                            Left Wins
+                                        {% elif bout.result == 'right' %}
+                                            Right Wins
+                                        {% else %}
+                                            Not Specified
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bout-body">
+                                <!-- Video Section -->
+                                {% if bout.video %}
+                                    <div class="video-container">
+                                        <video controls preload="metadata">
+                                            <source src="{{ url_for('result_file', filename=bout.video) }}" type="video/mp4">
+                                            <p>Your browser does not support the video tag.</p>
+                                        </video>
+                                    </div>
+                                {% else %}
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fas fa-video-slash fa-3x mb-3"></i>
+                                        <h5>Bout {{ bout.idx }} has no available video</h5>
+                                    </div>
+                                {% endif %}
+
+
+                                <!-- Tags Section -->
+                                {% if bout.left_tags or bout.right_tags %}
+                                    <div class="tags-section">
+                                        <h5 class="mb-3">
+                                            <i class="fas fa-tags me-2 text-primary"></i>Performance Tags
+                                        </h5>
+                                        <div class="tags-container">
+                                            <div class="fencer-tags">
+                                                <strong>
+                                                    <i class="fas fa-user text-success me-2"></i>Left Fencer:
+                                                </strong>
+                                                <div class="tag-list">
+                                                    {% for tag in bout.left_tags %}
+                                                        <span class="tag left-tag">{{ TAG_TRANSLATIONS.get(tag, tag.replace('_', ' ').title()) }}</span>
+                                                    {% endfor %}
+                                                    {% if not bout.left_tags %}
+                                                        <span class="text-muted fst-italic">No Tags</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="fencer-tags">
+                                                <strong>
+                                                    <i class="fas fa-user text-danger me-2"></i>Right Fencer:
+                                                </strong>
+                                                <div class="tag-list">
+                                                    {% for tag in bout.right_tags %}
+                                                        <span class="tag right-tag">{{ TAG_TRANSLATIONS.get(tag, tag.replace('_', ' ').title()) }}</span>
+                                                    {% endfor %}
+                                                    {% if not bout.right_tags %}
+                                                        <span class="text-muted fst-italic">No Tags</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Analysis Section -->
+                                {% if bout.analysis %}
+                                    <div class="mt-4">
+                                        <h5 class="mb-3">
+                                            <i class="fas fa-brain me-2 text-info"></i>Bout Analysis
+                                        </h5>
+                                        <div class="analysis-text">
+                                            {{ bout.analysis | safe }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Judgement Section -->
+                                {% if bout.judgement %}
+                                    <div class="judgement-card mt-4">
+                                        <h5 class="mb-3">
+                                            <i class="fas fa-gavel me-2"></i>AI Judgment
+                                        </h5>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p class="mb-1"><strong>Winner:</strong></p>
+                                                <p class="text-primary">{{ bout.judgement.winner }}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="mb-1"><strong>Confidence:</strong></p>
+                                                <p class="text-success">{{ '%.0f' % (bout.judgement.confidence * 100) }}%</p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <p class="mb-1"><strong>Reason:</strong></p>
+                                                <p class="text-muted">{{ bout.judgement.reasoning }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Fencer Analysis Section -->
+            <div class="main-card">
+                <div class="card-header-elegant">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user-friends me-2"></i>Fencer Analysis
+                    </h3>
+                </div>
+                <div class="card-body-elegant">
+                    {% if upload.cross_bout_analysis_path %}
+                        <!-- Download and Navigation Buttons -->
+                        <div class="row mb-4">
+                            <div class="col-lg-6">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-download me-2"></i>Download Analysis Report
+                                </h5>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="{{ url_for('result_file', filename=upload.cross_bout_analysis_path) }}" class="btn btn-elegant btn-download">
+                                        <i class="fas fa-file-code"></i>JSON Format
+                                    </a>
+                                    <a href="{{ url_for('result_file', filename=upload.cross_bout_analysis_path.replace('.json', '.txt')) }}" class="btn btn-elegant btn-download">
+                                        <i class="fas fa-file-alt"></i>Text Format
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-robot me-2"></i>Deep Analysis
+                                </h5>
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% if upload.left_fencer_id %}
+                                        <a href="{{ url_for('holistic_chat', fencer_id=upload.left_fencer_id) }}?weapon={{ upload.weapon_type }}" class="btn btn-elegant btn-nav">
+                                            <i class="fas fa-user"></i>Left Fencer Analysis
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Left fencer not associated</span>
+                                    {% endif %}
+                                    {% if upload.right_fencer_id %}
+                                        <a href="{{ url_for('holistic_chat', fencer_id=upload.right_fencer_id) }}?weapon={{ upload.weapon_type }}" class="btn btn-elegant btn-nav">
+                                            <i class="fas fa-user"></i>Right Fencer Analysis
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Right fencer not associated</span>
+                                    {% endif %}
+                                    <a href="{{ url_for('chat_view', upload_id=upload.id) }}" class="btn btn-elegant btn-nav">
+                                        <i class="fas fa-comments"></i>Video Chat
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fencer Association Form -->
+                        <div class="association-form">
+                            <h5 class="mb-4">
+                                <i class="fas fa-link me-2"></i>Associate Fencers
+                            </h5>
+                            <form method="POST" action="{{ url_for('results', upload_id=upload.id) }}">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="left_fencer_id" class="form-label">
+                                            <i class="fas fa-user text-success me-2"></i>Left Fencer
+                                        </label>
+                                        <select name="left_fencer_id" id="left_fencer_id" class="form-select">
+                                            <option value="">Select Fencer...</option>
+                                            {% for fencer in fencers %}
+                                                <option value="{{ fencer.id }}" {% if upload.left_fencer_id == fencer.id %}selected{% endif %}>{{ fencer.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="right_fencer_id" class="form-label">
+                                            <i class="fas fa-user text-danger me-2"></i>Right Fencer
+                                        </label>
+                                        <select name="right_fencer_id" id="right_fencer_id" class="form-select">
+                                            <option value="">Select Fencer...</option>
+                                            {% for fencer in fencers %}
+                                                <option value="{{ fencer.id }}" {% if upload.right_fencer_id == fencer.id %}selected{% endif %}>{{ fencer.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" name="save_fencers" class="btn btn-elegant btn-success">
+                                        <i class="fas fa-save"></i>Save Fencer Association
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning text-center">
+                            <i class="fas fa-hourglass-half me-2"></i>Cross-bout analysis is not available yet for this upload.
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('upload') }}" class="btn btn-elegant btn-back btn-lg">
+                    <i class="fas fa-arrow-left"></i>Return to Upload Page
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,746 @@
+{
+  "generated_at": "2025-10-06T14:35:55.216473",
+  "fencer": {
+    "id": 25,
+    "name": "Rui Guo",
+    "user_id": 12,
+    "match_count": 2
+  },
+  "executive_summary": {
+    "synopsis": "Rui Guo exhibits an aggressive, initiative-taking tactical style, consistently seeking to dictate the pace of the bout. Their most prominent strength lies in dominance during simultaneous engagements (Inbox), where they achieve a perfect scoring rate. However, a significant weakness is a systemic defensive vulnerability, evidenced by a zero percent scoring rate in defensive situations. Rui Guo's recent performance trend shows a strong offensive capability but a clear need for immediate improvement in defensive execution and counter-attack effectiveness.",
+    "overall_score": 70,
+    "wins": 7,
+    "losses": 3,
+    "skips": 0
+  },
+  "performance_dashboard": {
+    "style_profile": [
+      {
+        "label": "attack",
+        "count": 3,
+        "win_rate": 66.7,
+        "wins": 2,
+        "losses": 1
+      },
+      {
+        "label": "defense",
+        "count": 2,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 2
+      },
+      {
+        "label": "in_box",
+        "count": 5,
+        "win_rate": 100.0,
+        "wins": 5,
+        "losses": 0
+      }
+    ],
+    "key_strengths": {
+      "top_category": {
+        "label": "in_box",
+        "count": 5,
+        "win_rate": 100.0,
+        "wins": 5,
+        "losses": 0
+      },
+      "positive_tags": [
+        {
+          "tag": "good_attack_distance",
+          "label": "Good Attack Distance",
+          "count": 10
+        },
+        {
+          "tag": "fast_reaction_time",
+          "label": "Fast Reaction Time",
+          "count": 7
+        },
+        {
+          "tag": "variable_tempo",
+          "label": "Variable Tempo",
+          "count": 6
+        }
+      ],
+      "volume_tags": [
+        {
+          "tag": "good_attack_distance",
+          "label": "Good Attack Distance",
+          "count": 10
+        },
+        {
+          "tag": "poor_acceleration",
+          "label": "Poor Acceleration",
+          "count": 10
+        },
+        {
+          "tag": "arm_extension",
+          "label": "Arm Extension",
+          "count": 10
+        }
+      ]
+    },
+    "key_weaknesses": {
+      "lowest_category": {
+        "label": "defense",
+        "count": 2,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 2
+      },
+      "negative_tags": [
+        {
+          "tag": "poor_acceleration",
+          "label": "Poor Acceleration",
+          "count": 10
+        },
+        {
+          "tag": "excessive_tempo_changes",
+          "label": "Excessive Tempo Changes",
+          "count": 6
+        },
+        {
+          "tag": "low_speed",
+          "label": "Low Speed",
+          "count": 6
+        }
+      ]
+    },
+    "tag_counts": {
+      "positive": [
+        {
+          "tag": "good_attack_distance",
+          "label": "Good Attack Distance",
+          "count": 10
+        },
+        {
+          "tag": "fast_reaction_time",
+          "label": "Fast Reaction Time",
+          "count": 7
+        },
+        {
+          "tag": "variable_tempo",
+          "label": "Variable Tempo",
+          "count": 6
+        },
+        {
+          "tag": "consistent_spacing",
+          "label": "Consistent Spacing",
+          "count": 5
+        },
+        {
+          "tag": "good_defensive_quality",
+          "label": "Good Defensive Quality",
+          "count": 5
+        },
+        {
+          "tag": "maintain_safe_distance",
+          "label": "Maintain Safe Distance",
+          "count": 4
+        }
+      ],
+      "negative": [
+        {
+          "tag": "poor_acceleration",
+          "label": "Poor Acceleration",
+          "count": 10
+        },
+        {
+          "tag": "excessive_tempo_changes",
+          "label": "Excessive Tempo Changes",
+          "count": 6
+        },
+        {
+          "tag": "low_speed",
+          "label": "Low Speed",
+          "count": 6
+        },
+        {
+          "tag": "missed_counter_opportunities",
+          "label": "Missed Counter Opportunities",
+          "count": 5
+        },
+        {
+          "tag": "no_launch",
+          "label": "No Launch",
+          "count": 4
+        },
+        {
+          "tag": "poor_attack_distance",
+          "label": "Poor Attack Distance",
+          "count": 3
+        },
+        {
+          "tag": "excessive_pausing",
+          "label": "Excessive Pausing",
+          "count": 3
+        },
+        {
+          "tag": "poor_distance_maintenance",
+          "label": "Poor Distance Maintenance",
+          "count": 2
+        }
+      ]
+    }
+  },
+  "performance_over_time": {
+    "timeline": [
+      {
+        "match_id": 329,
+        "label": "test (2025-09-28 09:05)",
+        "match_datetime": "2025-09-28T09:05:00",
+        "win_rate": 60.0,
+        "wins": 3,
+        "losses": 2,
+        "skips": 0,
+        "category_win_rates": {
+          "attack": 50.0,
+          "defense": 0.0,
+          "in_box": 100.0
+        }
+      },
+      {
+        "match_id": 330,
+        "label": "2025-10-08 09:06",
+        "match_datetime": "2025-10-08T09:06:00",
+        "win_rate": 80.0,
+        "wins": 4,
+        "losses": 1,
+        "skips": 0,
+        "category_win_rates": {
+          "attack": 100.0,
+          "defense": 0.0,
+          "in_box": 100.0
+        }
+      }
+    ],
+    "narrative": "The recent match data indicates a significant upward trend in performance. Following an initial match with a 60% win rate, the subsequent match saw a substantial improvement to an 80% win rate. This surge is particularly notable in the \"attack\" and \"in_box\" categories, both achieving perfect 100% win rates in the latter match, suggesting a strong offensive execution and effective close-quarters combat. While the \"defense\" category remains at 0%, the overall improvement in win rate and offensive metrics points to a positive development in strategic execution and tactical application."
+  },
+  "tactical_analysis": {
+    "attack": {
+      "narrative": "The fencer demonstrates a strong attack performance with a 66.7% win rate, largely driven by excellent reaction time, variable tempo, and maintaining good attack distance. However, they frequently miss counter opportunities and exhibit poor acceleration, sometimes exacerbated by excessive tempo changes. While superior positioning often secures wins, a key loss reason stems from being countered on preparation due to timing errors.",
+      "analysis": {
+        "situation": "Attack produced a 66.7% win rate across 3 decided touches. Most successful outcome driver: Superior Positioning - Optimal Distance (2 touches). Positive trait showing up most often: Fast Reaction Time (3 occurrences).",
+        "improvement": "Primary loss driver: Countered on Preparation (Timing Error) (1 touches). Key risk indicator: Missed Counter Opportunities (3 occurrences)."
+      },
+      "summary": {
+        "performance_summary": "Attack win rate 66.7% across 3 decided touches (2 wins). The fencer achieved a strong 66.7% win rate in attacks across 3 bouts, securing 2 wins. This indicates a generally effective offensive approach, though opportunities for improvement exist.",
+        "strengths": [
+          "Excellent reaction time and tempo variation.",
+          "Consistently maintained good attack distance and spacing.",
+          "Demonstrated good defensive quality during offensive actions."
+        ],
+        "weaknesses": [
+          "Frequently missed counter-attack opportunities.",
+          "Struggled with poor acceleration and low speed in attacks.",
+          "Experienced issues with predictable timing and excessive pausing."
+        ],
+        "tactical_focus": "While the fencer excels at maintaining distance and varying tempo, a key area for improvement is capitalizing on counter-attack opportunities. Addressing predictable attack timing and improving acceleration will enhance offensive effectiveness.",
+        "training_suggestions": [
+          "Drills focused on recognizing and executing counter-attacks from defensive positions.",
+          "Interval training to improve explosive acceleration and sustained speed during attacks.",
+          "Practice sessions emphasizing unpredictable attack initiation and varied tempo changes to disrupt opponent's rhythm."
+        ],
+        "narrative": "The fencer's ability to control distance and tempo is a significant asset, leading to successful attacks when executed optimally. However, the data suggests a tendency to be predictable in attack timing, which, coupled with issues in acceleration, allows opponents to effectively counter. Missed opportunities to exploit opponent's defensive vulnerabilities during their preparation phase are also evident."
+      },
+      "key_metrics": {
+        "bout_count": 3,
+        "win_rate": 66.7,
+        "wins": 2,
+        "losses": 1
+      },
+      "reason_breakdown": {
+        "win": [
+          {
+            "reason": "Superior Positioning - Optimal Distance",
+            "count": 2
+          }
+        ],
+        "loss": [
+          {
+            "reason": "Countered on Preparation (Timing Error)",
+            "count": 1
+          }
+        ]
+      },
+      "tag_counts": {
+        "positive": [
+          {
+            "tag": "fast_reaction_time",
+            "label": "Fast Reaction Time",
+            "count": 3
+          },
+          {
+            "tag": "variable_tempo",
+            "label": "Variable Tempo",
+            "count": 3
+          },
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 3
+          },
+          {
+            "tag": "consistent_spacing",
+            "label": "Consistent Spacing",
+            "count": 3
+          },
+          {
+            "tag": "good_defensive_quality",
+            "label": "Good Defensive Quality",
+            "count": 3
+          },
+          {
+            "tag": "maintain_safe_distance",
+            "label": "Maintain Safe Distance",
+            "count": 2
+          }
+        ],
+        "negative": [
+          {
+            "tag": "missed_counter_opportunities",
+            "label": "Missed Counter Opportunities",
+            "count": 3
+          },
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 3
+          },
+          {
+            "tag": "excessive_tempo_changes",
+            "label": "Excessive Tempo Changes",
+            "count": 3
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 2
+          },
+          {
+            "tag": "no_launch",
+            "label": "No Launch",
+            "count": 1
+          },
+          {
+            "tag": "poor_attack_distance",
+            "label": "Poor Attack Distance",
+            "count": 1
+          },
+          {
+            "tag": "poor_distance_maintenance",
+            "label": "Poor Distance Maintenance",
+            "count": 1
+          },
+          {
+            "tag": "excessive_pausing",
+            "label": "Excessive Pausing",
+            "count": 1
+          }
+        ]
+      },
+      "tag_highlights": {
+        "positive": [
+          {
+            "tag": "fast_reaction_time",
+            "label": "Fast Reaction Time",
+            "count": 3
+          },
+          {
+            "tag": "variable_tempo",
+            "label": "Variable Tempo",
+            "count": 3
+          },
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 3
+          },
+          {
+            "tag": "consistent_spacing",
+            "label": "Consistent Spacing",
+            "count": 3
+          }
+        ],
+        "negative": [
+          {
+            "tag": "missed_counter_opportunities",
+            "label": "Missed Counter Opportunities",
+            "count": 3
+          },
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 3
+          },
+          {
+            "tag": "excessive_tempo_changes",
+            "label": "Excessive Tempo Changes",
+            "count": 3
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 2
+          }
+        ]
+      },
+      "tag_totals": {
+        "positive": 17,
+        "negative": 15
+      }
+    },
+    "defense": {
+      "narrative": "Despite maintaining consistent spacing and good defensive quality, the fencer's defense was ineffective, resulting in a 0.0 win rate over two bouts. This was primarily due to poor acceleration and excessive pausing, which led to missed counter-opportunities. The fencer's losses stemmed from tactical errors in missed counter-attacks and positional errors in failing to pull distance against lunges.",
+      "analysis": {
+        "situation": "Defense produced a 0.0% win rate across 2 decided touches. Positive trait showing up most often: Consistent Spacing (2 occurrences).",
+        "improvement": "Primary loss driver: Missed Counter-Attack Opportunity (Tactical Error) (1 touches). Key risk indicator: Poor Acceleration (2 occurrences)."
+      },
+      "summary": {
+        "performance_summary": "Defense win rate 0.0% across 2 decided touches (0 wins). The fencer experienced a 0.0% win rate in defense across 2 bouts, resulting in 0 wins and 2 losses. This indicates a significant need for improvement in defensive execution and tactical decision-making to secure victories.",
+        "strengths": [
+          "Consistent spacing maintained throughout bouts.",
+          "Good defensive quality observed.",
+          "Maintained safe distance effectively.",
+          "Fast reaction time noted in one instance."
+        ],
+        "weaknesses": [
+          "Missed counter-attack opportunities occurred twice.",
+          "Poor acceleration and low speed were consistent issues.",
+          "Excessive pausing and tempo changes were observed.",
+          "Failed to 'pull distance' effectively against lunges."
+        ],
+        "tactical_focus": "The fencer's defensive phase is hampered by missed counter-attack opportunities and positional errors, specifically failing to 'pull distance' against lunges. Addressing these tactical and positional shortcomings is crucial for improving defensive effectiveness and converting opportunities.",
+        "training_suggestions": [
+          "Drills focused on recognizing and executing counter-attacks from defensive positions.",
+          "Footwork drills to improve 'pulling distance' and maintaining optimal defensive spacing against aggressive attacks.",
+          "Tempo and rhythm training to reduce excessive pausing and improve offensive-defensive transitions."
+        ],
+        "narrative": "While the fencer demonstrated good defensive qualities like consistent spacing and maintaining safe distance, the inability to capitalize on counter-attack opportunities and positional errors against lunges led to a winless defensive record. The data suggests a need to be more proactive in offense following a successful defense and to refine footwork for better distance management."
+      },
+      "key_metrics": {
+        "bout_count": 2,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 2
+      },
+      "reason_breakdown": {
+        "win": [],
+        "loss": [
+          {
+            "reason": "Missed Counter-Attack Opportunity (Tactical Error)",
+            "count": 1
+          },
+          {
+            "reason": "Failed to \"Pull Distance\" vs. Lunge (Positional Error)",
+            "count": 1
+          }
+        ]
+      },
+      "tag_counts": {
+        "positive": [
+          {
+            "tag": "consistent_spacing",
+            "label": "Consistent Spacing",
+            "count": 2
+          },
+          {
+            "tag": "good_defensive_quality",
+            "label": "Good Defensive Quality",
+            "count": 2
+          },
+          {
+            "tag": "maintain_safe_distance",
+            "label": "Maintain Safe Distance",
+            "count": 2
+          },
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 2
+          },
+          {
+            "tag": "fast_reaction_time",
+            "label": "Fast Reaction Time",
+            "count": 1
+          },
+          {
+            "tag": "variable_tempo",
+            "label": "Variable Tempo",
+            "count": 1
+          }
+        ],
+        "negative": [
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 2
+          },
+          {
+            "tag": "excessive_pausing",
+            "label": "Excessive Pausing",
+            "count": 2
+          },
+          {
+            "tag": "missed_counter_opportunities",
+            "label": "Missed Counter Opportunities",
+            "count": 2
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 2
+          },
+          {
+            "tag": "poor_attack_distance",
+            "label": "Poor Attack Distance",
+            "count": 1
+          },
+          {
+            "tag": "excessive_tempo_changes",
+            "label": "Excessive Tempo Changes",
+            "count": 1
+          },
+          {
+            "tag": "no_launch",
+            "label": "No Launch",
+            "count": 1
+          },
+          {
+            "tag": "poor_distance_maintenance",
+            "label": "Poor Distance Maintenance",
+            "count": 1
+          }
+        ]
+      },
+      "tag_highlights": {
+        "positive": [
+          {
+            "tag": "consistent_spacing",
+            "label": "Consistent Spacing",
+            "count": 2
+          },
+          {
+            "tag": "good_defensive_quality",
+            "label": "Good Defensive Quality",
+            "count": 2
+          },
+          {
+            "tag": "maintain_safe_distance",
+            "label": "Maintain Safe Distance",
+            "count": 2
+          },
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 2
+          }
+        ],
+        "negative": [
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 2
+          },
+          {
+            "tag": "excessive_pausing",
+            "label": "Excessive Pausing",
+            "count": 2
+          },
+          {
+            "tag": "missed_counter_opportunities",
+            "label": "Missed Counter Opportunities",
+            "count": 2
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 2
+          }
+        ]
+      },
+      "tag_totals": {
+        "positive": 10,
+        "negative": 12
+      }
+    },
+    "in_box": {
+      "narrative": "The fencer demonstrated a perfect 100% win rate in the \"in_box\" category over 5 bouts, consistently leveraging \"good attack distance\" and \"fast reaction time.\" Their victories were primarily driven by \"overpowering at the start\" and \"exploiting hesitation.\" However, a recurring weakness was \"poor acceleration,\" with \"excessive tempo changes\" also noted as a contributing factor to some exchanges.",
+      "analysis": {
+        "situation": "In-Box produced a 100.0% win rate across 5 decided touches. Most successful outcome driver: Overpowering at Start (2 touches). Positive trait showing up most often: Good Attack Distance (5 occurrences).",
+        "improvement": "Key risk indicator: Poor Acceleration (5 occurrences)."
+      },
+      "summary": {
+        "performance_summary": "In-Box win rate 100.0% across 5 decided touches (5 wins). The fencer achieved a perfect 100% win rate across 5 bouts in the In-Box phase, demonstrating a strong ability to secure victories.",
+        "strengths": [
+          "Consistent good attack distance maintained in all bouts.",
+          "Fast reaction time observed in 3 bouts.",
+          "Variable tempo utilized effectively in 2 bouts."
+        ],
+        "weaknesses": [
+          "Poor acceleration noted in all 5 bouts.",
+          "Low speed was a factor in 2 bouts.",
+          "No launch observed in 2 bouts."
+        ],
+        "tactical_focus": "The fencer's success in the In-Box phase is driven by their ability to exploit opponent hesitation and overpower them early, as evidenced by the win reasons. However, consistent poor acceleration and low speed suggest a need to improve explosiveness to maintain this dominance.",
+        "training_suggestions": [
+          "Drills focusing on explosive first steps and acceleration from a stationary position.",
+          "Practice maintaining aggressive advances while incorporating variable tempo to create openings.",
+          "Implement drills that simulate capitalizing on opponent hesitation with decisive, fast actions."
+        ],
+        "narrative": "The data indicates a strong tactical approach to the In-Box phase, characterized by capitalizing on opponent weaknesses and maintaining advantageous distance. While the win rate is exceptional, the recurring negative tags related to speed and acceleration present a clear area for development to further enhance offensive capabilities."
+      },
+      "key_metrics": {
+        "bout_count": 5,
+        "win_rate": 100.0,
+        "wins": 5,
+        "losses": 0
+      },
+      "reason_breakdown": {
+        "win": [
+          {
+            "reason": "Overpowering at Start",
+            "count": 2
+          },
+          {
+            "reason": "Exploited Hesitation",
+            "count": 1
+          }
+        ],
+        "loss": []
+      },
+      "tag_counts": {
+        "positive": [
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 5
+          },
+          {
+            "tag": "fast_reaction_time",
+            "label": "Fast Reaction Time",
+            "count": 3
+          },
+          {
+            "tag": "variable_tempo",
+            "label": "Variable Tempo",
+            "count": 2
+          }
+        ],
+        "negative": [
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 5
+          },
+          {
+            "tag": "excessive_tempo_changes",
+            "label": "Excessive Tempo Changes",
+            "count": 2
+          },
+          {
+            "tag": "no_launch",
+            "label": "No Launch",
+            "count": 2
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 2
+          },
+          {
+            "tag": "poor_attack_distance",
+            "label": "Poor Attack Distance",
+            "count": 1
+          }
+        ]
+      },
+      "tag_highlights": {
+        "positive": [
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 5
+          },
+          {
+            "tag": "fast_reaction_time",
+            "label": "Fast Reaction Time",
+            "count": 3
+          },
+          {
+            "tag": "variable_tempo",
+            "label": "Variable Tempo",
+            "count": 2
+          }
+        ],
+        "negative": [
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 5
+          },
+          {
+            "tag": "excessive_tempo_changes",
+            "label": "Excessive Tempo Changes",
+            "count": 2
+          },
+          {
+            "tag": "no_launch",
+            "label": "No Launch",
+            "count": 2
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 2
+          }
+        ]
+      },
+      "tag_totals": {
+        "positive": 10,
+        "negative": 12
+      }
+    }
+  },
+  "signature_patterns": {
+    "strengths": [
+      {
+        "text": "Dominate early with explosive first steps, leveraging speed and acceleration for decisive advantages.",
+        "count": 1
+      },
+      {
+        "text": "Superior distance management and controlled aggression led to a decisive, unanswerable attack.",
+        "count": 1
+      },
+      {
+        "text": "Explosive starts create immediate advantage, forcing opponent reactions and dictating bout tempo.",
+        "count": 1
+      },
+      {
+        "text": "Capitalized on opponent's hesitation by maintaining aggressive advance and scoring.",
+        "count": 1
+      },
+      {
+        "text": "Superior positioning and distance management created an unanswerable attack opportunity, exploiting opponent's…",
+        "count": 1
+      }
+    ],
+    "risks": [
+      {
+        "text": "Attack timing was too predictable, allowing opponent to counter effectively with superior acceleration.",
+        "count": 1
+      },
+      {
+        "text": "Failed to capitalize on 4 clear counter-attack chances, showing hesitation and missed offensive execution.",
+        "count": 1
+      },
+      {
+        "text": "Defensive positional errors and passive rhythm allowed opponent to exploit distance, leading to a failed defen…",
+        "count": 1
+      }
+    ]
+  },
+  "actionable_recommendations": {
+    "markdown": "Here is a short action plan for Rui Guo:\n\n*   **Enhance Defensive Counter-Attack Execution:** Focus on drills that specifically train recognizing and executing counter-attacks from defensive positions. The data shows a 0.0% win rate in defense and a significant weakness in \"missed counter-opportunities\" (2 occurrences), indicating a critical need to convert these defensive moments into offensive actions.\n\n*   **Improve Acceleration and Speed:** Implement interval training and explosive footwork drills to address the consistent \"poor acceleration\" (5 occurrences in \"in_box\", 2 in \"defense\") and \"low speed\" (2 occurrences in \"defense\"). This will improve offensive explosiveness and defensive responsiveness.\n\n*   **Refine Attack Timing and Predictability:** Incorporate practice sessions that emphasize unpredictable attack initiation and varied tempo changes. The data highlights \"countered on preparation (timing error)\" as a primary loss reason in attacks, suggesting opponents are exploiting predictable patterns."
+  }
+}

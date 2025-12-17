@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload - Fencing Analysis Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-container {
+            padding: 2rem 0;
+        }
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .dashboard-title {
+            color: #2d3436;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+        .dashboard-subtitle {
+            color: #495057;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-elegant {
+            border-radius: 15px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-logout {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+        }
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(232, 67, 147, 0.3);
+            color: white;
+        }
+        .btn-manage {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+        }
+        .btn-manage:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
+            color: white;
+        }
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+        }
+        .card-header-elegant {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            padding: 1.5rem;
+            border: none;
+        }
+        .card-body-elegant {
+            padding: 2rem;
+        }
+        .fencer-info {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(116, 185, 255, 0.2);
+        }
+        .upload-area {
+            background: linear-gradient(135deg, #fff5f5 0%, #f0f8ff 100%);
+            border: 3px dashed #74b9ff;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        .upload-area:hover {
+            border-color: #0984e3;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+        }
+        .upload-area.dragover {
+            border-color: #00b894;
+            background: linear-gradient(135deg, #f0fff4 0%, #e8f5e8 100%);
+        }
+        
+        /* Multi-video upload styles */
+        .video-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .video-item {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .video-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(116, 185, 255, 0.15);
+        }
+        
+        .video-item.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+        
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-sequence {
+            background: #74b9ff;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        .video-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-video-action {
+            padding: 0.25rem 0.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-move-up, .btn-move-down {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-video-action:hover {
+            transform: scale(1.1);
+        }
+        
+        .video-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        .upload-btn {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(116, 185, 255, 0.3);
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 0.75rem 2rem;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
+        }
+        .uploads-table {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .table-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .table-row {
+            transition: all 0.3s ease;
+        }
+        .table-row:hover {
+            background-color: #f8f9ff;
+            transform: scale(1.01);
+        }
+        .latest-upload {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0fff4 100%);
+            border-left: 4px solid #00b894;
+        }
+        .status-badge {
+            border-radius: 20px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .btn-action {
+            border-radius: 10px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-action:hover {
+            transform: translateY(-1px);
+        }
+        .btn-info {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+        }
+        .status-updating::after {
+            content: ' (Updating...)';
+            color: #888;
+            font-size: 0.7em;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .alert-elegant {
+            border-radius: 15px;
+            border: none;
+            padding: 1rem 1.5rem;
+        }
+        .alert-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-sword me-3"></i>Fencing Analysis Center
+                </h1>
+                <p class="dashboard-subtitle">Upload and analyze your fencing videos, get professional performance feedback</p>
+                <div class="action-buttons">
+                    <a href="{{ url_for('logout') }}" class="btn btn-elegant btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>Logout
+                    </a>
+                    <a href="{{ url_for('manage_fencers') }}" class="btn btn-elegant btn-manage">
+                        <i class="fas fa-users"></i>Manage Fencers
+                    </a>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="main-card">
+                <div class="card-header-elegant">
+                    <h3 class="mb-0">
+                        <i class="fas fa-cloud-upload-alt me-2"></i>Upload New Video
+                    </h3>
+                </div>
+                <div class="card-body-elegant">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-elegant alert-{{ 'danger' if category == 'error' else category }} mb-4">
+                                    <i class="fas fa-info-circle me-2"></i>{{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <!-- Fencer Info -->
+                    <div class="fencer-info">
+                        <h5 class="mb-3">
+                            <i class="fas fa-users text-primary me-2"></i>Your Fencers
+                        </h5>
+                        {% if fencers %}
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for fencer in fencers %}
+                                    <span class="badge bg-primary rounded-pill">
+                                        {{ fencer.name }} <small>(ID: {{ fencer.id }})</small>
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-3">
+                                <i class="fas fa-exclamation-circle text-warning fa-2x mb-2"></i>
+                                <p class="mb-2">No fencers created yet</p>
+                                <a href="{{ url_for('manage_fencers') }}" class="btn btn-elegant btn-manage">
+                                    <i class="fas fa-plus"></i>Create Fencer
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if error %}
+                        <div class="alert alert-elegant alert-danger mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Upload Mode Toggle -->
+                    <div class="mb-4">
+                        <div class="btn-group w-100" role="group" aria-label="Upload mode">
+                            <input type="radio" class="btn-check" name="upload-mode" id="single-mode" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="single-mode">
+                                <i class="fas fa-video me-2"></i>Single Video
+                            </label>
+                            <input type="radio" class="btn-check" name="upload-mode" id="multi-mode" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="multi-mode">
+                                <i class="fas fa-layer-group me-2"></i>Multi-Video Match
+                            </label>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <small class="text-muted" id="mode-description">
+                                Upload a single video file for analysis
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Single Video Upload (Default) -->
+                    <div id="single-upload-container">
+                        <form method="POST" enctype="multipart/form-data" id="single-upload-form">
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="single-match-date" class="form-label">Match Date</label>
+                                    <input type="date" class="form-control" id="single-match-date" name="match_date" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="single-match-time" class="form-label">Match Time</label>
+                                    <input type="time" class="form-control" id="single-match-time" name="match_time" required>
+                                </div>
+                            </div>
+                            <div class="upload-area" id="upload-area">
+                                <i class="fas fa-video fa-3x text-primary mb-3"></i>
+                                <h4>Drag and drop video file here</h4>
+                                <p class="text-muted mb-3">Or click the button below to select file</p>
+                                <input type="file" class="file-input" id="video" name="video" accept="video/*" required>
+                                <button type="button" class="upload-btn" onclick="document.getElementById('video').click()">
+                                    <i class="fas fa-folder-open"></i>Select Video File
+                                </button>
+                                <div class="mt-3">
+                                    <small class="text-muted">Supported formats: MP4, AVI, MOV</small>
+                                </div>
+                            </div>
+                            <div id="file-info" class="d-none mb-3">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-file-video me-2"></i>
+                                    <span id="file-name"></span>
+                                    <small class="text-muted ms-2">(<span id="file-size"></span>)</small>
+                                </div>
+                            </div>
+                            <button type="submit" class="submit-btn" id="submit-btn" disabled>
+                                <i class="fas fa-upload me-2"></i>Start Upload and Analysis
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Multi Video Upload -->
+                    <div id="multi-upload-container" style="display: none;">
+                        <form method="POST" enctype="multipart/form-data" id="multi-upload-form">
+                            <input type="hidden" name="is_multi_video" value="true">
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="multi-match-date" class="form-label">Match Date</label>
+                                    <input type="date" class="form-control" id="multi-match-date" name="match_date" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="multi-match-time" class="form-label">Match Time</label>
+                                    <input type="time" class="form-control" id="multi-match-time" name="match_time" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Match Title -->
+                            <div class="mb-4">
+                                <label for="match-title" class="form-label">Match Title</label>
+                                <input type="text" class="form-control" id="match-title" name="match_title"
+                                       placeholder="e.g.: 2024 World Championship Semifinal" required>
+                            </div>
+
+                            <!-- Video List -->
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5>Video Sequence</h5>
+                                    <button type="button" class="btn btn-primary btn-sm" id="add-video-btn">
+                                        <i class="fas fa-plus me-1"></i>Add Video
+                                    </button>
+                                </div>
+                                <div id="video-list" class="video-list">
+                                    <!-- Video items will be added here dynamically -->
+                                </div>
+                                <div id="no-videos-message" class="text-center text-muted py-4">
+                                    <i class="fas fa-video fa-2x mb-2"></i>
+                                    <p>Click "Add Video" to start building match sequence</p>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="submit-btn w-100" id="multi-submit-btn" disabled>
+                                <i class="fas fa-upload me-2"></i>Start Multi-Video Analysis
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Previous Uploads -->
+            <div class="main-card mt-4">
+                <div class="card-header-elegant">
+                    <h3 class="mb-0">
+                        <i class="fas fa-history me-2"></i>Previous Uploads
+                    </h3>
+                </div>
+                <div class="card-body-elegant p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 uploads-table" id="uploads-table">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="ps-4">
+                                        <i class="fas fa-file-video me-2"></i>File
+                                    </th>
+                                    <th>
+                                        <i class="fas fa-calendar-alt me-2"></i>Match Date/Time
+                                    </th>
+                                    <th>
+                                        <i class="fas fa-shield-alt me-2"></i>Weapon
+                                    </th>
+                                    <th>
+                                        <i class="fas fa-info-circle me-2"></i>Status
+                                    </th>
+                                    <th>
+                                        <i class="fas fa-cogs me-2"></i>Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for upload in uploads %}
+                                <tr class="table-row{% if loop.first %} latest-upload{% endif %}" data-upload-id="{{ upload.id }}">
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-play-circle text-primary me-3"></i>
+                                            <div>
+                                                <div class="fw-bold">
+                                                    {% if upload.is_multi_video %}
+                                                        {{ upload.match_title if upload.match_title else 'Multi-Video Match' }}
+                                                    {% else %}
+                                                        {{ upload.video_path.split('/')[-1] }}
+                                                    {% endif %}
+                                                </div>
+                                                {% if loop.first %}
+                                                    <small class="text-success">
+                                                        <i class="fas fa-star me-1"></i>Latest Upload
+                                                    </small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if upload.match_datetime %}
+                                            {{ upload.match_datetime.strftime('%Y-%m-%d %H:%M') }}
+                                        {% else %}
+                                            <span class="text-muted">Not set</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if upload.weapon_type %}
+                                            <span class="badge rounded-pill" style="background: linear-gradient(135deg, {% if upload.weapon_type == 'saber' %}#e17055 0%, #d63031 100%{% elif upload.weapon_type == 'foil' %}#74b9ff 0%, #0984e3 100%{% else %}#6c757d 0%, #495057 100%{% endif %}; color: white;">
+                                                <i class="fas fa-{% if upload.weapon_type == 'saber' %}cut{% elif upload.weapon_type == 'foil' %}arrow-up{% else %}sword{% endif %} me-1"></i>{{ upload.weapon_type.title() }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Unknown</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="status">
+                                        <span class="status-badge 
+                                            {% if upload.status == 'completed' %}bg-success
+                                            {% elif upload.status == 'processing' or upload.status == 'processing_detection' %}bg-warning
+                                            {% elif upload.status == 'error' %}bg-danger
+                                            {% else %}bg-info{% endif %}">
+                                            {{ upload.status }}
+                                        </span>
+                                    </td>
+                                    <td class="action">
+                                        {% if upload.status == 'processing_detection' %}
+                                            <a href="{{ url_for('upload_wait', upload_id=upload.id) }}" class="btn btn-action btn-warning text-white">
+                                                <i class="fas fa-hourglass-half me-1"></i>Waiting for Detection
+                                            </a>
+                                        {% elif upload.status == 'awaiting_selection' or upload.status == 'awaiting_multi_video_setup' %}
+                                            <a href="{{ url_for('select_fencers', upload_id=upload.id) }}" class="btn btn-action btn-info text-white">
+                                                <i class="fas fa-user-check me-1"></i>Select Fencers
+                                            </a>
+                                        {% elif upload.status == 'processing' %}
+                                            <a href="{{ url_for('status', upload_id=upload.id) }}" class="btn btn-action btn-warning text-white">
+                                                <i class="fas fa-spinner me-1"></i>Check Status
+                                            </a>
+                                        {% elif upload.status == 'completed' %}
+                                            <a href="{{ url_for('results', upload_id=upload.id) }}" class="btn btn-action btn-success text-white">
+                                                <i class="fas fa-chart-line me-1"></i>View Results
+                                            </a>
+                                        {% elif upload.status == 'awaiting_user_input' %}
+                                            <a href="{{ url_for('select_bout_winners', upload_id=upload.id) }}" class="btn btn-action btn-info text-white">
+                                                <i class="fas fa-trophy me-1"></i>Select Winner
+                                            </a>
+                                        {% elif upload.status == 'results_submitted' %}
+                                            <a href="{{ url_for('status', upload_id=upload.id) }}" class="btn btn-action btn-warning text-white">
+                                                <i class="fas fa-clock me-1"></i>Check Status
+                                            </a>
+                                        {% elif upload.status == 'error' %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>Error
+                                            </span>
+                                        {% endif %}
+                                        <form method="POST" action="{{ url_for('delete_upload', upload_id=upload.id) }}" class="d-inline" onsubmit="return confirm('Delete this upload? This action cannot be undone.');">
+                                            <button type="submit" class="btn btn-action btn-danger text-white mt-2">
+                                                <i class="fas fa-trash me-1"></i>Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File upload handling
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('video');
+        const fileInfo = document.getElementById('file-info');
+        const fileName = document.getElementById('file-name');
+        const fileSize = document.getElementById('file-size');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelect();
+            }
+        });
+
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (file) {
+                fileName.textContent = file.name;
+                fileSize.textContent = formatFileSize(file.size);
+                fileInfo.classList.remove('d-none');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Start Upload and Analysis';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Status checking functionality
+        function checkUploadStatuses() {
+            const rows = document.querySelectorAll('#uploads-table tbody tr');
+            rows.forEach(row => {
+                const uploadId = row.getAttribute('data-upload-id');
+                const statusCell = row.querySelector('.status');
+                const actionCell = row.querySelector('.action');
+                const statusBadge = statusCell.querySelector('.status-badge');
+
+                if (statusBadge && (statusBadge.textContent.trim() === 'completed' || statusBadge.textContent.trim() === 'error')) {
+                    return;
+                }
+
+                statusCell.classList.add('status-updating');
+
+                fetch(`/check_status/${uploadId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        statusCell.classList.remove('status-updating');
+                        if (statusBadge && data.status !== statusBadge.textContent.trim()) {
+                            // Update status badge
+                            statusBadge.textContent = data.status;
+                            statusBadge.className = 'status-badge ' + getStatusClass(data.status);
+                            
+                            // Update action button
+                            let actionHtml = getActionHtml(data.status, uploadId);
+                            actionCell.innerHTML = actionHtml;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking status:', error);
+                        statusCell.classList.remove('status-updating');
+                    });
+            });
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'completed': return 'bg-success';
+                case 'processing_detection':
+                case 'processing': return 'bg-warning';
+                case 'error': return 'bg-danger';
+                default: return 'bg-info';
+            }
+        }
+
+        function getActionHtml(status, uploadId) {
+            switch(status) {
+                case 'processing_detection':
+                    return `<a href="/upload_wait/${uploadId}" class="btn btn-action btn-warning text-white"><i class="fas fa-hourglass-half me-1"></i>Waiting for Detection</a>`;
+                case 'awaiting_multi_video_setup':
+                    return `<a href="/select_fencers/${uploadId}" class="btn btn-action btn-info text-white"><i class="fas fa-user-check me-1"></i>Select Fencers</a>`;
+                case 'awaiting_selection':
+                    return `<a href="/select_fencers/${uploadId}" class="btn btn-action btn-info text-white"><i class="fas fa-user-check me-1"></i>Select Fencers</a>`;
+                case 'processing':
+                case 'results_submitted':
+                    return `<a href="/status/${uploadId}" class="btn btn-action btn-warning text-white"><i class="fas fa-spinner me-1"></i>Check Status</a>`;
+                case 'completed':
+                    return `<a href="/results/${uploadId}" class="btn btn-action btn-success text-white"><i class="fas fa-chart-line me-1"></i>View Results</a>`;
+                case 'awaiting_user_input':
+                    return `<a href="/select_bout_winners/${uploadId}" class="btn btn-action btn-info text-white"><i class="fas fa-trophy me-1"></i>Select Winner</a>`;
+                case 'error':
+                    return `<span class="badge bg-danger"><i class="fas fa-exclamation-triangle me-1"></i>Error</span>`;
+                default:
+                    return '';
+            }
+        }
+
+        // Form submission handling (single upload form)
+        const singleUploadFormEl = document.getElementById('single-upload-form');
+        if (singleUploadFormEl) {
+            singleUploadFormEl.addEventListener('submit', function() {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
+            });
+        }
+
+        setInterval(checkUploadStatuses, 10000);
+        checkUploadStatuses();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Upload mode toggle
+    const singleMode = document.getElementById('single-mode');
+    const multiMode = document.getElementById('multi-mode');
+    const singleContainer = document.getElementById('single-upload-container');
+    const multiContainer = document.getElementById('multi-upload-container');
+    const modeDescription = document.getElementById('mode-description');
+    const singleLabel = document.querySelector('label[for="single-mode"]');
+    const multiLabel = document.querySelector('label[for="multi-mode"]');
+    
+    function setMode(mode) {
+        if (mode === 'single') {
+            singleContainer.style.display = 'block';
+            multiContainer.style.display = 'none';
+            modeDescription.textContent = 'Upload a single video file for analysis';
+            if (singleLabel && multiLabel) {
+                singleLabel.classList.add('active');
+                multiLabel.classList.remove('active');
+            }
+            // Enable single form inputs, disable multi form inputs
+            const singleForm = document.getElementById('single-upload-form');
+            const multiForm = document.getElementById('multi-upload-form');
+            if (singleForm) Array.from(singleForm.elements).forEach(el => el.disabled = false);
+            if (multiForm) Array.from(multiForm.elements).forEach(el => el.disabled = true);
+        } else {
+            singleContainer.style.display = 'none';
+            multiContainer.style.display = 'block';
+            modeDescription.textContent = 'Upload multiple video clips, analyze entire match in sequence order';
+            if (singleLabel && multiLabel) {
+                multiLabel.classList.add('active');
+                singleLabel.classList.remove('active');
+            }
+            // Enable multi form inputs, disable single form inputs
+            const singleForm = document.getElementById('single-upload-form');
+            const multiForm = document.getElementById('multi-upload-form');
+            if (singleForm) Array.from(singleForm.elements).forEach(el => el.disabled = true);
+            if (multiForm) Array.from(multiForm.elements).forEach(el => el.disabled = false);
+        }
+    }
+    
+    // Mode switching
+    if (singleMode) {
+        singleMode.addEventListener('change', function() {
+            if (this.checked) setMode('single');
+        });
+    }
+    if (multiMode) {
+        multiMode.addEventListener('change', function() {
+            if (this.checked) setMode('multi');
+        });
+    }
+    if (singleLabel) singleLabel.addEventListener('click', () => setMode('single'));
+    if (multiLabel) multiLabel.addEventListener('click', () => setMode('multi'));
+    // Initialize mode based on current checked radio
+    setMode(multiMode && multiMode.checked ? 'multi' : 'single');
+    
+    // Multi-video functionality
+    let videoCounter = 0;
+    const videoList = document.getElementById('video-list');
+    const noVideosMessage = document.getElementById('no-videos-message');
+    const addVideoBtn = document.getElementById('add-video-btn');
+    const multiSubmitBtn = document.getElementById('multi-submit-btn');
+    const singleMatchDate = document.getElementById('single-match-date');
+    const singleMatchTime = document.getElementById('single-match-time');
+    const multiMatchDate = document.getElementById('multi-match-date');
+    const multiMatchTime = document.getElementById('multi-match-time');
+    
+    addVideoBtn.addEventListener('click', function() {
+        addVideoItem();
+    });
+    
+    function addVideoItem() {
+        videoCounter++;
+        const videoItem = document.createElement('div');
+        videoItem.className = 'video-item';
+        videoItem.dataset.sequence = videoCounter;
+        
+        videoItem.innerHTML = `
+            <div class="video-header">
+                <div class="d-flex align-items-center">
+                    <div class="video-sequence">${videoCounter}</div>
+                    <div>
+                        <strong>Video ${videoCounter}</strong>
+                        <div class="video-info" id="video-info-${videoCounter}">No file selected</div>
+                    </div>
+                </div>
+                <div class="video-actions">
+                    <button type="button" class="btn-video-action btn-move-up" onclick="moveVideo(${videoCounter}, 'up')" title="Move Up">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn-video-action btn-move-down" onclick="moveVideo(${videoCounter}, 'down')" title="Move Down">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button type="button" class="btn-video-action btn-remove" onclick="removeVideo(${videoCounter})" title="Remove">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="file" class="form-control" name="videos[]" accept="video/*" required
+                       onchange="updateVideoInfo(${videoCounter}, this)">
+            </div>
+        `;
+        
+        videoList.appendChild(videoItem);
+        noVideosMessage.style.display = 'none';
+        updateSequenceNumbers();
+        updateSubmitButton();
+    }
+    
+    window.removeVideo = function(id) {
+        const videoItem = document.querySelector(`[data-sequence="${id}"]`);
+        if (videoItem) {
+            videoItem.remove();
+            updateSequenceNumbers();
+            updateSubmitButton();
+            
+            if (videoList.children.length === 0) {
+                noVideosMessage.style.display = 'block';
+            }
+        }
+    };
+    
+    window.moveVideo = function(id, direction) {
+        const videoItem = document.querySelector(`[data-sequence="${id}"]`);
+        if (!videoItem) return;
+        
+        if (direction === 'up' && videoItem.previousElementSibling) {
+            videoList.insertBefore(videoItem, videoItem.previousElementSibling);
+        } else if (direction === 'down' && videoItem.nextElementSibling) {
+            videoList.insertBefore(videoItem.nextElementSibling, videoItem);
+        }
+        
+        updateSequenceNumbers();
+    };
+    
+    window.updateVideoInfo = function(id, input) {
+        if (input.files.length > 0) {
+            const file = input.files[0];
+            const info = document.getElementById(`video-info-${id}`);
+            const size = (file.size / (1024 * 1024)).toFixed(2);
+            info.textContent = `${file.name} (${size} MB)`;
+        }
+        updateSubmitButton();
+    };
+
+    if (multiMatchDate) {
+        multiMatchDate.addEventListener('change', updateSubmitButton);
+    }
+    if (multiMatchTime) {
+        multiMatchTime.addEventListener('change', updateSubmitButton);
+    }
+    
+    function updateSequenceNumbers() {
+        const videoItems = videoList.querySelectorAll('.video-item');
+        videoItems.forEach((item, index) => {
+            const sequenceNumber = index + 1;
+            const sequenceElement = item.querySelector('.video-sequence');
+            const titleElement = item.querySelector('strong');
+            
+            sequenceElement.textContent = sequenceNumber;
+            titleElement.textContent = `Video ${sequenceNumber}`;
+        });
+    }
+    
+    function updateSubmitButton() {
+        const videoItems = videoList.querySelectorAll('.video-item');
+        const hasVideos = videoItems.length > 0;
+        const allHaveFiles = Array.from(videoItems).every(item => {
+            const fileInput = item.querySelector('input[type="file"]');
+            return fileInput && fileInput.files.length > 0;
+        });
+
+        const hasDate = multiMatchDate && multiMatchDate.value;
+        const hasTime = multiMatchTime && multiMatchTime.value;
+
+        multiSubmitBtn.disabled = !hasVideos || !allHaveFiles || !hasDate || !hasTime;
+    }
+
+    function updateSingleSubmitButton() {
+        if (!submitBtn) {
+            return;
+        }
+        const hasFile = videoInput && videoInput.files.length > 0;
+        const hasDate = singleMatchDate && singleMatchDate.value;
+        const hasTime = singleMatchTime && singleMatchTime.value;
+        submitBtn.disabled = !(hasFile && hasDate && hasTime);
+    }
+    
+    // Single video upload functionality (existing)
+    const videoInput = document.getElementById('video');
+    const submitBtn = document.getElementById('submit-btn');
+    const fileInfo = document.getElementById('file-info');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    const multiUploadFormEl = document.getElementById('multi-upload-form');
+    // multiSubmitBtn already defined above; avoid redeclaration
+    
+    if (videoInput) {
+        videoInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                fileName.textContent = file.name;
+                fileSize.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+                fileInfo.classList.remove('d-none');
+            } else {
+                fileInfo.classList.add('d-none');
+            }
+            updateSingleSubmitButton();
+        });
+    }
+    if (singleMatchDate) {
+        singleMatchDate.addEventListener('change', updateSingleSubmitButton);
+    }
+    if (singleMatchTime) {
+        singleMatchTime.addEventListener('change', updateSingleSubmitButton);
+    }
+    if (multiUploadFormEl && multiSubmitBtn) {
+        multiUploadFormEl.addEventListener('submit', function() {
+            multiSubmitBtn.disabled = true;
+            multiSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
+        });
+    }
+
+    updateSingleSubmitButton();
+    updateSubmitButton();
+});
+</script>
+
+</body>
+</html>

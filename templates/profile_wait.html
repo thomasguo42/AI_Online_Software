@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refreshing {{ fencer.name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wait-card {
+            background: rgba(255,255,255,0.92);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(15,23,42,0.25);
+            padding: 3rem 2.5rem;
+            text-align: center;
+            max-width: 520px;
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+    <div class="wait-card">
+        <div class="mb-4">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <h2 class="fw-bold mb-2">Refreshing {{ fencer.name }}</h2>
+        <p class="text-muted mb-4">We are regenerating tactical insights and visualisations. This usually takes under a minute.</p>
+        <p class="text-muted small mb-0">You will be redirected automatically when it finishes.</p>
+    </div>
+
+    <script>
+        const statusUrl = {{ status_url|tojson }};
+        const profileUrl = {{ profile_url|tojson }};
+        const pollIntervalMs = 3000;
+
+        async function pollStatus() {
+            try {
+                const response = await fetch(statusUrl, { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error('Status request failed');
+                }
+                const data = await response.json();
+                if (data.state === 'SUCCESS') {
+                    if (data.success) {
+                        window.location.href = profileUrl + '?refreshed=1';
+                    } else {
+                        const message = data.errors && data.errors.length ? encodeURIComponent(data.errors[0]) : '';
+                        const errorSuffix = message ? `&error_msg=${message}` : '';
+                        window.location.href = profileUrl + `?refresh_error=1${errorSuffix}`;
+                    }
+                    return;
+                }
+                if (data.state === 'FAILURE' || data.state === 'REVOKED' || data.state === 'UNAUTHORIZED') {
+                    const message = (data.errors && data.errors.length) ? encodeURIComponent(data.errors[0]) : '';
+                    const errorSuffix = message ? `&error_msg=${message}` : '';
+                    window.location.href = profileUrl + `?refresh_error=1${errorSuffix}`;
+                    return;
+                }
+            } catch (err) {
+                const message = encodeURIComponent('Unable to check refresh status.');
+                window.location.href = profileUrl + `?refresh_error=1&error_msg=${message}`;
+                return;
+            }
+            setTimeout(pollStatus, pollIntervalMs);
+        }
+
+        setTimeout(pollStatus, 1200);
+    </script>
+</body>
+</html>

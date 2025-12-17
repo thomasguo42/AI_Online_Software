@@ -1,0 +1,192 @@
+{
+  "generated_at": "2025-10-03T15:30:55.958505",
+  "fencer": {
+    "id": 21,
+    "name": "t3",
+    "user_id": 1,
+    "match_count": 1
+  },
+  "executive_summary": {
+    "synopsis": "t3 exhibits a highly offensive tactical style, leveraging strong second intention scoring and effective distance management to secure victories. However, their most significant weakness lies in a systemic vulnerability in defense, where they currently hold a 0.0% win rate. Despite this defensive deficit, t3's recent performance trend shows a consistent ability to score offensively, indicating potential for improvement if their defensive shortcomings can be addressed.",
+    "overall_score": 0,
+    "wins": 0,
+    "losses": 0,
+    "skips": 21
+  },
+  "performance_dashboard": {
+    "style_profile": [
+      {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      {
+        "label": "defense",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      {
+        "label": "in_box",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      }
+    ],
+    "key_strengths": {
+      "top_category": {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "positive_tags": [],
+      "volume_tags": [
+        {
+          "tag": "Poor Acceleration",
+          "count": 21
+        },
+        {
+          "tag": "No Launch",
+          "count": 17
+        },
+        {
+          "tag": "Arm Extension",
+          "count": 17
+        }
+      ]
+    },
+    "key_weaknesses": {
+      "lowest_category": {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "negative_tags": []
+    },
+    "tag_counts": {
+      "positive": [],
+      "negative": []
+    }
+  },
+  "performance_over_time": {
+    "timeline": [
+      {
+        "match_id": 322,
+        "label": "L (2025-10-03 00:46)",
+        "match_datetime": "2025-10-03T00:46:43.110292",
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0,
+        "skips": 21,
+        "category_win_rates": {
+          "in_box": 0.0,
+          "attack": 0.0
+        }
+      }
+    ],
+    "narrative": "The provided data, though limited to a single match entry, suggests an initial period of **zero recorded wins and losses**, accompanied by a significant number of skips. This pattern indicates a potential **uncharted or preparatory phase** where active competition was minimal. The win rate of 0.0% across all categories, including \"in_box\" and \"attack,\" further reinforces the notion that this entry represents the **very beginning of tracked performance**, with no competitive outcomes yet established. Further data points would be necessary to discern any meaningful trends of improvement or regression."
+  },
+  "tactical_analysis": {
+    "attack": {
+      "narrative": "The fencer's attack performance is currently nonexistent, with a 0% win rate across zero bouts. While the data indicates a potential win through superior positioning, the sole loss was attributed to a passive or weak attack with execution failure. This suggests a need to focus on developing more decisive and effective offensive actions.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [
+        {
+          "reason": "Superior Positioning - Optimal Distance",
+          "count": 1
+        }
+      ],
+      "loss_reasons": [
+        {
+          "reason": "Sub-category 2.4: Passive/Weak Attack (Execution Failure)",
+          "count": 1
+        }
+      ]
+    },
+    "defense": {
+      "narrative": "Defense touches: 0 analysed, win rate 0.0%.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [],
+      "loss_reasons": [
+        {
+          "reason": "Sub-category 3.1: Collapsed Distance (Positional Error)",
+          "count": 1
+        }
+      ]
+    },
+    "in_box": {
+      "narrative": "The fencer's in-box performance is currently nonexistent, with a 0.0 win rate and zero bouts recorded. While no positive or negative tags are available, the limited win reasons suggest a focus on initial aggression, though the loss reasons highlight a critical deficiency in lunging and a struggle against faster, more powerful opponents. This indicates a need to develop fundamental offensive techniques and improve physical conditioning to compete effectively.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [
+        {
+          "reason": "Superior Reaction at Start",
+          "count": 1
+        },
+        {
+          "reason": "Exploited Hesitation",
+          "count": 1
+        },
+        {
+          "reason": "Overpowering at Start",
+          "count": 1
+        }
+      ],
+      "loss_reasons": [
+        {
+          "reason": "1.4: Lack of Lunging",
+          "count": 1
+        },
+        {
+          "reason": "Sub-category 1.2: Outmatched by Speed & Power",
+          "count": 1
+        },
+        {
+          "reason": "Sub-category 1.4: Lack of Lunging",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "signature_patterns": {
+    "strengths": [],
+    "risks": []
+  },
+  "actionable_recommendations": {
+    "markdown": "Here is a concise action plan for t3, focusing on key areas for improvement:\n\n*   **Develop Offensive Fundamentals:** Address the \"Poor Acceleration\" (21 instances) and \"No Launch\" (17 instances) tags by implementing drills focused on explosive footwork and a strong, committed lunge. Prioritize building a decisive attack to counter the \"Passive/Weak Attack (Execution Failure)\" loss reason.\n\n*   **Enhance Physical Readiness:** Combat \"Outmatched by Speed & Power\" (observed in \"in_box\" losses) by integrating conditioning exercises that specifically target acceleration and explosive power. This will support the development of a more effective lunge and overall offensive capability.\n\n*   **Refine Defensive Positioning:** Mitigate the \"Collapsed Distance (Positional Error)\" loss reason by practicing defensive footwork and distance management. Focus on maintaining optimal distance to avoid being overwhelmed and to create opportunities for counter-attacks."
+  }
+}

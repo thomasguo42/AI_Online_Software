@@ -1,0 +1,27 @@
+# --- Root Level Data Folders ---
+Uploads/
+results/
+
+# --- Files to always ignore (Logs & Python) ---
+*.log
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# --- Model Weights (Global Safety Net) ---
+# This ignores .pt files in root AND in your_scripts
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# --- Specifics inside 'your_scripts' ---
+your_scripts/checkpoints/
+your_scripts/result/
+your_scripts/training videos/
+your_scripts/*.run
+
+# --- Optional: Ignore the lowercase uploads folder? ---
+# Remove the '#' below if you want to ignore the 33MB folder too
+# uploads/

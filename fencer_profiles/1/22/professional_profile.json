@@ -1,0 +1,157 @@
+{
+  "generated_at": "2025-10-04T04:35:30.418627",
+  "fencer": {
+    "id": 22,
+    "name": "gg",
+    "user_id": 1,
+    "match_count": 1
+  },
+  "executive_summary": {
+    "synopsis": "gg demonstrates a highly reactive tactical style, relying heavily on defensive distance management as their primary strength. However, a significant weakness lies in their systemic defensive vulnerability, evidenced by a 0.0% defense round win rate due to missed counter-attack opportunities. With only one bout summarized, their recent performance trend is inconclusive, necessitating further matches to establish a definitive pattern.",
+    "overall_score": 0,
+    "wins": 0,
+    "losses": 1,
+    "skips": 0
+  },
+  "performance_dashboard": {
+    "style_profile": [
+      {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      {
+        "label": "defense",
+        "count": 1,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1
+      },
+      {
+        "label": "in_box",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      }
+    ],
+    "key_strengths": {
+      "top_category": {
+        "label": "defense",
+        "count": 1,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1
+      },
+      "positive_tags": [],
+      "volume_tags": [
+        {
+          "tag": "Poor Attack Distance",
+          "count": 1
+        },
+        {
+          "tag": "Holding Attack",
+          "count": 1
+        },
+        {
+          "tag": "Maintain Safe Distance",
+          "count": 1
+        }
+      ]
+    },
+    "key_weaknesses": {
+      "lowest_category": {
+        "label": "defense",
+        "count": 1,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1
+      },
+      "negative_tags": []
+    },
+    "tag_counts": {
+      "positive": [],
+      "negative": []
+    }
+  },
+  "performance_over_time": {
+    "timeline": [
+      {
+        "match_id": 324,
+        "label": "2025-10-03 11:19",
+        "match_datetime": "2025-10-03T11:19:00",
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1,
+        "skips": 0,
+        "category_win_rates": {
+          "attack": 0.0,
+          "defense": 0.0,
+          "in_box": 0.0
+        }
+      }
+    ],
+    "narrative": "The provided data, while limited, indicates an initial performance trend characterized by a significant setback. The single recorded match, dated October 3rd, 2025, shows a 0.0 win rate with one loss and zero wins across all categories. This suggests a challenging start to the observed period, with no immediate successes to report. Further data points would be necessary to identify any subsequent improvements, regressions, or streaks in performance."
+  },
+  "tactical_analysis": {
+    "attack": {
+      "narrative": "The fencer's attack performance is currently nonexistent, with a 0.0 win rate across zero bouts.  Without any recorded engagements, there are no discernible tag patterns, win reasons, or loss reasons to analyze. This indicates a complete lack of offensive activity or successful execution in this category.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [],
+      "loss_reasons": []
+    },
+    "defense": {
+      "narrative": "Defense touches: 0 analysed, win rate 0.0%.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [],
+      "loss_reasons": [
+        {
+          "reason": "Sub-category 3.3: Missed Counter-Attack Opportunity (Tactical Error)",
+          "count": 1
+        }
+      ]
+    },
+    "in_box": {
+      "narrative": "In_Box touches: 0 analysed, win rate 0.0%.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [],
+      "loss_reasons": []
+    }
+  },
+  "signature_patterns": {
+    "strengths": [],
+    "risks": []
+  },
+  "actionable_recommendations": {
+    "markdown": "Here is a focused action plan for gg:\n\n*   **Develop Offensive Engagement:** Given the complete absence of attack data (0 bouts, 0 wins), prioritize initiating offensive actions. Focus on developing a consistent attacking rhythm and executing at least 3-5 distinct attacking actions per bout.\n\n*   **Improve Distance Management in Attack:** The \"Poor Attack Distance\" tag indicates a need for better spatial awareness when attacking. Train drills that emphasize closing distance effectively and maintaining optimal range for offensive execution, aiming to reduce instances of being too far or too close to land a valid touch.\n\n*   **Capitalize on Defensive Opportunities:** The \"Missed Counter-Attack Opportunity (Tactical Error)\" in defense highlights a critical area for improvement. Implement scenario-based training where gg practices recognizing and executing counter-attacks after successful defensive parries, aiming to convert defensive actions into offensive opportunities."
+  }
+}

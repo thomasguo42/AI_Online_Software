@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ fencer.name }} - Professional Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1f2937;
+        }
+        .page-container {
+            padding: 2.5rem 0;
+        }
+        .hero-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(15, 81, 129, 0.25);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        .hero-actions form {
+            margin: 0;
+        }
+        .hero-actions .btn {
+            min-width: 120px;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+            color: #1B4D89;
+        }
+        .hero-subtitle {
+            color: #4f5d75;
+            font-size: 1.1rem;
+        }
+        .score-badge {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            border-radius: 18px;
+            padding: 0.5rem 1.25rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .section-card {
+            background: rgba(255,255,255,0.97);
+            border-radius: 20px;
+            border: 1px solid rgba(30,64,175,0.12);
+            box-shadow: 0 18px 25px rgba(15, 81, 129, 0.15);
+            margin-bottom: 2rem;
+        }
+        .section-card .card-header {
+            border-bottom: none;
+            padding: 1.75rem 2rem 0;
+            background: transparent;
+        }
+        .section-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #1D4ED8;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .section-card .card-body {
+            padding: 1.75rem 2rem 2.25rem;
+        }
+        .synopsis {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #334155;
+        }
+        .metric-pill {
+            background: rgba(37, 99, 235, 0.08);
+            border-radius: 14px;
+            padding: 0.4rem 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-right: 0.5rem;
+            font-weight: 600;
+            color: #1E3A8A;
+        }
+        .strength-card, .risk-card {
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .strength-card {
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(22, 163, 74, 0.2);
+        }
+        .risk-card {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+        }
+        .strength-card h6, .risk-card h6 {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+        .list-bullet {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .list-bullet li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+            line-height: 1.5;
+        }
+        .list-bullet li i {
+            margin-top: 0.25rem;
+        }
+        .chart-container {
+            min-height: 280px;
+        }
+        .tactical-chart-card {
+            background: rgba(255,255,255,0.85);
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid rgba(99,102,241,0.1);
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tactical-chart-card canvas {
+            max-height: 220px;
+            width: 100%;
+        }
+        .timeline-card {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            color: #0f172a;
+            margin-bottom: 1.25rem;
+        }
+        .recommendation-card {
+            background: rgba(240, 249, 255, 0.9);
+            border-radius: 18px;
+            padding: 1.75rem;
+            border: 1px solid rgba(59,130,246,0.2);
+        }
+        .recommendation-card h6 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .markdown-output ul {
+            padding-left: 1.2rem;
+        }
+        .markdown-output li {
+            margin-bottom: 0.6rem;
+        }
+        .category-nav .nav-link {
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .source-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        .source-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed rgba(148, 163, 184, 0.5);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: rgba(255,255,255,0.85);
+        }
+        .empty-state i {
+            font-size: 3.25rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="container">
+            <div class="hero-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-start">
+                    <div>
+                        <h1 class="hero-title">{{ fencer.name }}</h1>
+                        <p class="hero-subtitle mb-3">
+                            Professional Performance Intelligence Report
+                        </p>
+                        <div class="d-flex gap-3">
+                            <div class="metric-pill">
+                                <i class="fas fa-user-shield"></i> Fencer ID: {{ fencer.id }}
+                            </div>
+                            <div class="metric-pill">
+                                <i class="fas fa-chart-line"></i>
+                                {% if professional_report %}
+                                    {{ professional_report.fencer.match_count }} tracked matches
+                                {% else %}
+                                    Awaiting completed matches
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end d-flex flex-column align-items-end gap-2">
+                        <div class="hero-actions">
+                            <a href="{{ url_for('manage_fencers') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </a>
+                            <form method="post" action="{{ url_for('refresh_fencer_profile', fencer_id=fencer.id) }}">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-rotate"></i> Refresh
+                                </button>
+                            </form>
+                            <form method="post" action="{{ url_for('delete_fencer_profile', fencer_id=fencer.id) }}" onsubmit="return confirm(&quot;Delete the saved professional profile for {{ fencer.name|e }}?&quot;);">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="fas fa-trash"></i> Delete Profile
+                                </button>
+                            </form>
+                        </div>
+                        {% if professional_report %}
+                            <div class="score-badge">
+                                <i class="fas fa-trophy"></i>
+                                Overall Score
+                                <span style="font-size:1.6rem;">{{ professional_report.executive_summary.overall_score }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if professional_report_error %}
+                    <div class="alert alert-danger mt-3 mb-0" role="alert">
+                        <i class="fas fa-circle-exclamation me-2"></i>{{ professional_report_error }}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-4">
+                        {% for category, message in messages %}
+                            {% set alert_class = 'alert-info' %}
+                            {% if category == 'success' %}
+                                {% set alert_class = 'alert-success' %}
+                            {% elif category == 'warning' %}
+                                {% set alert_class = 'alert-warning' %}
+                            {% elif category == 'error' %}
+                                {% set alert_class = 'alert-danger' %}
+                            {% endif %}
+                            <div class="alert {{ alert_class }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% if not professional_report %}
+                <div class="empty-state">
+                    <i class="fas fa-layer-group"></i>
+                    <h3>No professional report available yet</h3>
+                    {% if professional_report_error %}
+                        <p class="mb-0">{{ professional_report_error }}</p>
+                    {% else %}
+                        <p class="mb-0">Upload and complete match analyses to unlock the full professional profile.</p>
+                    {% endif %}
+                </div>
+            {% else %}
+
+            <div class="section-card">
+                <div class="card-header">
+                    <div class="section-title">
+                        <i class="fas fa-star"></i> Executive Summary
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="synopsis">{{ professional_report.executive_summary.synopsis }}</p>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <div class="metric-pill">
+                            <i class="fas fa-medal text-success"></i>
+                            Wins: {{ professional_report.executive_summary.wins }}
+                        </div>
+                        <div class="metric-pill">
+                            <i class="fas fa-skull-crossbones text-danger"></i>
+                            Losses: {{ professional_report.executive_summary.losses }}
+                        </div>
+                        <div class="metric-pill">
+                            <i class="fas fa-forward"></i> Skips: {{ professional_report.executive_summary.skips }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="card-header">
+                    <div class="section-title">
+                        <i class="fas fa-gauge-high"></i> Performance Dashboard
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4 align-items-stretch">
+                        <div class="col-lg-5">
+                            <div class="chart-container">
+                                <canvas id="styleProfileChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="strength-card h-100">
+                                        <h6><i class="fas fa-arrow-up-right text-success"></i> Key Strengths</h6>
+                                        <ul class="list-bullet" id="strengthList"></ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="risk-card h-100">
+                                        <h6><i class="fas fa-triangle-exclamation text-danger"></i> Key Weaknesses</h6>
+                                        <ul class="list-bullet" id="riskList"></ul>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="timeline-card" id="dashboardHighlights"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="card-header">
+                    <div class="section-title">
+                        <i class="fas fa-chart-line"></i> Performance Over Time
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-lg-7">
+                            <div class="chart-container mb-4">
+                                <canvas id="timelineChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categoryTrendChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 d-flex">
+                            <div class="timeline-card w-100">
+                                <h6 class="mb-3"><i class="fas fa-wave-square"></i> Trend Narrative</h6>
+                                <p class="mb-0" id="timelineNarrative"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="card-header">
+                    <div class="section-title">
+                        <i class="fas fa-chess-knight"></i> Tactical Analysis
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-pills mb-3 category-nav" id="tacticalTabs" role="tablist">
+                        {% for category in ['attack', 'defense', 'in_box'] %}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link {% if loop.first %}active{% endif %}" id="{{ category }}-tab" data-bs-toggle="pill" data-bs-target="#{{ category }}-panel" type="button" role="tab">
+                                {{ category.replace('_', ' ').title() }}
+                            </button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content" id="tacticalPanels"></div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="card-header">
+                    <div class="section-title">
+                        <i class="fas fa-fingerprint"></i> Signature Patterns & Alerts
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="strength-card h-100">
+                                <h6><i class="fas fa-shield-alt text-success"></i> Consistent Strengths</h6>
+                                <ul class="list-bullet" id="signatureStrengths"></ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="risk-card h-100">
+                                <h6><i class="fas fa-radiation text-danger"></i> Risk Alerts</h6>
+                                <ul class="list-bullet" id="signatureRisks"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="card-header">
+                    <div class="section-title">
+                        <i class="fas fa-list-check"></i> Actionable Recommendations
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="recommendation-card">
+                        <h6><i class="fas fa-chalkboard-teacher"></i> Targeted Focus Areas</h6>
+                        <div class="markdown-output" id="recommendationMarkdown"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="card-header">
+                    <div class="section-title">
+                        <i class="fas fa-database"></i> Source Matches
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="source-list">
+                        {% for upload in uploads %}
+                        <li>
+                            <strong>#{{ upload.id }}</strong>
+                            {% if upload.match_title %}
+                                &mdash; {{ upload.match_title }}
+                            {% endif %}
+                            {% if upload.match_datetime %}
+                                <span class="text-muted ms-2">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    {{ upload.match_datetime.strftime('%Y-%m-%d %H:%M') }}
+                                </span>
+                            {% endif %}
+                            {% if upload.weapon_type %}
+                                <span class="badge bg-primary ms-2">{{ upload.weapon_type.title() }}</span>
+                            {% endif %}
+                            {% if upload.is_multi_video %}
+                                <span class="badge bg-secondary ms-1">Multi-Video</span>
+                            {% endif %}
+                        </li>
+                        {% else %}
+                        <li>No completed uploads detected for this fencer yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        const reportData = {{ professional_report_json|safe }};
+        const TAG_LABELS = {{ TAG_TRANSLATIONS|tojson|safe }};
+        const PHASE_LABELS = { attack: 'Attack', defense: 'Defense', in_box: 'In-Box' };
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatHumanLabel(value) {
+            if (!value) {
+                return 'Unlabelled';
+            }
+            if (/^[A-Za-z0-9 _-]+$/.test(value)) {
+                return value
+                    .replace(/[_-]+/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .replace(/\b\w/g, char => char.toUpperCase());
+            }
+            return value;
+        }
+
+        function formatTagLabel(tag) {
+            if (!tag) {
+                return 'Unlabelled';
+            }
+            if (TAG_LABELS && TAG_LABELS[tag]) {
+                return TAG_LABELS[tag];
+            }
+            return formatHumanLabel(tag);
+        }
+
+        function formatPhaseLabel(phase) {
+            if (!phase) {
+                return 'Unspecified';
+            }
+            return PHASE_LABELS[phase] || formatHumanLabel(phase);
+        }
+
+        function resolveTagLabel(entry) {
+            if (!entry) {
+                return 'Unlabelled';
+            }
+            if (entry.label) {
+                return entry.label;
+            }
+            if (entry.tag) {
+                return formatTagLabel(entry.tag);
+            }
+            return 'Unlabelled';
+        }
+
+        function buildBulletList(items, { iconClass, emptyText, formatItem }) {
+            if (!Array.isArray(items) || !items.length) {
+                return `<li><i class='fas fa-circle-notch text-muted'></i><span>${escapeHtml(emptyText)}</span></li>`;
+            }
+            return items
+                .map(item => `<li><i class='fas ${iconClass}'></i><span>${escapeHtml(formatItem(item))}</span></li>`)
+                .join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!reportData || Object.keys(reportData).length === 0) {
+                return;
+            }
+
+            renderDashboard(reportData.performance_dashboard || {});
+            renderTimeline(reportData.performance_over_time || {});
+            renderTactical(reportData.tactical_analysis || {});
+            renderSignature(reportData.signature_patterns || {});
+            renderRecommendations(reportData.actionable_recommendations || {});
+        });
+
+        function renderDashboard(dashboard) {
+            const styleData = Array.isArray(dashboard.style_profile) ? dashboard.style_profile : [];
+            const hasDecidedTouches = styleData.some(item => Number(item.count || 0) > 0);
+            const ctx = document.getElementById('styleProfileChart');
+            if (ctx) {
+                if (styleData.length && hasDecidedTouches) {
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: styleData.map(item => formatPhaseLabel(item.label).toUpperCase()),
+                            datasets: [{
+                                data: styleData.map(item => Number(item.count || 0)),
+                                backgroundColor: ['#38bdf8', '#34d399', '#fbbf24'],
+                                borderWidth: 0,
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { usePointStyle: true }
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    ctx.parentElement.innerHTML = '<p class="text-muted mb-0">No decided touches recorded yet. Complete more analyses to unlock visualisations.</p>';
+                }
+            }
+
+            const strengthList = document.getElementById('strengthList');
+            const riskList = document.getElementById('riskList');
+            const highlights = document.getElementById('dashboardHighlights');
+
+            if (strengthList) {
+                const keyStrengths = dashboard.key_strengths || {};
+                const entries = [];
+                const topCategory = keyStrengths.top_category;
+                if (topCategory && (Number(topCategory.count || 0) > 0 || Number(topCategory.win_rate || 0) > 0)) {
+                    entries.push(`<li><i class="fas fa-circle-check text-success"></i><span><strong>High-Performing Phase:</strong> ${escapeHtml(formatPhaseLabel(topCategory.label))} (Win rate ${Number(topCategory.win_rate || 0)}% across ${Number(topCategory.count || 0)} touches)</span></li>`);
+                }
+                const positiveList = Array.isArray(keyStrengths.positive_tags) ? keyStrengths.positive_tags : [];
+                if (positiveList.length) {
+                    entries.push(
+                        buildBulletList(positiveList, {
+                            iconClass: 'fa-circle-plus text-success',
+                            emptyText: 'No standout positive tags yet. Keep uploading bouts to surface strengths.',
+                            formatItem: item => `${resolveTagLabel(item)} (${item.count})`
+                        })
+                    );
+                }
+                const volumeList = Array.isArray(keyStrengths.volume_tags) ? keyStrengths.volume_tags : [];
+                if (volumeList.length) {
+                    entries.push(
+                        buildBulletList(volumeList, {
+                            iconClass: 'fa-chart-simple text-primary',
+                            emptyText: '',
+                            formatItem: item => `High-frequency tag: ${resolveTagLabel(item)} (${item.count})`
+                        })
+                    );
+                }
+                const filteredEntries = entries.filter(Boolean);
+                if (!filteredEntries.length) {
+                    strengthList.innerHTML = `<li><i class="fas fa-circle-notch text-muted"></i><span>No standout strengths detected yet.</span></li>`;
+                } else {
+                    strengthList.innerHTML = filteredEntries.join('');
+                }
+            }
+
+            if (riskList) {
+                const keyWeaknesses = dashboard.key_weaknesses || {};
+                const entries = [];
+                const lowestCategory = keyWeaknesses.lowest_category;
+                if (lowestCategory && (Number(lowestCategory.count || 0) > 0 || Number(lowestCategory.win_rate || 0) > 0)) {
+                    entries.push(`<li><i class="fas fa-circle-exclamation text-danger"></i><span><strong>Underperforming Phase:</strong> ${escapeHtml(formatPhaseLabel(lowestCategory.label))} (Win rate ${Number(lowestCategory.win_rate || 0)}% across ${Number(lowestCategory.count || 0)} touches)</span></li>`);
+                }
+                const negativeList = Array.isArray(keyWeaknesses.negative_tags) ? keyWeaknesses.negative_tags : [];
+                if (negativeList.length) {
+                    entries.push(
+                        buildBulletList(negativeList, {
+                            iconClass: 'fa-circle-minus text-danger',
+                            emptyText: 'No recurring risk tags yet. Review more bouts to surface alerts.',
+                            formatItem: item => `${resolveTagLabel(item)} (${item.count})`
+                        })
+                    );
+                }
+                const filteredEntries = entries.filter(Boolean);
+                if (!filteredEntries.length) {
+                    riskList.innerHTML = `<li><i class="fas fa-circle-notch text-muted"></i><span>No critical weaknesses detected yet.</span></li>`;
+                } else {
+                    riskList.innerHTML = filteredEntries.join('');
+                }
+            }
+
+            if (highlights) {
+                if (!styleData.length || !hasDecidedTouches) {
+                    highlights.innerHTML = '<p class="mb-0 text-muted">Upload and complete more match analyses to unlock performance insights.</p>';
+                } else {
+                    const total = styleData.reduce((acc, item) => acc + Number(item.count || 0), 0);
+                    const strongest = [...styleData].sort((a, b) => Number(b.win_rate || 0) - Number(a.win_rate || 0))[0];
+                    const weakest = [...styleData].sort((a, b) => Number(a.win_rate || 0) - Number(b.win_rate || 0))[0];
+                    highlights.innerHTML = `
+                        <p class="mb-2"><strong>Total decided touches:</strong> ${total}</p>
+                        <p class="mb-1">Most reliable phase: <strong>${escapeHtml(formatPhaseLabel(strongest.label))}</strong> (Win rate ${Number(strongest.win_rate || 0)}%).</p>
+                        <p class="mb-0 text-danger">Needs attention: <strong>${escapeHtml(formatPhaseLabel(weakest.label))}</strong> (Win rate ${Number(weakest.win_rate || 0)}%).</p>
+                    `;
+                }
+            }
+        }
+
+        function renderTimeline(temporal) {
+            const timeline = temporal.timeline || [];
+            const labels = timeline.map(item => item.label);
+            const winRates = timeline.map(item => item.win_rate);
+
+            const timelineCtx = document.getElementById('timelineChart');
+            if (timelineCtx && timeline.length) {
+                new Chart(timelineCtx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Match Win Rate %',
+                            data: winRates,
+                            fill: false,
+                            borderColor: '#2563eb',
+                            tension: 0.35,
+                            pointBackgroundColor: '#1d4ed8'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                suggestedMax: 100,
+                                ticks: { callback: value => `${value}%` }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const categoryCtx = document.getElementById('categoryTrendChart');
+            if (categoryCtx && timeline.length) {
+                const categories = ['attack', 'defense', 'in_box'];
+                const datasets = categories.map((category, index) => ({
+                    label: `${formatPhaseLabel(category)} Win %`,
+                    data: timeline.map(item => (item.category_win_rates || {})[category] || 0),
+                    borderColor: ['#22c55e', '#f97316', '#a855f7'][index],
+                    tension: 0.35,
+                    fill: false,
+                    pointRadius: 3,
+                }));
+                new Chart(categoryCtx, {
+                    type: 'line',
+                    data: { labels, datasets },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                suggestedMax: 100,
+                                ticks: { callback: value => `${value}%` }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const narrativeEl = document.getElementById('timelineNarrative');
+            if (narrativeEl) {
+                narrativeEl.textContent = temporal.narrative || 'Temporal insights will appear once sufficient data is available.';
+            }
+        }
+
+        function renderTactical(tactical) {
+            const container = document.getElementById('tacticalPanels');
+            if (!container) return;
+            const categories = ['attack', 'defense', 'in_box'];
+            container.innerHTML = '';
+
+            categories.forEach((category, index) => {
+                const data = tactical[category] || {};
+                const analysis = data.analysis || {};
+                const summary = data.summary || {};
+                const metrics = data.key_metrics || {};
+                const tagTotals = data.tag_totals || {};
+                const winEntries = (data.reason_breakdown?.win || data.win_reasons || []).slice(0, 8);
+                const lossEntries = (data.reason_breakdown?.loss || data.loss_reasons || []).slice(0, 8);
+                const positiveTags = (data.tag_counts?.positive || data.tag_highlights?.positive || []).slice(0, 6);
+                const negativeTags = (data.tag_counts?.negative || data.tag_highlights?.negative || []).slice(0, 6);
+
+                const performanceSummary = summary.performance_summary
+                    ? escapeHtml(summary.performance_summary).replace(/\n/g, '<br>')
+                    : (analysis.situation ? escapeHtml(analysis.situation).replace(/\n/g, '<br>') : 'More completed bouts are required to surface reliable tactical trends.');
+                const tacticalFocus = summary.tactical_focus
+                    ? escapeHtml(summary.tactical_focus).replace(/\n/g, '<br>')
+                    : (analysis.improvement ? escapeHtml(analysis.improvement).replace(/\n/g, '<br>') : 'Generate additional bouts to identify concrete improvement targets.');
+                const narrativeText = summary.narrative
+                    ? escapeHtml(summary.narrative).replace(/\n/g, '<br>')
+                    : (data.narrative ? escapeHtml(data.narrative).replace(/\n/g, '<br>') : '');
+
+                const strengthsList = Array.isArray(summary.strengths) && summary.strengths.length
+                    ? summary.strengths
+                    : positiveTags.slice(0, 3).map(item => `${resolveTagLabel(item)} (${item.count})`);
+                const weaknessesList = Array.isArray(summary.weaknesses) && summary.weaknesses.length
+                    ? summary.weaknesses
+                    : negativeTags.slice(0, 3).map(item => `${resolveTagLabel(item)} (${item.count})`);
+                const trainingList = Array.isArray(summary.training_suggestions) && summary.training_suggestions.length
+                    ? summary.training_suggestions
+                    : negativeTags.slice(0, 3).map(item => `Focus drill to mitigate ${resolveTagLabel(item)}`);
+
+                const strengthsHtml = buildBulletList(strengthsList, {
+                    iconClass: 'fa-circle-check text-success',
+                    emptyText: 'Strength patterns not yet established.',
+                    formatItem: item => (typeof item === 'string' ? item : resolveTagLabel(item))
+                });
+
+                const weaknessesHtml = buildBulletList(weaknessesList, {
+                    iconClass: 'fa-triangle-exclamation text-danger',
+                    emptyText: 'Weakness patterns not yet established.',
+                    formatItem: item => (typeof item === 'string' ? item : resolveTagLabel(item))
+                });
+
+                const trainingHtml = buildBulletList(trainingList, {
+                    iconClass: 'fa-dumbbell text-primary',
+                    emptyText: 'Add more bouts to generate training focus.',
+                    formatItem: item => (typeof item === 'string' ? item : resolveTagLabel(item))
+                });
+
+                const positiveListHtml = buildBulletList(positiveTags, {
+                    iconClass: 'fa-circle-check text-success',
+                    emptyText: 'No positive tags logged yet.',
+                    formatItem: item => `${resolveTagLabel(item)} (${item.count})`
+                });
+
+                const negativeListHtml = buildBulletList(negativeTags, {
+                    iconClass: 'fa-circle-exclamation text-danger',
+                    emptyText: 'No negative tags logged yet.',
+                    formatItem: item => `${resolveTagLabel(item)} (${item.count})`
+                });
+
+                const panel = document.createElement('div');
+                panel.className = `tab-pane fade ${index === 0 ? 'show active' : ''}`;
+                panel.id = `${category}-panel`;
+                panel.role = 'tabpanel';
+
+                const winCanvasId = `${category}-win-chart`;
+                const lossCanvasId = `${category}-loss-chart`;
+                const winContainerId = `${category}-win-container`;
+                const lossContainerId = `${category}-loss-container`;
+
+                panel.innerHTML = `
+                    <div class="row g-4">
+                        <div class="col-xl-6">
+                            <div class="strength-card mb-3">
+                                <h6><i class="fas fa-chart-area text-primary"></i> Performance Summary</h6>
+                                <p class="mb-0">${performanceSummary}</p>
+                            </div>
+                            <div class="risk-card">
+                                <h6><i class="fas fa-compass text-danger"></i> Tactical Focus</h6>
+                                <p class="mb-0">${tacticalFocus}</p>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <div class="metric-pill"><i class="fas fa-hand-fist"></i> Win rate: ${(Number(metrics.win_rate ?? 0)).toFixed(1)}%</div>
+                                <div class="metric-pill"><i class="fas fa-swords"></i> Decided touches: ${metrics.bout_count ?? 0}</div>
+                                <div class="metric-pill"><i class="fas fa-tags"></i> Tags +: ${tagTotals.positive ?? 0}</div>
+                                <div class="metric-pill"><i class="fas fa-tag"></i> Tags -: ${tagTotals.negative ?? 0}</div>
+                            </div>
+                            ${narrativeText ? `<p class="mt-3 mb-3 text-muted small"><i class="fas fa-quote-left me-1"></i>${narrativeText}</p>` : ''}
+                            <div class="strength-card mb-3">
+                                <h6 class="mb-2"><i class="fas fa-chart-line text-success"></i> Key Strengths</h6>
+                                <ul class="list-bullet">${strengthsHtml}</ul>
+                            </div>
+                            <div class="risk-card mb-3">
+                                <h6 class="mb-2"><i class="fas fa-exclamation-triangle text-danger"></i> Key Weaknesses</h6>
+                                <ul class="list-bullet">${weaknessesHtml}</ul>
+                            </div>
+                            <div class="timeline-card">
+                                <h6 class="mb-2"><i class="fas fa-dumbbell"></i> Training Suggestions</h6>
+                                <ul class="list-bullet">${trainingHtml}</ul>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="chart-container tactical-chart-card" id="${winContainerId}">
+                                        <canvas id="${winCanvasId}"></canvas>
+                                    </div>
+                                    <p class="mt-2 mb-0 text-muted small text-center">Win reason distribution</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="chart-container tactical-chart-card" id="${lossContainerId}">
+                                        <canvas id="${lossCanvasId}"></canvas>
+                                    </div>
+                                    <p class="mt-2 mb-0 text-muted small text-center">Loss reason distribution</p>
+                                </div>
+                                <div class="col-12">
+                                    <div class="timeline-card">
+                                        <h6 class="mb-3"><i class="fas fa-tags"></i> Tag Signals</h6>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <h6 class="text-success mb-2">Positive (${tagTotals.positive ?? 0})</h6>
+                                                <ul class="list-bullet">${positiveListHtml}</ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h6 class="text-danger mb-2">Negative (${tagTotals.negative ?? 0})</h6>
+                                                <ul class="list-bullet">${negativeListHtml}</ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                container.appendChild(panel);
+
+                const piePalette = ['#2563eb', '#10b981', '#f97316', '#ec4899', '#6366f1', '#facc15', '#14b8a6', '#9333ea'];
+
+                const winCtx = document.getElementById(winCanvasId);
+                const winContainer = document.getElementById(winContainerId);
+                if (winCtx && winEntries.length) {
+                    new Chart(winCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: winEntries.map(item => item.reason || 'Unspecified'),
+                            datasets: [{
+                                data: winEntries.map(item => Number(item.count || 0)),
+                                backgroundColor: piePalette,
+                            }]
+                        },
+                        options: {
+                            plugins: { legend: { position: 'bottom' } },
+                        }
+                    });
+                } else if (winContainer) {
+                    winContainer.innerHTML = '<div class="text-muted text-center py-4">No win reasons recorded yet.</div>';
+                }
+
+                const lossCtx = document.getElementById(lossCanvasId);
+                const lossContainer = document.getElementById(lossContainerId);
+                if (lossCtx && lossEntries.length) {
+                    new Chart(lossCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: lossEntries.map(item => item.reason || 'Unspecified'),
+                            datasets: [{
+                                data: lossEntries.map(item => Number(item.count || 0)),
+                                backgroundColor: piePalette,
+                            }]
+                        },
+                        options: {
+                            plugins: { legend: { position: 'bottom' } },
+                        }
+                    });
+                } else if (lossContainer) {
+                    lossContainer.innerHTML = '<div class="text-muted text-center py-4">No loss reasons recorded yet.</div>';
+                }
+            });
+        }
+
+        function renderSignature(signature) {
+            const strengths = Array.isArray(signature.strengths) ? signature.strengths : [];
+            const risks = Array.isArray(signature.risks) ? signature.risks : [];
+            const strengthList = document.getElementById('signatureStrengths');
+            const riskList = document.getElementById('signatureRisks');
+            if (strengthList) {
+                strengthList.innerHTML = buildBulletList(strengths, {
+                    iconClass: 'fa-check text-success',
+                    emptyText: 'No repeating strengths detected yet.',
+                    formatItem: item => {
+                        const label = item?.text || item?.reason || 'Unspecified pattern';
+                        const count = item?.count ? ` (${item.count})` : '';
+                        return `${label}${count}`;
+                    }
+                });
+            }
+            if (riskList) {
+                riskList.innerHTML = buildBulletList(risks, {
+                    iconClass: 'fa-exclamation-triangle text-danger',
+                    emptyText: 'No active risk alerts detected yet.',
+                    formatItem: item => {
+                        const label = item?.text || item?.reason || 'Unspecified alert';
+                        const count = item?.count ? ` (${item.count})` : '';
+                        return `${label}${count}`;
+                    }
+                });
+            }
+        }
+
+        function renderRecommendations(recommendations) {
+            const container = document.getElementById('recommendationMarkdown');
+            if (!container) return;
+            const markdown = recommendations.markdown || '';
+            container.innerHTML = markdown ? marked.parse(markdown) : '<p>No recommendations available yet.</p>';
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

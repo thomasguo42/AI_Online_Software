@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Type Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .category-card {
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .category-in-box { border-left: 5px solid #FFD700; }
+        .category-attack { border-left: 5px solid #FF4444; }
+        .category-defense { border-left: 5px solid #4488FF; }
+        
+        .win-rate-good { color: #28a745; font-weight: bold; }
+        .win-rate-average { color: #ffc107; font-weight: bold; }
+        .win-rate-poor { color: #dc3545; font-weight: bold; }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            height: auto;
+            overflow: visible;
+        }
+        
+        .radar-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        
+        .fencer-section {
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .left-fencer-bg { background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); }
+        .right-fencer-bg { background: linear-gradient(135deg, #FFF3E0 0%, #FFCC80 100%); }
+        
+        .performance-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        .metric-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        .legend-inbox { background: #FFD700; }
+        .legend-attack { background: #FF4444; }
+        .legend-defense { background: #4488FF; }
+        
+        .overall-score {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .subscore {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        
+        .subscore-inbox { background: rgba(255, 215, 0, 0.2); }
+        .subscore-attack { background: rgba(255, 68, 68, 0.2); }
+        .subscore-defense { background: rgba(68, 136, 255, 0.2); }
+        
+        .bout-type-table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table th {
+            background: #f8f9fa;
+            border: none;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .bout-type-attack { background: rgba(255, 68, 68, 0.1); }
+        .bout-type-defense { background: rgba(68, 136, 255, 0.1); }
+        .bout-type-inbox { background: rgba(255, 215, 0, 0.1); }
+        
+        /* Loss Analysis Styles */
+        .loss-reason-card {
+            background: white;
+            border-left: 4px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .loss-reason-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .loss-reason-title {
+            font-weight: bold;
+            color: #dc3545;
+            margin: 0;
+        }
+        
+        .loss-count-badge {
+            background: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .loss-reasoning {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        .loss-video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .loss-video {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 8px;
+        }
+        .loss-video video {
+            width: 100%;
+            max-height: 260px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .no-loss-data {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        /* Win Analysis Styles */
+        .win-reason-card {
+            background: white;
+            border-left: 4px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .win-reason-title {
+            font-weight: bold;
+            color: #28a745;
+            margin: 0;
+        }
+
+        .win-count-badge {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .win-reasoning {
+            font-size: 0.9rem;
+            color: #495057;
+            margin: 10px 0 12px 0;
+        }
+
+        .win-support-list {
+            padding-left: 20px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        .analysis-section-divider {
+            border-top: 2px solid #e9ecef;
+            margin: 30px 0 20px 0;
+        }
+        
+        /* Performance Analysis Styles */
+        .performance-analysis-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #28a745;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .performance-summary {
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid #28a745;
+        }
+        
+        .performance-section {
+            margin-bottom: 20px;
+        }
+        
+        .performance-section h6 {
+            color: #495057;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .performance-section-content {
+            color: #6c757d;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .performance-recommendations {
+            background: rgba(255, 193, 7, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            border-left: 3px solid #ffc107;
+        }
+        
+        .recommendation-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .recommendation-list li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        .performance-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .rating-stars {
+            color: #ffc107;
+        }
+        
+        .strengths-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .strengths-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            color: #28a745;
+        }
+        
+        .strengths-list li:before {
+            content: "✓ ";
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .weaknesses-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .weaknesses-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            color: #dc3545;
+        }
+        
+        .weaknesses-list li:before {
+            content: "⚠ ";
+            font-weight: bold;
+            color: #dc3545;
+        }
+        
+        /* Enhanced Analysis Styles */
+        .strength-item {
+            background: rgba(40, 167, 69, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .strength-title {
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .strength-evidence {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .enhancement-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .enhancement-list li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        .weakness-item {
+            background: rgba(220, 53, 69, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .weakness-title {
+            color: #dc3545;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .weakness-impact {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .improvement-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .improvement-list li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        .strategy-item {
+            background: rgba(0, 123, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .strategy-scenario {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        
+        .strategy-tactics {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .strategy-tactics li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        .roadmap-item {
+            background: rgba(23, 162, 184, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .roadmap-phase {
+            color: #17a2b8;
+            margin-bottom: 8px;
+        }
+        
+        .roadmap-focus {
+            margin-bottom: 10px;
+        }
+        
+        .methods-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .methods-list li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        .recurring-problem-item {
+            background: rgba(220, 53, 69, 0.02);
+            border-radius: 8px;
+        }
+        
+        .problem-title {
+            color: #dc3545;
+            margin-bottom: 8px;
+        }
+        
+        .problem-frequency {
+            font-size: 0.9rem;
+        }
+        
+        .problem-impact {
+            font-size: 0.9rem;
+        }
+        
+        .problem-cause {
+            font-size: 0.9rem;
+        }
+        
+        .improvement-category {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .improvement-item {
+            border: 1px solid #dee2e6;
+        }
+        
+        .improvement-problem {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .solutions-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .solutions-list li {
+            margin-bottom: 5px;
+            color: #28a745;
+        }
+        
+        .drills-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .drills-list li {
+            margin-bottom: 5px;
+            color: #17a2b8;
+        }
+        
+        .exploitation-item {
+            border: 1px solid #ffc107;
+        }
+        
+        .opponent-weakness {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        
+        .exploitation-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .exploitation-list li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        .strategy-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .strategy-list li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        .training-plan-item {
+            background: rgba(23, 162, 184, 0.02);
+        }
+        
+        .plan-timeframe {
+            color: #17a2b8;
+            margin-bottom: 8px;
+        }
+        
+        .exercises-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .exercises-list li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        .insights-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .insights-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+            color: #495057;
+        }
+        
+        .bg-warning-light {
+            background-color: rgba(255, 193, 7, 0.1) !important;
+        }
+
+        .bg-primary-light {
+            background-color: rgba(13, 110, 253, 0.2) !important;
+        }
+
+        .development-priority {
+            background: rgba(23, 162, 184, 0.1);
+            border-radius: 6px;
+            padding: 15px;
+            border-left: 3px solid #17a2b8;
+            font-weight: bold;
+            color: #17a2b8;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .priority-optimize {
+            background: rgba(40, 167, 69, 0.15);
+            color: #198754;
+            border: 1px solid rgba(40, 167, 69, 0.35);
+        }
+
+        .priority-improve {
+            background: rgba(255, 193, 7, 0.2);
+            color: #b37500;
+            border: 1px solid rgba(255, 193, 7, 0.4);
+        }
+
+        .priority-rebuild {
+            background: rgba(220, 53, 69, 0.15);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.35);
+        }
+
+        .priority-evaluate {
+            background: rgba(108, 117, 125, 0.15);
+            color: #6c757d;
+            border: 1px solid rgba(108, 117, 125, 0.35);
+        }
+
+        .tactical-mode-cell div + div {
+            margin-top: 4px;
+        }
+        .tactical-mode-cell {
+            white-space: normal;
+            word-break: break-word;
+        }
+        .training-drill-list li {
+            margin-bottom: 4px;
+        }
+        /* New structured immediate adjustments */
+        .immediate-adjustments-structured {
+            padding: 10px;
+        }
+        .immediate-category-section {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .category-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        }
+        .adjustment-subsection {
+            margin-left: 10px;
+        }
+        .subsection-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .adjustment-list {
+            list-style: none;
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .adjustment-list li {
+            position: relative;
+            margin-bottom: 8px;
+            padding-left: 8px;
+            line-height: 1.6;
+        }
+        .correction-item::before {
+            content: "▸";
+            position: absolute;
+            left: -12px;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .leverage-item::before {
+            content: "✓";
+            position: absolute;
+            left: -12px;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        /* Collapsible Overall Performance Analysis */
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .collapsible-header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .collapsible-header h4 {
+            margin: 0;
+            color: white;
+        }
+        .collapse-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        .collapse-icon.rotated {
+            transform: rotate(180deg);
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .collapsible-content.expanded {
+            max-height: 10000px;
+            transition: max-height 0.6s ease-in;
+        }
+        .touch-summary-table tbody tr:nth-of-type(odd) {
+            background: rgba(74, 144, 226, 0.05);
+        }
+        .touch-summary-table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Fencing Analysis System</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('upload') }}">Back to Uploads</a>
+                <a class="nav-link" href="{{ url_for('results', upload_id=upload.id) }}">Classic View</a>
+                <a class="nav-link active" href="{{ url_for('video_view', upload_id=upload.id) }}">Video Type Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="performance-header">
+        <div class="container text-center">
+            <h1>Video Type Analysis</h1>
+            <p class="lead">Comprehensive performance analysis based on {{ total_touches }} bouts</p>
+            <p class="text-white-75 mt-2">
+                <i class="fas fa-video me-2"></i>
+                {% if upload.is_multi_video %}
+                    {{ upload.match_title if upload.match_title else 'Multi-Video Match' }}
+                {% else %}
+                    {{ upload.video_path.split('/')[-1] }}
+                {% endif %}
+                {% if upload.match_datetime %}
+                    <span class="ms-3">
+                        <i class="fas fa-calendar-alt me-1"></i>{{ upload.match_datetime.strftime('%Y-%m-%d %H:%M') }}
+                    </span>
+                {% endif %}
+            </p>
+            <div class="mt-3">
+                <a href="{{ url_for('video_view_refresh_wait', upload_id=upload.id, start=1) }}" class="btn btn-outline-light">
+                    <i class="fas fa-sync-alt"></i> Regenerate Analysis
+                </a>
+            </div>
+            {% if analysis_ready %}
+                {% if analysis_generated_at %}
+                    <p class="text-white-50 mt-3 mb-0">Last generated time: {{ analysis_generated_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                {% endif %}
+                {% if not analysis_complete and missing_section_labels %}
+                    <div class="alert alert-warning bg-warning-light border-0 mt-3">
+                        Current analysis missing {{ missing_section_labels | join(', ') }}, click button above to regenerate to sync latest win/loss details.
+                    </div>
+                {% endif %}
+            {% else %}
+                {% set status_message = '' %}
+                {% if analysis_status == 'pending' %}
+                    {% set status_message = 'AI analysis being generated, please wait or keep this page open.' %}
+                {% elif analysis_status == 'error' %}
+                    {% set status_message = 'AI analysis generation failed, please click button above to regenerate.' %}
+                {% else %}
+                    {% set status_message = 'Gemini analysis not yet generated, please click button above to start generation.' %}
+                {% endif %}
+                <div class="alert alert-info bg-primary-light border-0 mt-3 text-white">
+                    {{ status_message }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- Metric Legend -->
+        <div class="metric-legend">
+            <div class="legend-item">
+                <div class="legend-color legend-inbox"></div>
+                <span>Inbox Metrics</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-attack"></div>
+                <span>Attack Execution Metrics</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-defense"></div>
+                <span>Defense Riposte Metrics</span>
+            </div>
+        </div>
+
+        <!-- Immediate Tactical Adjustments -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h4 class="text-center mb-4">Immediate Bout Adjustments</h4>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="fencer-section left-fencer-bg">
+                                <h5 class="text-center mb-3">Left Fencer</h5>
+                                <div id="leftImmediateAdjustments" class="immediate-adjustments"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3 mt-md-0">
+                            <div class="fencer-section right-fencer-bg">
+                                <h5 class="text-center mb-3">Right Fencer</h5>
+                                <div id="rightImmediateAdjustments" class="immediate-adjustments"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overall Performance Analysis (Collapsible) -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <div class="collapsible-header" onclick="toggleOverallAnalysis()">
+                        <h4>Overall Performance Analysis</h4>
+                        <i class="fas fa-chevron-down collapse-icon" id="overallAnalysisIcon"></i>
+                    </div>
+                    <div class="collapsible-content" id="overallAnalysisContent">
+
+                    <div class="row">
+                        <!-- Left Fencer Overall Analysis -->
+                        <div class="col-md-6">
+                            <div class="fencer-section left-fencer-bg">
+                                <h5 class="text-center mb-3">Left Fencer</h5>
+                                <div id="leftOverallAnalysis">
+                                    <div class="text-center text-muted">
+                                        <p>Analyzing...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Fencer Overall Analysis -->
+                        <div class="col-md-6">
+                            <div class="fencer-section right-fencer-bg">
+                                <h5 class="text-center mb-3">Right Fencer</h5>
+                                <div id="rightOverallAnalysis">
+                                    <div class="text-center text-muted">
+                                        <p>Analyzing...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div> <!-- End collapsible-content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Radar Charts Row -->
+        <div class="row">
+            <!-- Left Fencer Radar Chart -->
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="text-center mb-3">Left Fencer</h4>
+                    <div class="overall-score" style="color: #4a90e2;">
+                        {{ radar_data.left_fencer.overall_score | round(0) | int }}
+                    </div>
+
+                    <!-- Subscores -->
+                    <div class="row">
+                        {% if radar_data.left_fencer.subscores.in_box is not none %}
+                        <div class="col-4">
+                            <div class="subscore subscore-inbox">
+                                <div><strong>{{ radar_data.left_fencer.subscores.in_box | round(0) | int }}</strong></div>
+                                <small>Inbox</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if radar_data.left_fencer.subscores.attack is not none %}
+                        <div class="col-4">
+                            <div class="subscore subscore-attack">
+                                <div><strong>{{ radar_data.left_fencer.subscores.attack | round(0) | int }}</strong></div>
+                                <small>Attack Execution</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if radar_data.left_fencer.subscores.defense is not none %}
+                        <div class="col-4">
+                            <div class="subscore subscore-defense">
+                                <div><strong>{{ radar_data.left_fencer.subscores.defense | round(0) | int }}</strong></div>
+                                <small>Defense Riposte</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="radar-container">
+                        <canvas id="leftRadarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Fencer Radar Chart -->
+            <div class="col-md-6">
+                <div class="chart-container">
+                    <h4 class="text-center mb-3">Right Fencer</h4>
+                    <div class="overall-score" style="color: #e67e22;">
+                        {{ radar_data.right_fencer.overall_score | round(0) | int }}
+                    </div>
+
+                    <!-- Subscores -->
+                    <div class="row">
+                        {% if radar_data.right_fencer.subscores.in_box is not none %}
+                        <div class="col-4">
+                            <div class="subscore subscore-inbox">
+                                <div><strong>{{ radar_data.right_fencer.subscores.in_box | round(0) | int }}</strong></div>
+                                <small>Inbox</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if radar_data.right_fencer.subscores.attack is not none %}
+                        <div class="col-4">
+                            <div class="subscore subscore-attack">
+                                <div><strong>{{ radar_data.right_fencer.subscores.attack | round(0) | int }}</strong></div>
+                                <small>Attack Execution</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if radar_data.right_fencer.subscores.defense is not none %}
+                        <div class="col-4">
+                            <div class="subscore subscore-defense">
+                                <div><strong>{{ radar_data.right_fencer.subscores.defense | round(0) | int }}</strong></div>
+                                <small>Defense Riposte</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="radar-container">
+                        <canvas id="rightRadarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if touch_summary %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h4 class="mb-3">Touch Category Timeline</h4>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle touch-summary-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%">Touch #</th>
+                                    <th style="width: 30%">Left Fencer Category</th>
+                                    <th style="width: 30%">Right Fencer Category</th>
+                                    <th style="width: 30%">Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for touch in touch_summary %}
+                                <tr>
+                                    <td><strong>{{ touch.touch_number }}</strong></td>
+                                    <td>{{ touch.left_category }}</td>
+                                    <td>{{ touch.right_category }}</td>
+                                    <td>{{ touch.result_label }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Bout Type Analysis -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h4 class="text-center mb-4">Bout Type Performance Statistics</h4>
+
+                    <div class="row">
+                        <!-- Left Fencer Stats -->
+                        <div class="col-12">
+                            <div class="fencer-section left-fencer-bg">
+                                <h5 class="text-center mb-3">Left Fencer</h5>
+                                <table class="table table-sm bout-type-table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 18%">Tactical Dimension</th>
+                                            <th style="width: 10%">Win Rate (%)</th>
+                                            <th style="width: 12%">Execution Frequency</th>
+                                            <th style="width: 14%">Net Score</th>
+                                            <th style="width: 32%">Main Success/Failure Patterns</th>
+                                            <th style="width: 14%">Strategic Priority</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in tactical_summary.left_fencer %}
+                                            <tr class="{{ row.row_class }}">
+                                                <td><strong>{{ row.label }}</strong></td>
+                                                <td>
+                                                    <span class="{{ row.rate_class }}">{{ row.win_rate_display }}</span>
+                                                </td>
+                                                <td>{{ row.attempt_display }}</td>
+                                                <td>{{ row.net_display }}</td>
+                                                <td class="tactical-mode-cell text-wrap">
+                                                    {% if row.success_mode %}
+                                                        <div><strong>Success:</strong> {{ row.success_mode }}</div>
+                                                    {% endif %}
+                                                    {% if row.failure_mode %}
+                                                        <div><strong>Failure:</strong> {{ row.failure_mode }}</div>
+                                                    {% endif %}
+                                                    {% if not row.success_mode and not row.failure_mode %}
+                                                        <div class="text-muted">No detailed patterns yet</div>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <span class="priority-badge {{ row.priority_class }}">{{ row.priority_label }}</span>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right Fencer Stats -->
+                        <div class="col-12 mt-3">
+                            <div class="fencer-section right-fencer-bg">
+                                <h5 class="text-center mb-3">Right Fencer</h5>
+                                <table class="table table-sm bout-type-table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 18%">Tactical Dimension</th>
+                                            <th style="width: 10%">Win Rate (%)</th>
+                                            <th style="width: 12%">Execution Frequency</th>
+                                            <th style="width: 14%">Net Score</th>
+                                            <th style="width: 32%">Main Success/Failure Patterns</th>
+                                            <th style="width: 14%">Strategic Priority</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in tactical_summary.right_fencer %}
+                                            <tr class="{{ row.row_class }}">
+                                                <td><strong>{{ row.label }}</strong></td>
+                                                <td>
+                                                    <span class="{{ row.rate_class }}">{{ row.win_rate_display }}</span>
+                                                </td>
+                                                <td>{{ row.attempt_display }}</td>
+                                                <td>{{ row.net_display }}</td>
+                                                <td class="tactical-mode-cell text-wrap">
+                                                    {% if row.success_mode %}
+                                                        <div><strong>Success:</strong> {{ row.success_mode }}</div>
+                                                    {% endif %}
+                                                    {% if row.failure_mode %}
+                                                        <div><strong>Failure:</strong> {{ row.failure_mode }}</div>
+                                                    {% endif %}
+                                                    {% if not row.success_mode and not row.failure_mode %}
+                                                        <div class="text-muted">No detailed patterns yet</div>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <span class="priority-badge {{ row.priority_class }}">{{ row.priority_label }}</span>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Analysis Buttons and Mirror Bar Chart -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h4 class="text-center mb-4">Category Detailed Analysis</h4>
+
+                    <!-- Category Selection Buttons -->
+                    <div class="text-center mb-4">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-warning" id="btnInBox" onclick="showCategoryChart('in_box')">
+                                Inbox Analysis
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" id="btnAttack" onclick="showCategoryChart('attack')">
+                                Attack Analysis
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="btnDefense" onclick="showCategoryChart('defense')">
+                                Defense Analysis
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mirror Bar Chart Container -->
+                    <div id="categoryChartContainer" style="display: none;">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="min-height: 320px; position: relative; display: flex; align-items: center; justify-content: center;">
+                                    <img id="categoryChartImage" src="" alt="Category mirror bar chart" class="img-fluid" style="max-height: 480px; display: none;" />
+                                    <div id="categoryChartPlaceholder" class="text-muted">Mirror bar chart will display after selecting category</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="analysis-section-divider"></div>
+                        <div class="row mt-4" id="categoryPerformanceAnalysis" style="display: none;">
+                            <div class="col-12">
+                                <div class="chart-container">
+                                    <h4 class="text-center mb-4" id="categoryPerformanceTitle">Category Performance Analysis</h4>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="fencer-section left-fencer-bg">
+                                                <h5 class="text-center mb-3">Left Fencer</h5>
+                                                <div id="leftCategoryPerformanceAnalysis">
+                                                    <div class="text-center text-muted">
+                                                        <p>Select category to view analysis</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="fencer-section right-fencer-bg">
+                                                <h5 class="text-center mb-3">Right Fencer</h5>
+                                                <div id="rightCategoryPerformanceAnalysis">
+                                                    <div class="text-center text-muted">
+                                                        <p>Select category to view analysis</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Initial Instructions -->
+                    <div id="categoryInstructions" class="text-center text-muted">
+                        <p class="mb-0">Select button above to view detailed analysis</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Win Analysis Section -->
+        <div class="row mt-4" id="winAnalysisSection" style="display: none;">
+            <div class="col-12">
+                <div class="analysis-section-divider"></div>
+                <div class="chart-container">
+                    <h4 class="text-center mb-4" id="winAnalysisTitle">Win Pattern Analysis</h4>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="fencer-section left-fencer-bg">
+                                <h5 class="text-center mb-3">Left Fencer Win Reasons</h5>
+                                <div id="leftFencerWinAnalysis">
+                                    <div class="text-center text-muted">
+                                        <p>No win reason data for this category</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="fencer-section right-fencer-bg">
+                                <h5 class="text-center mb-3">Right Fencer Win Reasons</h5>
+                                <div id="rightFencerWinAnalysis">
+                                    <div class="text-center text-muted">
+                                        <p>No win reason data for this category</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loss Analysis Section -->
+        <div class="row mt-4" id="lossAnalysisSection" style="display: none;">
+            <div class="col-12">
+                <div class="analysis-section-divider"></div>
+                <div class="chart-container">
+                    <h4 class="text-center mb-4" id="lossAnalysisTitle">Loss Analysis</h4>
+
+                    <div class="row">
+                        <!-- Left Fencer Loss Analysis -->
+                        <div class="col-md-6">
+                            <div class="fencer-section left-fencer-bg">
+                                <h5 class="text-center mb-3">Left Fencer Loss Analysis</h5>
+                                <div id="leftFencerLossAnalysis">
+                                    <div class="text-center text-muted">
+                                        <p>No loss data for this category</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Fencer Loss Analysis -->
+                        <div class="col-md-6">
+                            <div class="fencer-section right-fencer-bg">
+                                <h5 class="text-center mb-3">Right Fencer Loss Analysis</h5>
+                                <div id="rightFencerLossAnalysis">
+                                    <div class="text-center text-muted">
+                                        <p>No loss data for this category</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Preloaded JSON data for charts (avoid inline JS templating) -->
+    <script id="leftRadarJson" type="application/json">{{ radar_data['left_fencer'] | tojson }}</script>
+    <script id="rightRadarJson" type="application/json">{{ radar_data['right_fencer'] | tojson }}</script>
+    <script id="categoryAnalysisJson" type="application/json">{{ detailed_analysis | default({}) | tojson }}</script>
+    <script id="categoryChartImagesJson" type="application/json">{{ category_chart_images | default({}) | tojson }}</script>
+    <script id="lossAnalysisJson" type="application/json">{{ loss_analysis | default({}) | tojson }}</script>
+    <script id="winAnalysisJson" type="application/json">{{ win_analysis | default({}) | tojson }}</script>
+    <script id="lossReasonReportsJson" type="application/json">{{ loss_reason_reports | default({}) | tojson }}</script>
+    <script id="winReasonReportsJson" type="application/json">{{ win_reason_reports | default({}) | tojson }}</script>
+    <script id="categoryPerformanceAnalysisJson" type="application/json">{{ category_performance_analysis | default({}) | tojson }}</script>
+    <script id="overallPerformanceAnalysisJson" type="application/json">{{ overall_performance_analysis | default({}) | tojson }}</script>
+    <script id="analysisStatusJson" type="application/json">{{ {'analysis_ready': analysis_ready, 'analysis_complete': analysis_complete} | tojson }}</script>
+
+    <script>
+        // Toggle function for overall performance analysis
+        function toggleOverallAnalysis() {
+            const content = document.getElementById('overallAnalysisContent');
+            const icon = document.getElementById('overallAnalysisIcon');
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                icon.classList.remove('rotated');
+            } else {
+                content.classList.add('expanded');
+                icon.classList.add('rotated');
+            }
+        }
+
+        // Chart.js configuration for radar charts
+        const radarConfig = {
+            type: 'radar',
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        angleLines: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 11
+                            }
+                        },
+                        ticks: {
+                            stepSize: 20,
+                            color: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = Math.round(context.parsed.r);
+                                return context.label + ': ' + value;
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 4,
+                        hoverRadius: 6
+                    },
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            }
+        };
+
+        // Left Fencer Radar Chart
+        const leftCtx = document.getElementById('leftRadarChart').getContext('2d');
+        const leftRadarJson = JSON.parse(document.getElementById('leftRadarJson').textContent || '{}');
+        const leftRadarData = {
+            labels: leftRadarJson.labels || [],
+            datasets: [{
+                data: leftRadarJson.values || [],
+                backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                borderColor: '#4a90e2',
+                pointBackgroundColor: function(context) {
+                    const index = context.dataIndex;
+                    // Color code by category: 0-2 (inbox), 3-5 (attack), 6-8 (defense)
+                    if (index <= 2) return '#FFD700';      // Gold for In-Box
+                    else if (index <= 5) return '#FF4444'; // Red for Attack  
+                    else return '#4488FF';                 // Blue for Defense
+                },
+                pointBorderColor: '#4a90e2',
+                pointRadius: 5
+            }]
+        };
+        new Chart(leftCtx, {
+            ...radarConfig,
+            data: leftRadarData
+        });
+
+        // Right Fencer Radar Chart
+        const rightCtx = document.getElementById('rightRadarChart').getContext('2d');
+        const rightRadarJson = JSON.parse(document.getElementById('rightRadarJson').textContent || '{}');
+        const rightRadarData = {
+            labels: rightRadarJson.labels || [],
+            datasets: [{
+                data: rightRadarJson.values || [],
+                backgroundColor: 'rgba(230, 126, 34, 0.1)',
+                borderColor: '#e67e22',
+                pointBackgroundColor: function(context) {
+                    const index = context.dataIndex;
+                    // Color code by category: 0-2 (inbox), 3-5 (attack), 6-8 (defense)
+                    if (index <= 2) return '#FFD700';      // Gold for In-Box
+                    else if (index <= 5) return '#FF4444'; // Red for Attack
+                    else return '#4488FF';                 // Blue for Defense
+                },
+                pointBorderColor: '#e67e22',
+                pointRadius: 5
+            }]
+        };
+        new Chart(rightCtx, {
+            ...radarConfig,
+            data: rightRadarData
+        });
+
+        // Category Analysis Data
+        const categoryAnalysisData = JSON.parse(document.getElementById('categoryAnalysisJson').textContent || '{}');
+        const categoryChartImages = JSON.parse(document.getElementById('categoryChartImagesJson').textContent || '{}');
+        const lossReasonReports = JSON.parse(document.getElementById('lossReasonReportsJson').textContent || '{}');
+        const winReasonReports = JSON.parse(document.getElementById('winReasonReportsJson').textContent || '{}');
+        const categoryPerformanceAnalysisData = JSON.parse(document.getElementById('categoryPerformanceAnalysisJson').textContent || '{}');
+        const overallPerformanceAnalysisData = JSON.parse(document.getElementById('overallPerformanceAnalysisJson').textContent || '{}');
+        const analysisStatus = JSON.parse(document.getElementById('analysisStatusJson').textContent || '{}');
+        const resultsBase = "{{ url_for('result_file', filename='') }}";
+        const LOSS_REASON_TRANSLATIONS = {
+            'Slow Reaction at Start': 'Slow reaction at start',
+            'Outmatched by Speed & Power': 'Outmatched by speed & power',
+            'Indecisive Movement / Early Pause': 'Indecisive movement / early pause',
+            'Lack of Offensive Commitment': 'Lack of offensive commitment',
+            'Lack of Arm Extension': 'Lack of arm extension',
+            'Lack of Lunging': 'Lack of lunging',
+            'Attacked from Too Far (Positional Error)': 'Attacked from too far (positional error)',
+            'Predictable Attack (Tactical Error)': 'Predictable attack (tactical error)',
+            'Countered on Preparation (Timing Error)': 'Countered on preparation (timing error)',
+            'Passive/Weak Attack (Execution Failure)': 'Passive/weak attack (execution failure)',
+            'Collapsed Distance (Positional Error)': 'Collapsed distance (positional error)',
+            'Failed to "Pull Distance" vs. Lunge (Positional Error)': 'Failed to "pull distance" vs. lunge (positional error)',
+            'Missed Counter-Attack Opportunity (Tactical Error)': 'Missed counter-attack opportunity (tactical error)',
+            'Purely Defensive / No Counter-Threat (Execution Failure)': 'Purely defensive / no counter-threat (execution failure)',
+            'General/Unclassified': 'General/Unclassified'
+        };
+        const WIN_REASON_TRANSLATIONS = {
+            'Superior Reaction at Start': 'Superior reaction at start',
+            'Overpowering at Start': 'Overpowering at start',
+            'Exploited Hesitation': 'Exploited hesitation',
+            'Superior Positioning - Optimal Distance': 'Superior positioning - optimal distance',
+            'Superior Tactics - Rhythm Break': 'Superior tactics - rhythm break',
+            'Superior Power - Overwhelming Attack': 'Superior power - overwhelming attack',
+            'Capitalized on Attacker Positional Error': 'Capitalized on attacker positional error',
+            'Capitalized on Attacker Rhythmic Error': 'Capitalized on attacker rhythmic error',
+            'Capitalized on Attacker Power Failure': 'Capitalized on attacker power failure',
+            'General/Unclassified': 'General/Unclassified'
+        };
+
+        const HTML_ESCAPE_MAP = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        };
+
+        function escapeHtml(value) {
+            if (value === null || value === undefined) {
+                return '';
+            }
+            return String(value).replace(/[&<>"']/g, char => HTML_ESCAPE_MAP[char] || char);
+        }
+
+        function stringifyListEntry(entry) {
+            if (entry === null || entry === undefined) {
+                return '';
+            }
+            if (typeof entry === 'string') {
+                return entry;
+            }
+            if (typeof entry === 'number' || typeof entry === 'boolean') {
+                return String(entry);
+            }
+            if (Array.isArray(entry)) {
+                return entry.map(stringifyListEntry).filter(Boolean).join('；');
+            }
+            if (typeof entry === 'object') {
+                if (entry.title && entry.detail) {
+                    return `${entry.title}: ${stringifyListEntry(entry.detail)}`;
+                }
+                if (entry.description && entry.metric) {
+                    return `${entry.description}（${stringifyListEntry(entry.metric)}）`;
+                }
+                const pairs = Object.entries(entry)
+                    .filter(([_, value]) => value !== null && value !== undefined && value !== '');
+                if (pairs.length === 0) {
+                    try {
+                        return JSON.stringify(entry, null, 0);
+                    } catch (err) {
+                        return '';
+                    }
+                }
+                return pairs.map(([key, value]) => `${key}: ${stringifyListEntry(value)}`).join('；');
+            }
+            return String(entry);
+        }
+
+        function formatListEntry(entry) {
+            const raw = stringifyListEntry(entry);
+            if (!raw) {
+                return '';
+            }
+            return escapeHtml(String(raw)).replace(/\n/g, '<br>');
+        }
+
+        function formatParagraph(text) {
+            if (!text) {
+                return '';
+            }
+            const cleaned = String(text).replace(/\s+/g, ' ').trim();
+            return escapeHtml(cleaned).replace(/\n/g, '<br>');
+        }
+        
+        // Show category chart function
+        function showCategoryChart(category) {
+            // Update button states
+            document.querySelectorAll('.btn-group .btn').forEach(btn => {
+                btn.classList.remove('btn-warning', 'btn-danger', 'btn-primary');
+                btn.classList.add('btn-outline-warning', 'btn-outline-danger', 'btn-outline-primary');
+            });
+            
+            const idMap = { 'in_box': 'btnInBox', 'attack': 'btnAttack', 'defense': 'btnDefense' };
+            const activeBtn = document.getElementById(idMap[category]);
+            if (category === 'in_box') {
+                activeBtn.classList.remove('btn-outline-warning');
+                activeBtn.classList.add('btn-warning');
+            } else if (category === 'attack') {
+                activeBtn.classList.remove('btn-outline-danger');  
+                activeBtn.classList.add('btn-danger');
+            } else if (category === 'defense') {
+                activeBtn.classList.remove('btn-outline-primary');
+                activeBtn.classList.add('btn-primary');
+            }
+            
+            // Show chart container and hide instructions
+            document.getElementById('categoryChartContainer').style.display = 'block';
+            document.getElementById('categoryInstructions').style.display = 'none';
+            
+            updateCategoryChartImage(category);
+            
+            // Update detailed statistics
+            updateCategoryDetails(category);
+            
+            // Show and update win analysis
+            showWinAnalysis(category);
+
+            // Show and update loss analysis
+            showLossAnalysis(category);
+
+            // Show and update category performance analysis
+            showCategoryPerformanceAnalysis(category);
+        }
+        
+        function updateCategoryChartImage(category) {
+            const imageElement = document.getElementById('categoryChartImage');
+            const placeholder = document.getElementById('categoryChartPlaceholder');
+            if (!imageElement || !placeholder) {
+                return;
+            }
+
+            const imageData = categoryChartImages && categoryChartImages[category];
+            if (imageData) {
+                imageElement.src = imageData;
+                imageElement.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                imageElement.style.display = 'none';
+                placeholder.style.display = 'block';
+                placeholder.textContent = 'No visualization data for this category';
+            }
+        }
+        
+        // Removed: detailed metric dashboard (mirror chart now includes raw values)
+        function updateCategoryDetails(category) {
+            return;
+        }
+        
+        // Loss Analysis Functions
+        function showLossAnalysis(category) {
+            const lossAnalysisSection = document.getElementById('lossAnalysisSection');
+            const lossAnalysisTitle = document.getElementById('lossAnalysisTitle');
+
+            const categoryTitles = {
+                'in_box': 'Inbox Loss Analysis',
+                'attack': 'Attack Loss Analysis',
+                'defense': 'Defense Loss Analysis'
+            };
+
+            lossAnalysisTitle.textContent = categoryTitles[category] || 'Loss Analysis';
+
+            const leftLossReports = lossReasonReports.left_fencer ? (lossReasonReports.left_fencer[category] || []) : [];
+            const rightLossReports = lossReasonReports.right_fencer ? (lossReasonReports.right_fencer[category] || []) : [];
+
+            document.getElementById('leftFencerLossAnalysis').innerHTML = buildLossAnalysisHTML(leftLossReports);
+            document.getElementById('rightFencerLossAnalysis').innerHTML = buildLossAnalysisHTML(rightLossReports);
+
+            lossAnalysisSection.style.display = 'block';
+        }
+
+        function buildTouchVideoGrid(touches) {
+            if (!Array.isArray(touches) || touches.length === 0) {
+                return '';
+            }
+            let html = '<div class="loss-video-grid">';
+            touches.forEach((touch) => {
+                const videoNameRaw = touch.filename || `touch_${((touch.touch_index ?? 0) + 1)}`;
+                let displayName = videoNameRaw;
+                const matchIdx = typeof touch.match_idx === 'number' ? touch.match_idx : null;
+                const m1 = (videoNameRaw || '').match(/match_(\d+)_analysis\.json$/);
+                if (typeof matchIdx === 'number') {
+                    displayName = `Bout ${matchIdx}`;
+                } else if (m1) {
+                    displayName = `Bout ${parseInt(m1[1])}`;
+                } else if (/^touch_\d+$/i.test(videoNameRaw)) {
+                    const m2 = videoNameRaw.match(/\d+/);
+                    displayName = m2 ? `Bout ${parseInt(m2[0])}` : 'Bout';
+                }
+                const safeDisplayName = escapeHtml(displayName);
+                const vp = touch.video_path || '';
+                let src = '';
+                if (vp) {
+                    if (vp.startsWith('http://') || vp.startsWith('https://') || vp.startsWith('/results/')) {
+                        src = vp;
+                    } else {
+                        const clean = vp.startsWith('/') ? vp.slice(1) : vp;
+                        src = resultsBase + encodeURI(clean);
+                    }
+                }
+                const evidenceEntries = Array.isArray(touch.data_evidence)
+                    ? touch.data_evidence.slice(0, 2).map(formatListEntry).filter(Boolean)
+                    : [];
+                const evidenceHtml = evidenceEntries.length ? evidenceEntries.join('；') : '';
+                html += `
+                    <div class="loss-video">
+                        ${src ? `
+                        <video controls preload="metadata">
+                            <source src="${src}" type="video/mp4">
+                            <p>Your browser does not support video playback.</p>
+                        </video>
+                        ` : `<div class=\"text-muted\">No video</div>`}
+                        <div class="mt-1 small text-muted">${safeDisplayName}</div>
+                        ${evidenceHtml ? `<div class="mt-1 small text-muted">Data: ${evidenceHtml}</div>` : ''}
+                    </div>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function buildLossAnalysisHTML(lossReports) {
+            if (!Array.isArray(lossReports) || lossReports.length === 0) {
+                const message = analysisStatus.analysis_ready
+                    ? 'No loss data available for this category'
+                    : 'Win/loss analysis not yet generated. Click "Regenerate Analysis" button above to generate.';
+                return `<div class="no-loss-data">${message}</div>`;
+            }
+
+            let html = '';
+            lossReports
+                .sort((a, b) => (b.touch_count || 0) - (a.touch_count || 0))
+                .forEach(report => {
+                    const label = report.reason_label || report.reason_key || 'Unnamed reason';
+                    const count = report.touch_count || 0;
+                    const safeLabel = escapeHtml(label);
+                    const headline = formatParagraph(report.analysis_headline || '');
+                    const narrative = formatParagraph(report.core_narrative || '');
+                    const keySeq = Array.isArray(report.key_sequences) ? report.key_sequences : [];
+                    const focusPoints = Array.isArray(report.focus_points) ? report.focus_points : [];
+                    const validations = Array.isArray(report.validation_checks) ? report.validation_checks : [];
+                    const summaryBullet = formatParagraph(report.summary_bullet || '');
+
+                    const keySeqItems = keySeq.map(item => formatListEntry(item)).filter(Boolean);
+                    const focusItems = focusPoints.map(item => formatListEntry(item)).filter(Boolean);
+                    const validationItems = validations.map(item => formatListEntry(item)).filter(Boolean);
+
+                    html += `
+                        <div class="loss-reason-card">
+                            <div class="loss-reason-header">
+                                <h6 class="loss-reason-title">${safeLabel}</h6>
+                                <span class="loss-count-badge">${count} times</span>
+                            </div>
+                            <div class="loss-reasoning">
+                                ${headline ? `<div class="fw-semibold mb-1">${headline}</div>` : ''}
+                                ${narrative ? `<p class="mb-2">${narrative}</p>` : ''}
+                                ${summaryBullet ? `<div class="small text-muted">${summaryBullet}</div>` : ''}
+                            </div>
+                            ${keySeqItems.length ? `<div class="loss-reasoning"><div class="fw-semibold">Key Sequences</div><ul class="loss-support-list">${keySeqItems.map(item => `<li>${item}</li>`).join('')}</ul></div>` : ''}
+                            ${focusItems.length ? `<div class="loss-reasoning"><div class="fw-semibold">Correction Points</div><ul class="loss-support-list">${focusItems.map(item => `<li>${item}</li>`).join('')}</ul></div>` : ''}
+                            ${validationItems.length ? `<div class="loss-reasoning"><div class="fw-semibold">Validation Checklist</div><ul class="loss-support-list">${validationItems.map(item => `<li>${item}</li>`).join('')}</ul></div>` : ''}
+                            ${buildTouchVideoGrid(report.touches)}
+                        </div>`;
+                });
+
+            return html || '<div class="no-loss-data">No loss data for this category</div>';
+        }
+
+        // Category Performance Analysis Functions
+        function showCategoryPerformanceAnalysis(category) {
+            const titleMap = {
+                'in_box': 'Inbox Performance Analysis',
+                'attack': 'Attack Performance Analysis',
+                'defense': 'Defense Performance Analysis'
+            };
+
+            const wrapper = document.getElementById('categoryPerformanceAnalysis');
+            if (wrapper) {
+                wrapper.style.display = 'block';
+            }
+
+            document.getElementById('categoryPerformanceTitle').textContent = titleMap[category] || 'Category Performance Analysis';
+
+            const leftData = (categoryPerformanceAnalysisData.left_fencer || {})[category] || {};
+            const rightData = (categoryPerformanceAnalysisData.right_fencer || {})[category] || {};
+
+            document.getElementById('leftCategoryPerformanceAnalysis').innerHTML = buildCategoryPerformanceHTML(leftData);
+            document.getElementById('rightCategoryPerformanceAnalysis').innerHTML = buildCategoryPerformanceHTML(rightData);
+        }
+
+        function buildCategoryPerformanceHTML(analysisData) {
+            if (!analysisData || Object.keys(analysisData).length === 0) {
+                return '<div class="text-center text-muted"><p>No analysis data for this category</p></div>';
+            }
+
+            let html = '<div class="performance-analysis-card">';
+
+            if (analysisData.performance_summary) {
+                html += `
+                    <div class="performance-summary">
+                        <h6 class="text-primary fw-bold"><i class="fas fa-chart-line me-1"></i> Performance Summary</h6>
+                        <div class="performance-section-content lead">${formatParagraph(analysisData.performance_summary)}</div>
+                    </div>`;
+            }
+
+            const rating = parseInt(analysisData.overall_rating, 10);
+            if (!Number.isNaN(rating)) {
+                html += `
+                    <div class="overall-rating text-center mb-3">
+                        <span class="rating-badge">${rating}</span>
+                        <small class="text-muted">Overall Rating</small>
+                    </div>`;
+            }
+
+            if (analysisData.technical_analysis) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-primary fw-bold"><i class="fas fa-cogs me-1"></i> Technical Analysis</h6>
+                        <div class="performance-section-content">${formatParagraph(analysisData.technical_analysis)}</div>
+                    </div>`;
+            }
+
+            if (analysisData.tactical_analysis) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-danger fw-bold"><i class="fas fa-crosshairs me-1"></i> Tactical Analysis</h6>
+                        <div class="performance-section-content">${formatParagraph(analysisData.tactical_analysis)}</div>
+                    </div>`;
+            }
+
+            if (Array.isArray(analysisData.recurring_problems) && analysisData.recurring_problems.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-warning fw-bold"><i class="fas fa-exclamation-circle me-1"></i> Recurring Problems</h6>
+                        <ul class="performance-list">`;
+                analysisData.recurring_problems.forEach(problem => {
+                    html += `<li><strong>${escapeHtml(problem.problem || '')}</strong><br><small class="text-muted">${escapeHtml(problem.frequency || '')}</small></li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            if (Array.isArray(analysisData.detailed_improvements) && analysisData.detailed_improvements.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-success fw-bold"><i class="fas fa-tools me-1"></i> Detailed Improvement Plan</h6>`;
+                analysisData.detailed_improvements.forEach(group => {
+                    const groupTitle = escapeHtml(group.category || '');
+                    html += `
+                        <div class="improvement-category mb-3">
+                            <div class="improvement-title mb-2"><span class="badge bg-success-subtle text-success border border-success">${groupTitle}</span></div>`;
+                    (group.improvements || []).forEach(item => {
+                        const problem = escapeHtml((item && item.problem) ? item.problem : '');
+                        const solutions = Array.isArray(item && item.solutions) ? item.solutions.slice(0, 3) : [];
+                        const drills = Array.isArray(item && item.training_drills) ? item.training_drills.slice(0, 3) : [];
+                        html += `
+                            <div class="card card-body border-0 bg-light mb-2">
+                                ${problem ? `<div class="fw-semibold mb-2"><i class="fas fa-triangle-exclamation text-warning me-2"></i>${problem}</div>` : ''}
+                                ${solutions.length ? `
+                                <div class="mb-1 small text-muted"><i class="fas fa-list-check me-1"></i> Solutions</div>
+                                <ul class="list-unstyled mb-2">
+                                    ${solutions.map(sol => `<li class="mb-1"><i class="fas fa-check-circle text-success me-2"></i>${escapeHtml(sol)}</li>`).join('')}
+                                </ul>` : ''}
+                                ${drills.length ? `
+                                <div class="mb-1 small text-muted"><i class="fas fa-dumbbell me-1"></i> Training Drills</div>
+                                <ul class="list-unstyled mb-0 training-drill-list">
+                                    ${(drills).map(drill => `<li class="mb-1">${escapeHtml(drill)}</li>`).join('')}
+                                </ul>` : ''}
+                            </div>`;
+                    });
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            if (Array.isArray(analysisData.opponent_exploitation) && analysisData.opponent_exploitation.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-info fw-bold"><i class="fas fa-bullseye me-1"></i> Opponent Exploitation</h6>
+                        <ul class="performance-list">`;
+                analysisData.opponent_exploitation.forEach(item => {
+                    html += `<li><strong>${escapeHtml(item.opponent_weakness || '')}</strong><br><small class="text-muted">${(item.exploitation_methods || []).map(method => escapeHtml(method)).join(' / ')}</small></li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            if (Array.isArray(analysisData.competition_strategies) && analysisData.competition_strategies.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-secondary fw-bold"><i class="fas fa-chess-knight me-1"></i> Competition Strategies</h6>`;
+                analysisData.competition_strategies.forEach(item => {
+                    html += `<div class="strategy-item mb-2"><strong>${escapeHtml(item.scenario || '')}</strong><br><small class="text-muted">${(item.strategies || []).map(strategy => escapeHtml(strategy)).join(' / ')}</small></div>`;
+                });
+                html += '</div>';
+            }
+
+            if (Array.isArray(analysisData.priority_training_plan) && analysisData.priority_training_plan.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-primary fw-bold"><i class="fas fa-route me-1"></i> Priority Training Plan</h6>`;
+                analysisData.priority_training_plan.forEach(plan => {
+                    html += `<div class="training-plan-item mb-2"><strong>${escapeHtml(plan.timeframe || '')}</strong> – ${escapeHtml(plan.focus || '')}${plan.success_metrics ? `<br><small class="text-muted">Success Metrics: ${escapeHtml(plan.success_metrics)}</small>` : ''}</div>`;
+                });
+                html += '</div>';
+            }
+
+            if (Array.isArray(analysisData.key_insights) && analysisData.key_insights.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-warning fw-bold"><i class="fas fa-lightbulb me-1"></i> Key Insights</h6>
+                        <ul class="insights-list">`;
+                analysisData.key_insights.forEach(insight => {
+                    html += `<li>${escapeHtml(insight)}</li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            if (analysisData.training_focus) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-info fw-bold"><i class="fas fa-bullseye me-1"></i> Training Focus</h6>
+                        <div class="performance-section-content">${formatParagraph(analysisData.training_focus)}</div>
+                    </div>`;
+            } else if (analysisData.development_priority) {
+                html += `
+                    <div class="performance-section">
+                        <h6 class="text-info fw-bold"><i class="fas fa-bullseye me-1"></i> Development Priority</h6>
+                        <div class="performance-section-content">${formatParagraph(analysisData.development_priority)}</div>
+                    </div>`;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // Win Analysis Functions
+        function showWinAnalysis(category) {
+            const winAnalysisSection = document.getElementById('winAnalysisSection');
+            const winAnalysisTitle = document.getElementById('winAnalysisTitle');
+
+            const categoryTitles = {
+                'in_box': 'Inbox Win Analysis',
+                'attack': 'Attack Win Analysis',
+                'defense': 'Defense Win Analysis'
+            };
+
+            winAnalysisTitle.textContent = categoryTitles[category] || 'Win Pattern Analysis';
+
+            const leftWinReports = winReasonReports.left_fencer ? (winReasonReports.left_fencer[category] || []) : [];
+            const rightWinReports = winReasonReports.right_fencer ? (winReasonReports.right_fencer[category] || []) : [];
+
+            document.getElementById('leftFencerWinAnalysis').innerHTML = buildWinAnalysisHTML(leftWinReports);
+            document.getElementById('rightFencerWinAnalysis').innerHTML = buildWinAnalysisHTML(rightWinReports);
+
+            winAnalysisSection.style.display = 'block';
+        }
+
+        function buildWinAnalysisHTML(winReports) {
+            if (!Array.isArray(winReports) || winReports.length === 0) {
+                const message = analysisStatus.analysis_ready
+                    ? 'No win data available for this category'
+                    : 'Win/loss analysis not yet generated. Click "Regenerate Analysis" button above to generate.';
+                return `<div class="no-loss-data">${message}</div>`;
+            }
+
+            let html = '';
+            winReports
+                .sort((a, b) => (b.touch_count || 0) - (a.touch_count || 0))
+                .forEach(report => {
+                    const label = report.reason_label || report.reason_key || 'Win reason';
+                    const count = report.touch_count || 0;
+                    const safeLabel = escapeHtml(label);
+                    const headline = formatParagraph(report.analysis_headline || '');
+                    const narrative = formatParagraph(report.core_narrative || '');
+                    const keySeq = Array.isArray(report.key_sequences) ? report.key_sequences : [];
+                    const focusPoints = Array.isArray(report.focus_points) ? report.focus_points : [];
+                    const validations = Array.isArray(report.validation_checks) ? report.validation_checks : [];
+                    const summaryBullet = formatParagraph(report.summary_bullet || '');
+
+                    const keySeqItems = keySeq.map(item => formatListEntry(item)).filter(Boolean);
+                    const focusItems = focusPoints.map(item => formatListEntry(item)).filter(Boolean);
+                    const validationItems = validations.map(item => formatListEntry(item)).filter(Boolean);
+
+                    html += `
+                        <div class="win-reason-card">
+                            <div class="loss-reason-header">
+                                <h6 class="win-reason-title">${safeLabel}</h6>
+                                <span class="win-count-badge">${count} times</span>
+                            </div>
+                            <div class="win-reasoning">
+                                ${headline ? `<div class="fw-semibold mb-1">${headline}</div>` : ''}
+                                ${narrative ? `<p class="mb-2">${narrative}</p>` : ''}
+                                ${summaryBullet ? `<div class="small text-muted">${summaryBullet}</div>` : ''}
+                            </div>
+                            ${keySeqItems.length ? `<div class="win-reasoning"><div class="fw-semibold">Key Sequences</div><ul class="win-support-list">${keySeqItems.map(item => `<li>${item}</li>`).join('')}</ul></div>` : ''}
+                            ${focusItems.length ? `<div class="win-reasoning"><div class="fw-semibold">Replication Points</div><ul class="win-support-list">${focusItems.map(item => `<li>${item}</li>`).join('')}</ul></div>` : ''}
+                            ${validationItems.length ? `<div class="win-reasoning"><div class="fw-semibold">Stress Tests</div><ul class="win-support-list">${validationItems.map(item => `<li>${item}</li>`).join('')}</ul></div>` : ''}
+                            ${buildTouchVideoGrid(report.touches)}
+                        </div>`;
+                });
+
+            return html || '<div class="no-loss-data">No win reason data for this category</div>';
+        }
+        
+        // Overall Performance Analysis Functions
+        function initializeOverallAnalysis() {
+            // Display overall analysis for both fencers
+            const leftAnalysis = overallPerformanceAnalysisData.left_fencer || {};
+            const rightAnalysis = overallPerformanceAnalysisData.right_fencer || {};
+            
+            document.getElementById('leftOverallAnalysis').innerHTML = buildOverallAnalysisHTML(leftAnalysis);
+            document.getElementById('rightOverallAnalysis').innerHTML = buildOverallAnalysisHTML(rightAnalysis);
+
+            const leftImmediate = document.getElementById('leftImmediateAdjustments');
+            if (leftImmediate) {
+                // rapid_adjustments is now a structured object: {in_box: {corrections: [], leverage: []}, attack: {...}, defense: {...}}
+                const leftRapid = leftAnalysis.rapid_adjustments && typeof leftAnalysis.rapid_adjustments === 'object'
+                    ? leftAnalysis.rapid_adjustments
+                    : null;
+                console.log('Left rapid adjustments:', leftRapid);
+                leftImmediate.innerHTML = buildImmediateAdjustmentsHTML(leftRapid);
+            }
+            const rightImmediate = document.getElementById('rightImmediateAdjustments');
+            if (rightImmediate) {
+                const rightRapid = rightAnalysis.rapid_adjustments && typeof rightAnalysis.rapid_adjustments === 'object'
+                    ? rightAnalysis.rapid_adjustments
+                    : null;
+                console.log('Right rapid adjustments:', rightRapid);
+                rightImmediate.innerHTML = buildImmediateAdjustmentsHTML(rightRapid);
+            }
+        }
+
+        function buildImmediateAdjustmentsHTML(structuredItems) {
+            console.log('buildImmediateAdjustmentsHTML called with:', structuredItems);
+
+            if (!structuredItems || typeof structuredItems !== 'object') {
+                console.log('No structured items or not an object');
+                return '<div class="text-center text-muted"><p>Analyzing...</p></div>';
+            }
+
+            // New structured format: { in_box: {corrections: [], leverage: []}, attack: {...}, defense: {...} }
+            const categories = ['in_box', 'attack', 'defense'];
+            const categoryLabels = {
+                'in_box': 'Simultaneous/In-Box',
+                'attack': 'Attack',
+                'defense': 'Defense'
+            };
+            const categoryIcons = {
+                'in_box': 'fa-crosshairs',
+                'attack': 'fa-bolt',
+                'defense': 'fa-shield-alt'
+            };
+
+            let hasAnyContent = false;
+            let html = '<div class="immediate-adjustments-structured">';
+
+            categories.forEach(category => {
+                const categoryData = structuredItems[category];
+                if (!categoryData) return;
+
+                const corrections = categoryData.corrections || [];
+                const leverage = categoryData.leverage || [];
+
+                if (corrections.length === 0 && leverage.length === 0) return;
+
+                hasAnyContent = true;
+
+                html += `
+                    <div class="immediate-category-section mb-4">
+                        <div class="category-header">
+                            <i class="fas ${categoryIcons[category]} me-2"></i>
+                            <strong>${categoryLabels[category]}</strong>
+                        </div>`;
+
+                // Corrections
+                if (corrections.length > 0) {
+                    html += `
+                        <div class="adjustment-subsection mt-2">
+                            <div class="subsection-title text-danger">
+                                <i class="fas fa-exclamation-triangle me-1"></i> Critical Corrections
+                            </div>
+                            <ul class="adjustment-list">`;
+                    corrections.forEach(text => {
+                        html += `<li class="correction-item">${escapeHtml(text)}</li>`;
+                    });
+                    html += `</ul></div>`;
+                }
+
+                // Leverage points
+                if (leverage.length > 0) {
+                    html += `
+                        <div class="adjustment-subsection mt-2">
+                            <div class="subsection-title text-success">
+                                <i class="fas fa-check-circle me-1"></i> Keep Leveraging
+                            </div>
+                            <ul class="adjustment-list">`;
+                    leverage.forEach(text => {
+                        html += `<li class="leverage-item">${escapeHtml(text)}</li>`;
+                    });
+                    html += `</ul></div>`;
+                }
+
+                html += `</div>`;
+            });
+
+            html += '</div>';
+
+            console.log('hasAnyContent:', hasAnyContent);
+
+            return hasAnyContent
+                ? html
+                : '<div class="text-center text-muted"><p>No immediate adjustments available</p></div>';
+        }
+
+        function buildOverallAnalysisHTML(analysisData) {
+            if (!analysisData || Object.keys(analysisData).length === 0) {
+                return '<div class="text-center text-muted"><p>Analyzing...</p></div>';
+            }
+            
+            let html = '<div class="performance-analysis-card">';
+            
+           // Performance Profile
+           if (analysisData.performance_profile) {
+               html += `
+                   <div class="performance-summary">
+                       <h6><i class="fas fa-user-shield"></i> Overall Performance</h6>
+                       <div class="performance-section-content">${analysisData.performance_profile}</div>
+                   </div>`;
+           }
+
+            if (analysisData.key_insights && analysisData.key_insights.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-lightbulb text-warning"></i> Key Insights</h6>
+                        <ul class="list-unstyled mb-0">`;
+                analysisData.key_insights.slice(0, 3).forEach(insight => {
+                    html += `<li class="mb-1"><i class="fas fa-angle-right text-muted"></i> ${insight}</li>`;
+                });
+                html += `</ul></div>`;
+            }
+            
+            // Detailed Strengths (Enhanced Structure)
+            if (analysisData.detailed_strengths && analysisData.detailed_strengths.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-thumbs-up text-success"></i> Main Strengths</h6>`;
+                analysisData.detailed_strengths.slice(0, 2).forEach(strengthItem => {
+                    html += `
+                        <div class="strength-item mb-3">
+                            <div class="strength-title"><strong>${strengthItem.strength}</strong></div>
+                            <div class="strength-evidence text-muted mb-2"><i class="fas fa-chart-bar"></i> ${strengthItem.evidence}</div>
+                            <div class="enhancement-strategies">
+                                <small class="text-info"><i class="fas fa-arrow-up"></i> Enhancement Strategies:</small>
+                                <ul class="enhancement-list">`;
+                    strengthItem.enhancement_strategies.slice(0, 2).forEach(strategy => {
+                        html += `<li>${strategy}</li>`;
+                    });
+                    html += `</ul></div></div>`;
+                });
+                html += `</div>`;
+            }
+            // Fallback for old simple strengths structure
+            else if (analysisData.strengths && analysisData.strengths.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-thumbs-up text-success"></i> Main Strengths</h6>
+                        <ul class="strengths-list">`;
+                analysisData.strengths.slice(0, 3).forEach(strength => {
+                    html += `<li>${strength}</li>`;
+                });
+                html += `</ul></div>`;
+            }
+            
+            // Critical Weaknesses (Enhanced Structure)
+            if (analysisData.critical_weaknesses && analysisData.critical_weaknesses.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-exclamation-triangle text-warning"></i> Critical Weaknesses</h6>`;
+                analysisData.critical_weaknesses.slice(0, 2).forEach(weaknessItem => {
+                    html += `
+                        <div class="weakness-item mb-3">
+                            <div class="weakness-title"><strong>${weaknessItem.weakness}</strong></div>
+                            <div class="weakness-impact text-muted mb-2"><i class="fas fa-impact"></i> ${weaknessItem.impact}</div>
+                            <div class="improvement-strategies">
+                                <small class="text-danger"><i class="fas fa-tools"></i> Improvement Strategies:</small>
+                                <ul class="improvement-list">`;
+                    weaknessItem.improvement_strategies.slice(0, 2).forEach(strategy => {
+                        html += `<li>${strategy}</li>`;
+                    });
+                    html += `</ul></div></div>`;
+                });
+                html += `</div>`;
+            }
+            // Fallback for old simple weaknesses structure
+            else if (analysisData.weaknesses && analysisData.weaknesses.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-exclamation-triangle text-warning"></i> Areas for Improvement</h6>
+                        <ul class="weaknesses-list">`;
+                analysisData.weaknesses.slice(0, 3).forEach(weakness => {
+                    html += `<li>${weakness}</li>`;
+                });
+                html += `</ul></div>`;
+            }
+            
+            // Situational Strategies (Enhanced Structure)
+            if (analysisData.situational_strategies && analysisData.situational_strategies.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-chess text-primary"></i> Situational Strategies</h6>`;
+                analysisData.situational_strategies.slice(0, 2).forEach(strategyItem => {
+                    html += `
+                        <div class="strategy-item mb-3">
+                            <div class="strategy-scenario"><strong><i class="fas fa-bullseye"></i> ${strategyItem.scenario}</strong></div>
+                            <ul class="strategy-tactics">`;
+                    (strategyItem.tactics || []).slice(0, 2).forEach(tactic => {
+                        html += `<li>${tactic}</li>`;
+                    });
+                    html += `</ul></div>`;
+                });
+                html += `</div>`;
+            }
+            // Fallback for old strategic_recommendations
+            else if (analysisData.strategic_recommendations && analysisData.strategic_recommendations.length > 0) {
+                html += `
+                    <div class="performance-recommendations">
+                        <h6><i class="fas fa-lightbulb"></i> Strategic Recommendations</h6>
+                        <ul class="recommendation-list">`;
+                analysisData.strategic_recommendations.slice(0, 3).forEach(rec => {
+                    html += `<li>${rec}</li>`;
+                });
+                html += `</ul></div>`;
+            }
+            
+            // Development Roadmap (Enhanced Structure)
+            if (analysisData.development_roadmap && analysisData.development_roadmap.length > 0) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-road text-info"></i> Development Roadmap</h6>`;
+                analysisData.development_roadmap.slice(0, 2).forEach(roadmapItem => {
+                    html += `
+                        <div class="roadmap-item mb-3">
+                            <div class="roadmap-phase"><strong><i class="fas fa-calendar-alt"></i> ${roadmapItem.phase}</strong></div>
+                            <div class="roadmap-focus text-primary mb-2"><i class="fas fa-target"></i> Focus: ${roadmapItem.focus}</div>
+                            <div class="roadmap-methods">
+                                <small class="text-muted"><i class="fas fa-list"></i> Training Methods:</small>
+                                <ul class="methods-list">`;
+                    (roadmapItem.methods || []).slice(0, 2).forEach(method => {
+                        html += `<li>${method}</li>`;
+                    });
+                    html += `</ul></div></div>`;
+                });
+                html += `</div>`;
+            }
+
+            // Competition Readiness
+            if (analysisData.competition_readiness) {
+                html += `
+                    <div class="performance-section">
+                        <h6><i class="fas fa-trophy text-warning"></i> Competition Readiness Assessment</h6>
+                        <div class="performance-section-content">${analysisData.competition_readiness}</div>
+                    </div>`;
+            }
+
+            // Immediate Focus (Enhanced Structure)
+            if (analysisData.immediate_focus) {
+                html += `
+                    <div class="development-priority">
+                        <h6><i class="fas fa-flag text-danger"></i> Immediate Focus</h6>
+                        <div class="alert alert-info">${analysisData.immediate_focus}</div>
+                    </div>`;
+            }
+            // Fallback for old development_priority
+            else if (analysisData.development_priority) {
+                html += `
+                    <div class="development-priority">
+                        <h6><i class="fas fa-target"></i> Development Priority</h6>
+                        <div>${analysisData.development_priority}</div>
+                    </div>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+        
+        // Initialize overall analysis when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeOverallAnalysis();
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

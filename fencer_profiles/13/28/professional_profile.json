@@ -1,0 +1,442 @@
+{
+  "generated_at": "2025-10-07T01:30:11.427990",
+  "fencer": {
+    "id": 28,
+    "name": "Andrea Sayson",
+    "user_id": 13,
+    "match_count": 1
+  },
+  "executive_summary": {
+    "synopsis": "Andrea Sayson demonstrates a predominantly reactive tactical style, heavily reliant on defensive positioning. Her most prominent strength, though not yet proven in scoring, appears to be maintaining distance, as evidenced by her Defense Distance Management. However, her most significant weakness lies in a critical lack of offensive initiative and an inability to convert defensive situations into points, resulting in a 0.0% defense scoring rate. Consequently, her recent performance trend indicates a need for immediate development in offensive aggression and defensive effectiveness to achieve competitive readiness.",
+    "overall_score": 0,
+    "wins": 0,
+    "losses": 1,
+    "skips": 0
+  },
+  "performance_dashboard": {
+    "style_profile": [
+      {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      {
+        "label": "defense",
+        "count": 1,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1
+      },
+      {
+        "label": "in_box",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      }
+    ],
+    "key_strengths": {
+      "top_category": {
+        "label": "defense",
+        "count": 1,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1
+      },
+      "positive_tags": [
+        {
+          "tag": "variable_tempo",
+          "label": "Variable Tempo",
+          "count": 1
+        },
+        {
+          "tag": "good_defensive_quality",
+          "label": "Good Defensive Quality",
+          "count": 1
+        },
+        {
+          "tag": "good_attack_distance",
+          "label": "Good Attack Distance",
+          "count": 1
+        }
+      ],
+      "volume_tags": [
+        {
+          "tag": "variable_tempo",
+          "label": "Variable Tempo",
+          "count": 1
+        },
+        {
+          "tag": "no_launch",
+          "label": "No Launch",
+          "count": 1
+        },
+        {
+          "tag": "slow_reaction_time",
+          "label": "Slow Reaction Time",
+          "count": 1
+        }
+      ]
+    },
+    "key_weaknesses": {
+      "lowest_category": {
+        "label": "defense",
+        "count": 1,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1
+      },
+      "negative_tags": [
+        {
+          "tag": "no_launch",
+          "label": "No Launch",
+          "count": 1
+        },
+        {
+          "tag": "low_speed",
+          "label": "Low Speed",
+          "count": 1
+        },
+        {
+          "tag": "excessive_pausing",
+          "label": "Excessive Pausing",
+          "count": 1
+        }
+      ]
+    },
+    "tag_counts": {
+      "positive": [
+        {
+          "tag": "variable_tempo",
+          "label": "Variable Tempo",
+          "count": 1
+        },
+        {
+          "tag": "good_defensive_quality",
+          "label": "Good Defensive Quality",
+          "count": 1
+        },
+        {
+          "tag": "good_attack_distance",
+          "label": "Good Attack Distance",
+          "count": 1
+        },
+        {
+          "tag": "consistent_spacing",
+          "label": "Consistent Spacing",
+          "count": 1
+        },
+        {
+          "tag": "maintain_safe_distance",
+          "label": "Maintain Safe Distance",
+          "count": 1
+        }
+      ],
+      "negative": [
+        {
+          "tag": "no_launch",
+          "label": "No Launch",
+          "count": 1
+        },
+        {
+          "tag": "low_speed",
+          "label": "Low Speed",
+          "count": 1
+        },
+        {
+          "tag": "excessive_pausing",
+          "label": "Excessive Pausing",
+          "count": 1
+        },
+        {
+          "tag": "poor_acceleration",
+          "label": "Poor Acceleration",
+          "count": 1
+        },
+        {
+          "tag": "poor_distance_maintenance",
+          "label": "Poor Distance Maintenance",
+          "count": 1
+        },
+        {
+          "tag": "missed_counter_opportunities",
+          "label": "Missed Counter Opportunities",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "performance_over_time": {
+    "timeline": [
+      {
+        "match_id": 340,
+        "label": "2025-10-06 08:30",
+        "match_datetime": "2025-10-06T08:30:00",
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1,
+        "skips": 0,
+        "category_win_rates": {
+          "attack": 0.0,
+          "defense": 0.0,
+          "in_box": 0.0
+        }
+      }
+    ],
+    "narrative": "The provided data shows a single match played on October 6th, 2025, with a win rate of 0.0, resulting in one loss and zero wins. This initial data point indicates a challenging start to the observed period, with no success in any of the measured categories (attack, defense, in_box). Without further chronological data, it is impossible to identify any trends, improvements, regressions, or streaks. Additional match data points are required to analyze performance over time."
+  },
+  "tactical_analysis": {
+    "attack": {
+      "narrative": "Attack touches: 0.0 analysed, win rate 0.0%.",
+      "analysis": {
+        "situation": "Attack data is limited so far; continue analysing matches to expose reliable winning patterns.",
+        "improvement": "Focus on gathering more attack sequences to surface consistent improvement targets."
+      },
+      "summary": {
+        "performance_summary": "Attack win rate 0.0% across 0 decided touches (0 wins). Across the analyzed bouts, the attack phase yielded no wins and a 0.0% win rate. This indicates a significant challenge in converting offensive actions into successful touches.",
+        "strengths": [],
+        "weaknesses": [
+          "Inability to secure offensive wins.",
+          "Zero successful attacks recorded."
+        ],
+        "tactical_focus": "The current data suggests a critical need to re-evaluate offensive strategies and execution. Focus should be placed on developing more effective finishing actions and improving the success rate of offensive attempts.",
+        "training_suggestions": [
+          "Drill specific finishing actions with a high success rate under pressure.",
+          "Practice offensive sequences that lead to clear scoring opportunities.",
+          "Analyze successful attacks from elite fencers to identify effective techniques."
+        ]
+      },
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "reason_breakdown": {
+        "win": [],
+        "loss": []
+      },
+      "tag_counts": {
+        "positive": [],
+        "negative": []
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "tag_totals": {
+        "positive": 0,
+        "negative": 0
+      }
+    },
+    "defense": {
+      "narrative": "Despite a 0% win rate in the single bout analyzed, the fencer demonstrated positive defensive qualities like variable tempo and good distance control. However, their defense was ultimately undermined by a lack of offensive initiative (\"no launch,\" \"low speed,\" \"excessive pausing\"), leading to a loss due to positional errors and collapsed distance. This suggests a need to integrate offensive actions more effectively into their defensive strategy.",
+      "analysis": {
+        "situation": "Defense produced a 0.0% win rate across 1 decided touches. Positive trait showing up most often: Variable Tempo (1 occurrences).",
+        "improvement": "Primary loss driver: Collapsed Distance (Positional Error) (1 touches). Key risk indicator: No Launch (1 occurrences)."
+      },
+      "summary": {
+        "performance_summary": "Defense win rate 0.0% across 1 decided touches (0 wins). In the analyzed defense phase, the win rate was 0.0% with one loss and zero wins. This indicates a significant challenge in converting defensive actions into successful outcomes.",
+        "strengths": [
+          "Variable tempo observed",
+          "Good defensive quality noted",
+          "Good attack distance maintained",
+          "Consistent spacing utilized"
+        ],
+        "weaknesses": [
+          "Collapsed distance (positional error) occurred",
+          "Missed counter opportunities",
+          "Poor distance maintenance",
+          "Low speed and poor acceleration"
+        ],
+        "tactical_focus": "The primary tactical issue identified is collapsing distance, leading to positional errors and missed counter-attack opportunities. Focus must be placed on actively creating and maintaining safe distance to enable more effective defensive actions and subsequent offensive transitions.",
+        "training_suggestions": [
+          "Drills focusing on controlled retreat and distance creation",
+          "Practice identifying and executing counter-attacks from a safe distance",
+          "Footwork drills to improve acceleration and maintain spacing under pressure"
+        ],
+        "narrative": "While there were positive indicators in defensive quality, spacing, and tempo, the critical failure point was positional error leading to collapsed distance. This directly impacted the ability to capitalize on defensive opportunities and resulted in a loss."
+      },
+      "key_metrics": {
+        "bout_count": 1,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 1
+      },
+      "reason_breakdown": {
+        "win": [],
+        "loss": [
+          {
+            "reason": "Collapsed Distance (Positional Error)",
+            "count": 1
+          }
+        ]
+      },
+      "tag_counts": {
+        "positive": [
+          {
+            "tag": "variable_tempo",
+            "label": "Variable Tempo",
+            "count": 1
+          },
+          {
+            "tag": "good_defensive_quality",
+            "label": "Good Defensive Quality",
+            "count": 1
+          },
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 1
+          },
+          {
+            "tag": "consistent_spacing",
+            "label": "Consistent Spacing",
+            "count": 1
+          },
+          {
+            "tag": "maintain_safe_distance",
+            "label": "Maintain Safe Distance",
+            "count": 1
+          }
+        ],
+        "negative": [
+          {
+            "tag": "no_launch",
+            "label": "No Launch",
+            "count": 1
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 1
+          },
+          {
+            "tag": "excessive_pausing",
+            "label": "Excessive Pausing",
+            "count": 1
+          },
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 1
+          },
+          {
+            "tag": "poor_distance_maintenance",
+            "label": "Poor Distance Maintenance",
+            "count": 1
+          },
+          {
+            "tag": "missed_counter_opportunities",
+            "label": "Missed Counter Opportunities",
+            "count": 1
+          }
+        ]
+      },
+      "tag_highlights": {
+        "positive": [
+          {
+            "tag": "variable_tempo",
+            "label": "Variable Tempo",
+            "count": 1
+          },
+          {
+            "tag": "good_defensive_quality",
+            "label": "Good Defensive Quality",
+            "count": 1
+          },
+          {
+            "tag": "good_attack_distance",
+            "label": "Good Attack Distance",
+            "count": 1
+          },
+          {
+            "tag": "consistent_spacing",
+            "label": "Consistent Spacing",
+            "count": 1
+          }
+        ],
+        "negative": [
+          {
+            "tag": "no_launch",
+            "label": "No Launch",
+            "count": 1
+          },
+          {
+            "tag": "low_speed",
+            "label": "Low Speed",
+            "count": 1
+          },
+          {
+            "tag": "excessive_pausing",
+            "label": "Excessive Pausing",
+            "count": 1
+          },
+          {
+            "tag": "poor_acceleration",
+            "label": "Poor Acceleration",
+            "count": 1
+          }
+        ]
+      },
+      "tag_totals": {
+        "positive": 5,
+        "negative": 6
+      }
+    },
+    "in_box": {
+      "narrative": "In_Box touches: 0.0 analysed, win rate 0.0%.",
+      "analysis": {
+        "situation": "In-Box data is limited so far; continue analysing matches to expose reliable winning patterns.",
+        "improvement": "Focus on gathering more in-box sequences to surface consistent improvement targets."
+      },
+      "summary": {
+        "performance_summary": "In-Box win rate 0.0% across 0 decided touches (0 wins). The In-Box phase was not observed across any bouts, indicating no engagements occurred within this specific distance. Consequently, win rate, wins, and losses are all zero, providing no data for performance analysis.",
+        "strengths": [],
+        "weaknesses": [],
+        "tactical_focus": "Given the complete absence of In-Box engagements, the primary tactical focus must be on initiating and engaging at this distance. Developing strategies to close the distance effectively and create opportunities for attacks within the box is paramount.",
+        "training_suggestions": [
+          "Drills focused on closing distance safely and efficiently.",
+          "Practice attacking from a stationary or moving close-range position.",
+          "Simulate scenarios where the opponent is attempting to deny close-range engagement."
+        ]
+      },
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "reason_breakdown": {
+        "win": [],
+        "loss": []
+      },
+      "tag_counts": {
+        "positive": [],
+        "negative": []
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "tag_totals": {
+        "positive": 0,
+        "negative": 0
+      }
+    }
+  },
+  "signature_patterns": {
+    "strengths": [],
+    "risks": [
+      {
+        "text": "Stop allowing opponent too close on retreat; create distance to enable counter-attacks.",
+        "count": 1
+      }
+    ]
+  },
+  "actionable_recommendations": {
+    "markdown": "Here is a short action plan for Andrea Sayson:\n\n*   **Improve Offensive Conversion:** The data indicates a 0.0% win rate in attack touches. Focus on drilling finishing actions and practicing offensive sequences that create clear scoring opportunities to increase success rates.\n\n*   **Enhance Defensive Footwork and Distance Management:** While defensive quality is noted, the primary loss driver is \"Collapsed Distance (Positional Error).\" Implement drills focusing on controlled retreats, maintaining safe distance, and improving acceleration to prevent positional errors and create counter-attack opportunities.\n\n*   **Develop Close-Range Engagement:** The \"In-Box\" phase shows no recorded engagements. Prioritize drills that focus on safely and efficiently closing distance to initiate attacks within the box, as this is a currently unexploited area."
+  }
+}

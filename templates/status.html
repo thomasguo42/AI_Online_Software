@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Status - Fencing Analysis Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #3742fa 0%, #2f3542 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .page-container {
+            padding: 2rem 0;
+        }
+        .page-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .page-title {
+            background: linear-gradient(135deg, #3742fa 0%, #2f3542 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .card-header-elegant {
+            background: linear-gradient(135deg, #3742fa 0%, #2f3542 100%);
+            color: white;
+            padding: 1.5rem;
+            border: none;
+        }
+        .card-body-elegant {
+            padding: 2rem;
+        }
+        .status-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(55, 66, 250, 0.2);
+            text-align: center;
+        }
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #3742fa;
+        }
+        .status-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2f3542;
+            margin-bottom: 0.5rem;
+        }
+        .status-message {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .progress-section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .progress-title {
+            color: #3742fa;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .progress-bar-custom {
+            height: 10px;
+            border-radius: 10px;
+            background: #e9ecef;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #3742fa 0%, #5a67d8 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .btn-elegant {
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+            color: white;
+        }
+        .status-updating .status-text::after {
+            content: ' (Updating...)';
+            color: #888;
+            font-size: 0.8em;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spinning {
+            animation: spin 2s linear infinite;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(55, 66, 250, 0.2);
+            border-radius: 25px;
+            font-weight: 500;
+        }
+        .step.active {
+            background: linear-gradient(135deg, #3742fa 0%, #2f3542 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-cog me-3"></i>Processing Status
+                </h1>
+                <p class="page-subtitle">Track your video analysis progress in real time</p>
+            </div>
+
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step">
+                    <i class="fas fa-upload"></i>Upload Complete
+                </div>
+                <i class="fas fa-arrow-right text-muted"></i>
+                <div class="step">
+                    <i class="fas fa-user-friends"></i>Select Fencers
+                </div>
+                <i class="fas fa-arrow-right text-muted"></i>
+                <div class="step active">
+                    <i class="fas fa-cog"></i>Processing
+                </div>
+                <i class="fas fa-arrow-right text-muted"></i>
+                <div class="step">
+                    <i class="fas fa-chart-line"></i>View Results
+                </div>
+            </div>
+
+            <!-- Status Card -->
+            <div class="main-card">
+                <div class="card-header-elegant">
+                    <h3 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Current Status
+                    </h3>
+                </div>
+                <div class="card-body-elegant">
+                    <div class="status-card">
+                        <i class="fas fa-cog status-icon spinning" id="status-icon"></i>
+                        <div class="status-text" id="status">{{ upload.status }}</div>
+                        <div class="status-message" id="message">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="main-card">
+                <div class="card-header-elegant">
+                    <h3 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>Analysis Progress
+                    </h3>
+                </div>
+                <div class="card-body-elegant">
+                    <div class="progress-section">
+                        <div class="progress-title">
+                            <i class="fas fa-play-circle"></i>Bout Analysis Progress
+                        </div>
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span id="progress-text">Bouts analyzed: {{ upload.bouts_analyzed or 0 }} / {{ upload.total_bouts or 'N/A' }}</span>
+                            <span id="progress-percentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="text-center">
+                <a href="{{ url_for('upload') }}" class="btn btn-elegant btn-back" id="return-link">
+                    <i class="fas fa-arrow-left"></i>Back to Uploads
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isNavigating = false;
+
+        function updateProgressBar(analyzed, total) {
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const progressPercentage = document.getElementById('progress-percentage');
+            
+            if (total && total !== 'N/A' && total > 0) {
+                const percentage = Math.round((analyzed / total) * 100);
+                progressFill.style.width = percentage + '%';
+                progressText.textContent = `Bouts analyzed: ${analyzed} / ${total}`;
+                progressPercentage.textContent = percentage + '%';
+            } else {
+                progressFill.style.width = '0%';
+                progressText.textContent = `Bouts analyzed: ${analyzed} / N/A`;
+                progressPercentage.textContent = '0%';
+            }
+        }
+
+        function updateStatusIcon(status) {
+            const statusIcon = document.getElementById('status-icon');
+            statusIcon.className = 'status-icon';
+            
+            switch(status) {
+                case 'processing':
+                    statusIcon.className += ' fas fa-cog spinning';
+                    break;
+                case 'completed':
+                    statusIcon.className += ' fas fa-check-circle';
+                    statusIcon.style.color = '#00b894';
+                    break;
+                case 'awaiting_user_input':
+                    statusIcon.className += ' fas fa-hand-pointer';
+                    statusIcon.style.color = '#fdcb6e';
+                    break;
+                case 'error':
+                    statusIcon.className += ' fas fa-exclamation-triangle';
+                    statusIcon.style.color = '#e84393';
+                    break;
+                default:
+                    statusIcon.className += ' fas fa-info-circle';
+                    statusIcon.style.color = '#3742fa';
+            }
+        }
+
+        function checkStatus() {
+            if (isNavigating) return;
+
+            const statusElement = document.getElementById('status');
+            statusElement.parentElement.classList.add('status-updating');
+
+            fetch('/check_status/{{ upload.id }}')
+                .then(response => response.json())
+                .then(data => {
+                    statusElement.parentElement.classList.remove('status-updating');
+                    statusElement.textContent = data.status;
+                    updateStatusIcon(data.status);
+                    
+                    // Update progress if available
+                    if (data.bouts_analyzed !== undefined && data.total_bouts !== undefined) {
+                        updateProgressBar(data.bouts_analyzed, data.total_bouts);
+                    }
+                    
+                    if (data.status === 'awaiting_user_input' && !isNavigating) {
+                        document.getElementById('message').textContent = 'Redirecting to select bout winners...';
+                        setTimeout(() => {
+                            if (!isNavigating) window.location.href = '/select_bout_winners/{{ upload.id }}';
+                        }, 2000);
+                    } else if (data.status === 'completed' && !isNavigating) {
+                        document.getElementById('message').textContent = 'Redirecting to the results page...';
+                        setTimeout(() => {
+                            if (!isNavigating) window.location.href = '/results/{{ upload.id }}';
+                        }, 2000);
+                    } else if (data.status === 'processing') {
+                        document.getElementById('message').textContent = 'Video analysis in progress. Please wait...';
+                    } else if (data.status === 'error') {
+                        document.getElementById('message').textContent = 'Processing error encountered. Please verify your upload.';
+                    } else {
+                        document.getElementById('message').textContent = 'Loading...';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking status:', error);
+                    statusElement.parentElement.classList.remove('status-updating');
+                    document.getElementById('message').textContent = 'Failed to check status. Please try again.';
+                });
+        }
+
+        window.onload = function() {
+            // Initialize progress bar
+            updateProgressBar({{ upload.bouts_analyzed or 0 }}, {{ upload.total_bouts or 0 }});
+            updateStatusIcon('{{ upload.status }}');
+            
+            checkStatus();
+            setInterval(checkStatus, 5000);
+
+            document.getElementById('return-link').addEventListener('click', () => {
+                isNavigating = true;
+            });
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ 'Processing Video Segments' if is_multi else 'Processing Video Analysis' }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e90ff 0%, #3742fa 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2f3542;
+        }
+        .wait-card {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 18px;
+            box-shadow: 0 18px 45px rgba(30, 144, 255, 0.22);
+            max-width: 520px;
+            width: 100%;
+            padding: 2.75rem 2.5rem;
+            text-align: center;
+        }
+        .wait-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e90ff 0%, #3742fa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.75rem;
+            box-shadow: 0 10px 25px rgba(30, 144, 255, 0.25);
+        }
+        .status-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1b1f3a;
+        }
+        .status-message {
+            font-size: 1rem;
+            color: #57606f;
+            margin-bottom: 1.5rem;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            background: rgba(30, 144, 255, 0.1);
+            color: #1e90ff;
+            font-weight: 600;
+        }
+        .cta-row {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn-outline-light {
+            color: #1e90ff;
+            border-color: rgba(30, 144, 255, 0.4);
+        }
+        .btn-outline-light:hover {
+            background: rgba(30, 144, 255, 0.1);
+            color: #1b1f3a;
+            border-color: rgba(30, 144, 255, 0.6);
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #1e90ff;
+        }
+        .helper-text {
+            font-size: 0.9rem;
+            color: #8395a7;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="wait-card">
+        <div class="wait-icon">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <h2 class="status-title">{{ 'Processing Your Videos' if is_multi else 'Processing Your Video' }}</h2>
+        <p class="status-message" id="primaryStatus">
+            {{ 'We are stitching the bouts and preparing analysis data.' if is_multi else 'We are analyzing the footage and preparing the performance data.' }}
+        </p>
+        <div class="status-pill" id="statusPill">
+            <i class="fas fa-sync-alt"></i>
+            <span id="statusLabel">Checking status…</span>
+        </div>
+        <p class="helper-text mt-3" id="helperText">
+            This page will redirect to the bout winner selection as soon as processing finishes.
+        </p>
+        <div class="cta-row">
+            <a href="{{ upload_url }}" class="btn btn-outline-light">
+                Back to Uploads
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-SlwEF7RFpQz73PvgnWD1q5Xqu1H4or+uLT5l8oZG1Q6tuo9czQPYfrXnkxpIxuVkXGgxWss+4BzqlTsjKvcs2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        (function() {
+            const statusUrl = '{{ status_url }}';
+            const winnersUrl = '{{ winners_url }}';
+            const resultsUrl = '{{ results_url }}';
+            const statusLabel = document.getElementById('statusLabel');
+            const primaryStatus = document.getElementById('primaryStatus');
+            const helperText = document.getElementById('helperText');
+
+            const statusMessages = {
+                'processing_detection': {{ "'Running enhanced detection across all videos…'" if is_multi else "'Running enhanced detection on the video…'" }},
+                'awaiting_multi_video_setup': 'Awaiting additional setup information…',
+                'processing': 'Analyzing bouts and generating metrics…',
+                'awaiting_user_input': 'Analysis ready. Redirecting to bout winners…',
+                'results_submitted': 'Results submitted. Redirecting to bout winners…',
+                'completed': 'Processing complete. Redirecting to results…',
+                'error': 'Processing encountered an error. Please review your upload.'
+            };
+
+            function humanizeStatus(state) {
+                if (!state) return 'Unknown status';
+                return statusMessages[state] || state;
+            }
+
+            function pollStatus() {
+                fetch(statusUrl, { cache: 'no-store' })
+                    .then(response => response.json())
+                    .then(data => {
+                        const state = data.status || 'unknown';
+                        statusLabel.textContent = humanizeStatus(state);
+
+                        if (state === 'awaiting_user_input' || state === 'results_submitted') {
+                            primaryStatus.textContent = 'Processing finished. Opening bout winner selection…';
+                            helperText.textContent = 'If you are not redirected automatically, use the link below.';
+                            setTimeout(() => { window.location.href = winnersUrl; }, 800);
+                            return;
+                        }
+
+                        if (state === 'completed') {
+                            primaryStatus.textContent = 'Analysis is done. Redirecting to final results…';
+                            helperText.textContent = 'You can also open the results directly if the redirect does not trigger.';
+                            setTimeout(() => { window.location.href = resultsUrl; }, 1200);
+                            return;
+                        }
+
+                        if (state === 'error') {
+                            primaryStatus.textContent = 'We could not complete the analysis.';
+                            helperText.textContent = 'Please return to the uploads page and retry the processing.';
+                            statusLabel.textContent = humanizeStatus(state);
+                            return;
+                        }
+
+                        setTimeout(pollStatus, 3500);
+                    })
+                    .catch(() => {
+                        statusLabel.textContent = 'Network hiccup. Retrying shortly…';
+                        setTimeout(pollStatus, 5000);
+                    });
+            }
+
+            pollStatus();
+        })();
+    </script>
+</body>
+</html>

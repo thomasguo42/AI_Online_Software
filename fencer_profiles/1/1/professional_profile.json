@@ -1,0 +1,227 @@
+{
+  "generated_at": "2025-10-03T17:40:51.737334",
+  "fencer": {
+    "id": 1,
+    "name": "T",
+    "user_id": 1,
+    "match_count": 3
+  },
+  "executive_summary": {
+    "synopsis": "T has competed in 3 tracked matches with a current win rate of 100.0%. Key strengths and development areas will appear once more AI summaries are available.",
+    "overall_score": 100,
+    "wins": 2,
+    "losses": 0,
+    "skips": 7
+  },
+  "performance_dashboard": {
+    "style_profile": [
+      {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      {
+        "label": "defense",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      {
+        "label": "in_box",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      }
+    ],
+    "key_strengths": {
+      "top_category": {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "positive_tags": [
+        {
+          "tag": "variable_tempo",
+          "count": 1
+        },
+        {
+          "tag": "fast_reaction_time",
+          "count": 1
+        },
+        {
+          "tag": "good_attack_distance",
+          "count": 1
+        }
+      ],
+      "volume_tags": [
+        {
+          "tag": "良好攻击距离",
+          "count": 5
+        },
+        {
+          "tag": "稳定节奏",
+          "count": 5
+        },
+        {
+          "tag": "手臂伸展",
+          "count": 5
+        }
+      ]
+    },
+    "key_weaknesses": {
+      "lowest_category": {
+        "label": "attack",
+        "count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "negative_tags": [
+        {
+          "tag": "excessive_tempo_changes",
+          "count": 1
+        }
+      ]
+    },
+    "tag_counts": {
+      "positive": [
+        {
+          "tag": "variable_tempo",
+          "count": 1
+        },
+        {
+          "tag": "fast_reaction_time",
+          "count": 1
+        },
+        {
+          "tag": "good_attack_distance",
+          "count": 1
+        }
+      ],
+      "negative": [
+        {
+          "tag": "excessive_tempo_changes",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "performance_over_time": {
+    "timeline": [
+      {
+        "match_id": 25,
+        "label": "Upload 25",
+        "match_datetime": null,
+        "win_rate": 100.0,
+        "wins": 2,
+        "losses": 0,
+        "skips": 1,
+        "category_win_rates": {}
+      },
+      {
+        "match_id": 147,
+        "label": "Upload 147",
+        "match_datetime": null,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0,
+        "skips": 1,
+        "category_win_rates": {
+          "in_box": 0.0
+        }
+      },
+      {
+        "match_id": 310,
+        "label": "2025-09-18 07:47",
+        "match_datetime": "2025-09-18T07:47:21",
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0,
+        "skips": 5,
+        "category_win_rates": {
+          "attack": 0.0,
+          "in_box": 0.0
+        }
+      }
+    ],
+    "narrative": "Recent matches show a win rate of 0.0% with continued opportunities to stabilise performance."
+  },
+  "tactical_analysis": {
+    "attack": {
+      "narrative": "Attack touches: 0 analysed, win rate 0.0%.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [],
+      "loss_reasons": []
+    },
+    "defense": {
+      "narrative": "Defense touches: 0 analysed, win rate 0.0%.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [],
+        "negative": []
+      },
+      "win_reasons": [],
+      "loss_reasons": []
+    },
+    "in_box": {
+      "narrative": "In_Box touches: 0 analysed, win rate 0.0%.",
+      "key_metrics": {
+        "bout_count": 0,
+        "win_rate": 0.0,
+        "wins": 0,
+        "losses": 0
+      },
+      "tag_highlights": {
+        "positive": [
+          {
+            "tag": "variable_tempo",
+            "count": 1
+          },
+          {
+            "tag": "fast_reaction_time",
+            "count": 1
+          },
+          {
+            "tag": "good_attack_distance",
+            "count": 1
+          }
+        ],
+        "negative": [
+          {
+            "tag": "excessive_tempo_changes",
+            "count": 1
+          }
+        ]
+      },
+      "win_reasons": [],
+      "loss_reasons": []
+    }
+  },
+  "signature_patterns": {
+    "strengths": [],
+    "risks": []
+  },
+  "actionable_recommendations": {
+    "markdown": "- **Stabilise Tactical Execution**: Focus on balanced drills to maintain win rate.\n- **Video Review**: Add more completed matches to unlock richer AI guidance."
+  }
+}

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Bout Winners - Fencing Analysis Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .page-container {
+            padding: 2rem 0;
+        }
+        .page-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .page-title {
+            background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        .bout-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .bout-header {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #2c3e50;
+            padding: 1.5rem;
+            border: none;
+        }
+        .bout-body {
+            padding: 2rem;
+        }
+        .video-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .video-note {
+            color: #6c757d;
+        }
+        .no-video-placeholder {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+        .trim-controls {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .trim-controls.disabled {
+            opacity: 0.6;
+        }
+        .trim-slider {
+            position: relative;
+            height: 40px;
+            margin: 1rem 0;
+        }
+        .trim-slider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 6px;
+        }
+        .trim-slider .slider-range-fill {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 6px;
+            background: linear-gradient(135deg, #6a82fb 0%, #8fd3f4 100%);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+        .trim-slider input[type=range] {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .trim-slider input[type=range]::-webkit-slider-thumb {
+            pointer-events: all;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #6a82fb;
+            box-shadow: 0 0 0 4px rgba(106, 130, 251, 0.25);
+            -webkit-appearance: none;
+        }
+        .trim-slider input[type=range]::-moz-range-thumb {
+            pointer-events: all;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #6a82fb;
+            box-shadow: 0 0 0 4px rgba(106, 130, 251, 0.25);
+        }
+        .trim-slider input[type=range]::-ms-thumb {
+            pointer-events: all;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #6a82fb;
+            box-shadow: 0 0 0 4px rgba(106, 130, 251, 0.25);
+        }
+        .trim-slider input[type=range]::-webkit-slider-runnable-track {
+            height: 6px;
+            background: transparent;
+        }
+        .trim-slider input[type=range]::-moz-range-track {
+            height: 6px;
+            background: transparent;
+        }
+        .trim-slider input[type=range]::-ms-track {
+            height: 6px;
+            background: transparent;
+            border-color: transparent;
+            color: transparent;
+        }
+        .trim-actions .btn {
+            border-radius: 10px;
+        }
+        .trim-confirm-status {
+            font-weight: 600;
+        }
+        .trim-duration-warning {
+            color: #dc3545;
+        }
+        .result-selector {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+        .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-select:focus {
+            border-color: #6a82fb;
+            box-shadow: 0 0 0 0.2rem rgba(106, 130, 251, 0.25);
+        }
+        .btn-elegant {
+            border-radius: 15px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #2c3e50;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(132, 250, 176, 0.4);
+            color: #2c3e50;
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+            color: white;
+        }
+        .bout-counter {
+            background: rgba(0,0,0,0.1);
+            color: #2c3e50;
+            padding: 0.25rem 0.75rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .alert-danger {
+            background: linear-gradient(135deg, #ff8a80 0%, #ff5252 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-trophy me-3"></i>Select Bout Winners
+                </h1>
+                <p class="page-subtitle">
+                    Video: <strong>{{ upload.video_path.split('/')[-1] }}</strong>
+                </p>
+                <p class="text-muted mb-0 small">
+                    Drag the start and end handles below each video to refine the bout window. Data slicing uses a 1-second buffer inside your selection.
+                </p>
+            </div>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>{{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% if error %}
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+                </div>
+            {% endif %}
+
+            <!-- Bout Selection Form -->
+            <form method="POST" action="{{ url_for('select_bout_winners', upload_id=upload.id) }}">
+                {% for bout in bouts %}
+                    <div class="bout-card">
+                        <div class="bout-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="mb-0">
+                                    <i class="fas fa-swords me-2"></i>Bout {{ bout.idx }}
+                                </h3>
+                                <div class="bout-counter">
+                                    {{ loop.index }} / {{ bouts|length }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bout-body">
+                            <!-- Video Player -->
+                            {% if bout.video_url %}
+                                <div class="video-container">
+                                    <video id="bout-video-{{ bout.idx }}" controls preload="metadata" playsinline>
+                                        <source src="{{ bout.video_url }}" type="video/mp4">
+                                        <p>Your browser does not support the video tag.</p>
+                                    </video>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <div class="video-note small">Source{{ bout.video_info }}</div>
+                                        {% if bout.trimmed_clip %}
+                                            <a class="video-note small" href="{{ url_for('result_file', filename=bout.trimmed_clip) }}" target="_blank">View current clip</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if bout.has_video %}
+                                <div class="trim-controls"
+                                     data-bout="{{ bout.idx }}"
+                                     data-duration="{{ bout.duration }}"
+                                     data-start="{{ bout.user_start }}"
+                                     data-end="{{ bout.user_end }}"
+                                     data-analysis-start="{{ bout.analysis_start }}"
+                                     data-analysis-end="{{ bout.analysis_end }}">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                        <div><span class="fw-semibold text-primary">Start:</span> <span class="trim-start-label">{{ '%.2f'|format(bout.user_start) }}</span>s</div>
+                                        <div><span class="fw-semibold text-danger">End:</span> <span class="trim-end-label">{{ '%.2f'|format(bout.user_end) }}</span>s</div>
+                                        <div class="text-muted small ms-auto">
+                                            Data range after confirmation: <span class="analysis-start-label">{{ '%.2f'|format(bout.analysis_start) }}</span>s → <span class="analysis-end-label">{{ '%.2f'|format(bout.analysis_end) }}</span>s
+                                        </div>
+                                    </div>
+                                    <div class="trim-slider mt-3">
+                                        <span class="slider-range-fill"></span>
+                                        <input type="range" class="trim-range trim-range-start" min="0" max="{{ bout.duration if bout.duration else bout.user_end|float }}" step="0.05" value="{{ bout.user_start }}">
+                                        <input type="range" class="trim-range trim-range-end" min="0" max="{{ bout.duration if bout.duration else bout.user_end|float }}" step="0.05" value="{{ bout.user_end }}">
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2 align-items-center trim-actions">
+                                        <button type="button" class="btn btn-sm btn-outline-success trim-confirm" data-bout="{{ bout.idx }}">
+                                            <i class="fas fa-check me-1"></i>Confirm Change
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary trim-preview" data-bout="{{ bout.idx }}">
+                                            <i class="fas fa-play me-1"></i>Preview Selection
+                                        </button>
+                                        <span class="trim-confirm-status small text-success" hidden>
+                                            Ready to apply
+                                        </span>
+                                        <div class="trim-duration-warning small ms-auto" hidden>
+                                            Adjusted selection is too short for analysis buffer.
+                                        </div>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">Drag the handles, then confirm to apply the new clip.</small>
+                                    <input type="hidden" name="start_time_{{ bout.idx }}" value="{{ bout.user_start }}">
+                                    <input type="hidden" name="end_time_{{ bout.idx }}" value="{{ bout.user_end }}">
+                                    <input type="hidden" name="original_start_{{ bout.idx }}" value="{{ bout.user_start }}">
+                                    <input type="hidden" name="original_end_{{ bout.idx }}" value="{{ bout.user_end }}">
+                                    <input type="hidden" name="confirm_{{ bout.idx }}" value="0">
+                                </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="no-video-placeholder">
+                                    <i class="fas fa-video-slash fa-3x mb-3"></i>
+                                    <h5 class="text-muted">Bout {{ bout.idx }} has no available video</h5>
+                                    <p class="text-muted mb-0">Please make selection based on other information.</p>
+                                </div>
+                            {% endif %}
+
+                            <!-- Result Selector -->
+                            <div class="result-selector">
+                                <label class="form-label fw-bold mb-3">
+                                    <i class="fas fa-hand-pointer me-2 text-warning"></i>Select Bout Result:
+                                </label>
+                                <select name="result_{{ bout.idx }}" class="form-select" required>
+                                    <option value="" {% if not bout.result %}selected{% endif %}>
+                                        <i class="fas fa-question"></i> Please select result...
+                                    </option>
+                                    <option value="skip" {% if bout.result == 'skip' %}selected{% endif %}>
+                                        🙅 Skip this bout
+                                    </option>
+                                    <option value="left" {% if bout.result == 'left' %}selected{% endif %}>
+                                        🟢 Left fencer wins
+                                    </option>
+                                    <option value="right" {% if bout.result == 'right' %}selected{% endif %}>
+                                        🔴 Right fencer wins
+                                    </option>
+                                </select>
+                                <div class="form-text mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>Please watch the video carefully before selecting the correct result.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!-- Submit Button -->
+                <div class="text-center mb-4">
+                    <button type="submit" class="btn btn-elegant btn-submit">
+                        <i class="fas fa-check-double me-2"></i>Submit All Results
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Back Button -->
+            <div class="text-center">
+                <a href="{{ url_for('upload') }}" class="btn btn-elegant btn-back">
+                    <i class="fas fa-arrow-left"></i>Back to Upload Page
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            const previewHandlers = new Map();
+            const formatTime = (seconds) => {
+                if (!isFinite(seconds)) {
+                    return '0:00.00';
+                }
+                const clamped = Math.max(0, seconds);
+                const minutes = Math.floor(clamped / 60);
+                const remainder = clamped - minutes * 60;
+                const wholeSeconds = Math.floor(remainder).toString().padStart(2, '0');
+                const decimals = Math.round((remainder - Math.floor(remainder)) * 100)
+                    .toString()
+                    .padStart(2, '0');
+                return `${minutes}:${wholeSeconds}.${decimals}`;
+            };
+
+            const seekVideo = (video, seconds) => {
+                if (!video) {
+                    return;
+                }
+                const target = Math.max(0, seconds);
+                if (video.readyState >= 1) {
+                    video.pause();
+                    video.currentTime = target;
+                } else {
+                    const handler = () => {
+                        video.pause();
+                        video.currentTime = target;
+                        video.removeEventListener('loadedmetadata', handler);
+                    };
+                    video.addEventListener('loadedmetadata', handler, { once: true });
+                }
+            };
+
+            const schedulePreview = (video, startTime, endTime) => {
+                if (!video) {
+                    return;
+                }
+                const begin = Math.max(0, startTime);
+                const finish = Math.max(begin + 0.033, endTime);
+
+                if (previewHandlers.has(video)) {
+                    video.removeEventListener('timeupdate', previewHandlers.get(video));
+                    previewHandlers.delete(video);
+                }
+
+                const onFinish = (handler, wasMuted) => {
+                    video.pause();
+                    video.removeEventListener('timeupdate', handler);
+                    previewHandlers.delete(video);
+                    video.muted = wasMuted;
+                };
+
+                const wasMuted = video.muted;
+                video.muted = true;
+
+                const handler = () => {
+                    if (video.currentTime >= finish - 0.016) {
+                        onFinish(handler, wasMuted);
+                    }
+                };
+
+                previewHandlers.set(video, handler);
+                video.addEventListener('timeupdate', handler);
+
+                const startPlayback = () => {
+                    const playPromise = video.play();
+                    if (playPromise && typeof playPromise.catch === 'function') {
+                        playPromise.catch(() => {
+                            video.play().catch(() => {});
+                        });
+                    }
+                };
+
+                const seekAndPlay = () => {
+                    const onSeeked = () => {
+                        video.removeEventListener('seeked', onSeeked);
+                        startPlayback();
+                    };
+                    video.addEventListener('seeked', onSeeked, { once: true });
+                    video.pause();
+                    video.currentTime = begin;
+                    if (video.readyState >= 2 && Math.abs(video.currentTime - begin) < 0.01) {
+                        video.removeEventListener('seeked', onSeeked);
+                        startPlayback();
+                    }
+                };
+
+                if (video.readyState >= 1) {
+                    seekAndPlay();
+                } else {
+                    const onLoaded = () => {
+                        video.removeEventListener('loadedmetadata', onLoaded);
+                        seekAndPlay();
+                    };
+                    video.addEventListener('loadedmetadata', onLoaded, { once: true });
+                    if (video.readyState === 0) {
+                        video.load();
+                    }
+                }
+            };
+            document.querySelectorAll('.trim-controls').forEach((control) => {
+                const boutId = control.dataset.bout;
+                const video = document.getElementById(`bout-video-${boutId}`);
+                const startRange = control.querySelector('.trim-range-start');
+                const endRange = control.querySelector('.trim-range-end');
+                if (!startRange || !endRange) {
+                    return;
+                }
+
+                const fill = control.querySelector('.slider-range-fill');
+                const startLabel = control.querySelector('.trim-start-label');
+                const endLabel = control.querySelector('.trim-end-label');
+                const analysisStartLabel = control.querySelector('.analysis-start-label');
+                const analysisEndLabel = control.querySelector('.analysis-end-label');
+                const warning = control.querySelector('.trim-duration-warning');
+                const hiddenStart = control.querySelector(`input[name="start_time_${boutId}"]`);
+                const hiddenEnd = control.querySelector(`input[name="end_time_${boutId}"]`);
+                const hiddenConfirm = control.querySelector(`input[name="confirm_${boutId}"]`);
+                const confirmButton = control.querySelector('.trim-confirm');
+                const previewButton = control.querySelector('.trim-preview');
+                const confirmStatus = control.querySelector('.trim-confirm-status');
+
+                let sliderMax = parseFloat(control.dataset.duration || endRange.value || '0');
+                if (!isFinite(sliderMax) || sliderMax <= 0) {
+                    sliderMax = Math.max(parseFloat(endRange.value) || 0, parseFloat(startRange.value) || 0);
+                }
+
+                const clamp = (value) => {
+                    if (sliderMax > 0) {
+                        return Math.min(Math.max(value, 0), sliderMax);
+                    }
+                    return Math.max(value, 0);
+                };
+
+                const updateFill = () => {
+                    if (!fill) {
+                        return;
+                    }
+                    const startVal = parseFloat(startRange.value) || 0;
+                    const endVal = parseFloat(endRange.value) || 0;
+                    const max = sliderMax > 0 ? sliderMax : Math.max(endVal, startVal);
+                    const startPercent = max ? (startVal / max) * 100 : 0;
+                    const endPercent = max ? (endVal / max) * 100 : 100;
+                    fill.style.left = `${Math.max(0, Math.min(startPercent, 100))}%`;
+                    fill.style.width = `${Math.max(0, Math.min(100, endPercent) - Math.max(0, Math.min(startPercent, 100)))}%`;
+                };
+
+                const resetConfirmation = () => {
+                    if (hiddenConfirm) {
+                        hiddenConfirm.value = '0';
+                    }
+                    if (confirmButton) {
+                        confirmButton.classList.remove('btn-success');
+                        confirmButton.classList.add('btn-outline-success');
+                    }
+                    if (confirmStatus) {
+                        confirmStatus.hidden = true;
+                    }
+                };
+
+                const updateLabels = () => {
+                    let startVal = clamp(parseFloat(startRange.value) || 0);
+                    let endVal = clamp(parseFloat(endRange.value) || 0);
+
+                    if (startVal > endVal) {
+                        startVal = endVal;
+                        startRange.value = startVal;
+                    }
+                    if ((parseFloat(endRange.value) || 0) < startVal) {
+                        endVal = startVal;
+                        endRange.value = endVal;
+                    }
+
+                    if (hiddenStart) {
+                        hiddenStart.value = startVal.toFixed(3);
+                    }
+                    if (hiddenEnd) {
+                        hiddenEnd.value = endVal.toFixed(3);
+                    }
+                    if (startLabel) {
+                        startLabel.textContent = formatTime(startVal);
+                    }
+                    if (endLabel) {
+                        endLabel.textContent = formatTime(endVal);
+                    }
+
+                    const analysisStart = clamp(startVal + 1.0);
+                    const analysisEnd = clamp(Math.max(endVal - 1.0, analysisStart));
+                    if (analysisStartLabel) {
+                        analysisStartLabel.textContent = formatTime(analysisStart);
+                    }
+                    if (analysisEndLabel) {
+                        analysisEndLabel.textContent = formatTime(analysisEnd);
+                    }
+                    if (warning) {
+                        warning.hidden = (analysisEnd - analysisStart) >= 1e-2;
+                    }
+
+                    updateFill();
+                };
+
+                const handleStartInput = () => {
+                    const value = clamp(parseFloat(startRange.value) || 0);
+                    startRange.value = value;
+                    if ((parseFloat(endRange.value) || 0) < value) {
+                        endRange.value = value;
+                    }
+                    updateLabels();
+                    resetConfirmation();
+                    seekVideo(video, value);
+                };
+
+                const handleEndInput = () => {
+                    const value = clamp(parseFloat(endRange.value) || 0);
+                    endRange.value = value;
+                    if (value < (parseFloat(startRange.value) || 0)) {
+                        startRange.value = value;
+                    }
+                    updateLabels();
+                    resetConfirmation();
+                    seekVideo(video, value);
+                };
+
+                startRange.addEventListener('input', handleStartInput);
+                endRange.addEventListener('input', handleEndInput);
+
+                if (confirmButton) {
+                    confirmButton.addEventListener('click', () => {
+                        if (hiddenConfirm) {
+                            hiddenConfirm.value = '1';
+                        }
+                        confirmButton.classList.remove('btn-outline-success');
+                        confirmButton.classList.add('btn-success');
+                        if (confirmStatus) {
+                            confirmStatus.hidden = false;
+                            confirmStatus.textContent = 'Ready to apply';
+                        }
+                    });
+                }
+
+                if (previewButton) {
+                    previewButton.addEventListener('click', () => {
+                        if (!video) {
+                            return;
+                        }
+                        const startVal = clamp(parseFloat(startRange.value) || 0);
+                        const endVal = clamp(parseFloat(endRange.value) || startVal);
+                        const previewEnd = Math.max(endVal, startVal + 0.033);
+
+                        if (video.readyState >= 1) {
+                            schedulePreview(video, startVal, previewEnd);
+                        } else {
+                            video.addEventListener('loadedmetadata', () => {
+                                schedulePreview(video, startVal, previewEnd);
+                            }, { once: true });
+                        }
+                    });
+                }
+
+                const initialStart = clamp(parseFloat(control.dataset.start || startRange.value || '0'));
+                const initialEnd = clamp(parseFloat(control.dataset.end || endRange.value || '0'));
+                startRange.value = initialStart;
+                endRange.value = initialEnd;
+                if (hiddenStart) {
+                    hiddenStart.value = initialStart.toFixed(3);
+                }
+                if (hiddenEnd) {
+                    hiddenEnd.value = initialEnd.toFixed(3);
+                }
+
+                if (video) {
+                    if (video.readyState >= 1) {
+                        if (!isNaN(video.duration) && video.duration > 0) {
+                            sliderMax = video.duration;
+                            startRange.max = endRange.max = sliderMax;
+                        }
+                        seekVideo(video, initialStart);
+                    } else {
+                        video.addEventListener('loadedmetadata', () => {
+                            if (!isNaN(video.duration) && video.duration > 0) {
+                                sliderMax = video.duration;
+                                startRange.max = endRange.max = sliderMax;
+                            }
+                            seekVideo(video, initialStart);
+                        }, { once: true });
+                    }
+                }
+
+                updateLabels();
+                resetConfirmation();
+            });
+        })();
+    </script>
+</body>
+</html>
