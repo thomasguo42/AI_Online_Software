@@ -351,7 +351,21 @@ def compress_video(input_path, output_dir, resolution="1280:720", bitrate="2000k
     except Exception as e:
         raise RuntimeError(f"Error during compression: {str(e)}")
 
-def main(video_path, output_path, reid_model_path, csv_output_dir, selected_indexes, fps=30):
+def main(
+    video_path,
+    output_path,
+    reid_model_path,
+    csv_output_dir,
+    selected_indexes,
+    fps=30,
+    yolo_model_path="yolov8l.pt",
+    pose_model_path="yolov8l-pose.pt",
+    sam_checkpoint=None,
+    sam_model_type="vit_b",
+    xmem_checkpoint=None,
+    e2fgvi_checkpoint=None,
+    yolo_conf=0.7,
+):
     torch.cuda.empty_cache()
     os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
@@ -383,15 +397,18 @@ def main(video_path, output_path, reid_model_path, csv_output_dir, selected_inde
     args = parse_augment()
     sys.argv = original_argv
     args.device = "cuda" if torch.cuda.is_available() else "cpu"
-    args.sam_model_type = "vit_b"
+    args.sam_model_type = sam_model_type
     args.mask_save = False
     similarity_threshold = 0.8
-    yolo_model = YOLO("yolov8l.pt")
-    pose_model = YOLO("yolov8l-pose.pt")
+    yolo_model = YOLO(yolo_model_path)
+    pose_model = YOLO(pose_model_path)
     reid_model = ReIDModel(reid_model_path)
-    sam_checkpoint = os.path.join(os.getcwd(), "your_scripts", "checkpoints", "sam_vit_b_01ec64.pth")
-    xmem_checkpoint = os.path.join(os.getcwd(), "your_scripts", "checkpoints", "XMem-s012.pth")
-    e2fgvi_checkpoint = os.path.join(os.getcwd(), "your_scripts", "checkpoints", "E2FGVI-HQ-CVPR22.pth")
+    if sam_checkpoint is None:
+        sam_checkpoint = os.path.join(os.getcwd(), "your_scripts", "checkpoints", "sam_vit_b_01ec64.pth")
+    if xmem_checkpoint is None:
+        xmem_checkpoint = os.path.join(os.getcwd(), "your_scripts", "checkpoints", "XMem-s012.pth")
+    if e2fgvi_checkpoint is None:
+        e2fgvi_checkpoint = os.path.join(os.getcwd(), "your_scripts", "checkpoints", "E2FGVI-HQ-CVPR22.pth")
     tracker = TrackingAnything(sam_checkpoint, xmem_checkpoint, e2fgvi_checkpoint, args)
     stabilizer = ImprovedCameraStabilizer(use_strip_detection=True)
 
@@ -406,7 +423,7 @@ def main(video_path, output_path, reid_model_path, csv_output_dir, selected_inde
     tracks_per_frame = []
 
     # First frame processing
-    results = yolo_model(first_frame_rgb, classes=[0], conf=0.7)
+    results = yolo_model(first_frame_rgb, classes=[0], conf=yolo_conf)
     detections = []
     for det in results[0].boxes:
         box = det.xyxy[0].cpu().numpy()
