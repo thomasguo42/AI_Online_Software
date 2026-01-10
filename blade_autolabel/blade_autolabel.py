@@ -28,8 +28,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--video", required=True, help="Path to input video")
     parser.add_argument("--output-dir", required=True, help="Output directory")
-    parser.add_argument("--sam-checkpoint", default=os.path.join(YOUR_SCRIPTS_DIR, "checkpoints", "sam_vit_h_4b8939.pth"))
-    parser.add_argument("--xmem-checkpoint", default=os.path.join(YOUR_SCRIPTS_DIR, "checkpoints", "XMem-s012.pth"))
+    parser.add_argument("--sam-checkpoint", default=os.path.join(PROJECT_DIR, "your_scripts", "checkpoints", "sam_vit_h_4b8939.pth"))
+    parser.add_argument("--xmem-checkpoint", default=os.path.join(PROJECT_DIR, "your_scripts", "checkpoints", "XMem-s012.pth"))
     parser.add_argument("--sam-model-type", default="vit_h")
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--init-frame", type=int, default=0, help="Frame index for SAM init")
@@ -37,6 +37,7 @@ def parse_args():
     parser.add_argument("--left-tip", default=None, help="Left blade tip click as 'x,y'")
     parser.add_argument("--right-tip", default=None, help="Right blade tip click as 'x,y'")
     parser.add_argument("--output-video", default=None, help="Optional overlay video output (mp4)")
+    parser.add_argument("--dump-init-frame", action="store_true", help="Save init frame PNG to output-dir and exit")
     return parser.parse_args()
 
 
@@ -58,6 +59,8 @@ def _load_frame(cap, target_idx):
 
 
 def _pick_points(frame_rgb, num_points):
+    if not os.environ.get("DISPLAY"):
+        raise RuntimeError("No DISPLAY available for interactive point picking.")
     points = []
     window_name = "Select Blade Tips (Left then Right)"
 
@@ -152,8 +155,20 @@ def main():
     tracker = BaseTracker(args.xmem_checkpoint, device)
 
     init_frame_rgb = _load_frame(cap, args.init_frame)
+    if args.dump_init_frame:
+        os.makedirs(args.output_dir, exist_ok=True)
+        init_path = os.path.join(args.output_dir, "init_frame.png")
+        cv2.imwrite(init_path, cv2.cvtColor(init_frame_rgb, cv2.COLOR_RGB2BGR))
+        raise SystemExit(f"Init frame saved to {init_path}. Provide --left-tip and --right-tip.")
+
     if left_tip is None or right_tip is None:
-        left_tip, right_tip = _pick_points(init_frame_rgb, 2)
+        try:
+            left_tip, right_tip = _pick_points(init_frame_rgb, 2)
+        except RuntimeError:
+            os.makedirs(args.output_dir, exist_ok=True)
+            init_path = os.path.join(args.output_dir, "init_frame.png")
+            cv2.imwrite(init_path, cv2.cvtColor(init_frame_rgb, cv2.COLOR_RGB2BGR))
+            raise SystemExit(f"No GUI available. Init frame saved to {init_path}. Provide --left-tip and --right-tip.")
     blade_points = {1: left_tip, 2: right_tip}
     template_mask = _build_template_mask(
         init_frame_rgb, sam_controler, blade_points, args.mask_dilate
