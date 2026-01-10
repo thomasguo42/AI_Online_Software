@@ -8,7 +8,7 @@ import json
 import requests
 
 # Set the API key
-os.environ['GEMINI_API_KEY'] = 'AIzaSyDy_RRq8hd8rTYILt_mYtMH8GtM41GFp6I'
+os.environ['GEMINI_API_KEY'] = 'AIzaSyCAKZxJCnt7BKfsBH1ImvunKuaui-2L_9U'
 
 def test_gemini_api():
     """Test Gemini API with a simple fencing analysis request"""

@@ -1,0 +1,216 @@
+====================================================================================================
+                              FENCING MATCH ANALYSIS REPORT
+====================================================================================================
+
+Generated from AI-powered video keypoint tracking analysis
+Analysis Date: December 29, 2025
+System: Advanced Biomechanical Fencing Analysis
+Methodology: Multi-factor weighted scoring based on attack timing, extension, and movement
+
+
+====================================================================================================
+                                        MATCH 1: VIDEO 3809
+====================================================================================================
+
+MATCH DETAILS:
+Duration: 2.10 seconds (63 frames at 30 fps)
+Analysis Timestamp: Full action sequence from engagement to completion
+
+OFFICIAL DECISION:
+----------------------------------------------------------------------------------------------------
+WINNER: RIGHT FENCER
+Confidence Level: 60.0%
+Final Score: Left Fencer 4 points - Right Fencer 6 points
+
+DETAILED TACTICAL ANALYSIS:
+----------------------------------------------------------------------------------------------------
+
+1. Attack Priority (+4 points for right fencer):
+   The right fencer initiated their attack first at 0.433s, establishing attack priority 133 milliseconds before the left fencer (who attacked at 0.567s). In fencing, the fencer who attacks first has right-of-way and priority.
+
+2. Tactical Aggression (+2 points for right fencer):
+   The left fencer showed significantly more hesitation with 31.7% pause time (0.67s) compared to the right fencer's 14.3% pause time (0.30s). This 17.5% difference indicates the right fencer maintained more consistent offensive pressure throughout the action.
+
+3. Extension at Contact (+3 points for left fencer):
+   At the critical moment of closest approach (1.83s), the left fencer had superior arm extension (72.7 pixels) compared to the right fencer (57.8 pixels), a difference of 15.0 pixels. This indicates the left fencer's weapon was more fully extended during the scoring opportunity.
+
+4. Athletic Execution (+1 point for left fencer):
+   The left fencer displayed superior explosive speed with a maximum velocity of 497.4 pixels/second, significantly higher than the right fencer's 389.6 pixels/second, indicating more explosive athletic execution.
+
+
+COMPLETE PERFORMANCE METRICS:
+----------------------------------------------------------------------------------------------------
+
+LEFT FENCER ANALYSIS:
+  Movement Characteristics:
+    • Average movement speed throughout the action: 149.35 pixels/second
+    • Peak explosive speed achieved: 497.43 pixels/second
+    • Total pause/hesitation time: 0.67 seconds (31.7% of total action)
+    • Net forward advancement: 223.4 pixels
+
+  Attack Execution:
+    • Attack initiation timestamp: 0.567 seconds into the action
+    • Maximum arm extension achieved: 73.69 pixels (at 1.80s)
+    • Average arm extension: 56.50 pixels
+    • Arm extension at critical contact moment: 72.75 pixels
+    • Forward velocity at contact: 1.49 pixels/second
+    • Overall speed at contact: 140.40 pixels/second
+
+RIGHT FENCER ANALYSIS:
+  Movement Characteristics:
+    • Average movement speed throughout the action: 199.28 pixels/second
+    • Peak explosive speed achieved: 389.58 pixels/second
+    • Total pause/hesitation time: 0.30 seconds (14.3% of total action)
+    • Net forward advancement: -319.4 pixels
+
+  Attack Execution:
+    • Attack initiation timestamp: 0.433 seconds into the action
+    • Maximum arm extension achieved: 76.09 pixels (at 1.43s)
+    • Average arm extension: 59.19 pixels
+    • Arm extension at critical contact moment: 57.78 pixels
+    • Forward velocity at contact: 57.03 pixels/second
+    • Overall speed at contact: 149.64 pixels/second
+
+ENGAGEMENT DYNAMICS:
+  • Point of closest approach: 2.02 pixels separation
+  • Timing of closest approach: 1.83 seconds (frame 55)
+  • Final separation at action completion: 46.82 pixels
+
+REFEREE INTERPRETATION AND JUSTIFICATION:
+----------------------------------------------------------------------------------------------------
+The right fencer is awarded the point based on superior tactical execution. The analysis clearly demonstrates that the right fencer established attack priority through earlier initiation timing, maintained better offensive pressure with significantly less hesitation, and achieved superior arm extension at the critical moment of engagement. The 133 millisecond advantage in attack initiation gave the right fencer unambiguous right-of-way. These factors combine to create a decisive tactical advantage that warrants awarding the point to the right fencer with 60.0% confidence.
+
+
+
+====================================================================================================
+                                        MATCH 2: VIDEO 3810
+====================================================================================================
+
+MATCH DETAILS:
+Duration: 1.70 seconds (51 frames at 30 fps)
+Analysis Timestamp: Full action sequence from engagement to completion
+
+OFFICIAL DECISION:
+----------------------------------------------------------------------------------------------------
+WINNER: LEFT FENCER
+Confidence Level: 71.4%
+Final Score: Left Fencer 5 points - Right Fencer 2 points
+
+DETAILED TACTICAL ANALYSIS:
+----------------------------------------------------------------------------------------------------
+
+1. Attack Priority (+4 points for left fencer):
+   The left fencer initiated their attack first at 0.567s, establishing attack priority 167 milliseconds before the right fencer (who attacked at 0.733s). In fencing, the fencer who attacks first has right-of-way and priority.
+
+2. Tactical Aggression (+2 points for right fencer):
+   The left fencer showed significantly more hesitation with 33.3% pause time (0.57s) compared to the right fencer's 21.6% pause time (0.37s). This 11.8% difference indicates the right fencer maintained more consistent offensive pressure throughout the action.
+
+3. Athletic Execution (+1 point for left fencer):
+   The left fencer displayed superior explosive speed with a maximum velocity of 466.2 pixels/second, significantly higher than the right fencer's 374.3 pixels/second, indicating more explosive athletic execution.
+
+
+COMPLETE PERFORMANCE METRICS:
+----------------------------------------------------------------------------------------------------
+
+LEFT FENCER ANALYSIS:
+  Movement Characteristics:
+    • Average movement speed throughout the action: 179.97 pixels/second
+    • Peak explosive speed achieved: 466.16 pixels/second
+    • Total pause/hesitation time: 0.57 seconds (33.3% of total action)
+    • Net forward advancement: 281.4 pixels
+
+  Attack Execution:
+    • Attack initiation timestamp: 0.567 seconds into the action
+    • Maximum arm extension achieved: 76.99 pixels (at 1.00s)
+    • Average arm extension: 59.89 pixels
+    • Arm extension at critical contact moment: 56.74 pixels
+    • Forward velocity at contact: 73.09 pixels/second
+    • Overall speed at contact: 90.34 pixels/second
+
+RIGHT FENCER ANALYSIS:
+  Movement Characteristics:
+    • Average movement speed throughout the action: 151.12 pixels/second
+    • Peak explosive speed achieved: 374.33 pixels/second
+    • Total pause/hesitation time: 0.37 seconds (21.6% of total action)
+    • Net forward advancement: -118.8 pixels
+
+  Attack Execution:
+    • Attack initiation timestamp: 0.733 seconds into the action
+    • Maximum arm extension achieved: 72.79 pixels (at 1.00s)
+    • Average arm extension: 55.38 pixels
+    • Arm extension at critical contact moment: 65.89 pixels
+    • Forward velocity at contact: 50.00 pixels/second
+    • Overall speed at contact: 112.64 pixels/second
+
+ENGAGEMENT DYNAMICS:
+  • Point of closest approach: 125.53 pixels separation
+  • Timing of closest approach: 1.30 seconds (frame 39)
+  • Final separation at action completion: 177.61 pixels
+
+REFEREE INTERPRETATION AND JUSTIFICATION:
+----------------------------------------------------------------------------------------------------
+The left fencer is awarded the point. The analysis shows superior tactical execution with better arm extension, offensive pressure, and movement dynamics. The decision is made with 71.4% confidence.
+
+
+====================================================================================================
+                                        OVERALL MATCH SUMMARY
+====================================================================================================
+
+FINAL RESULTS:
+----------------------------------------------------------------------------------------------------
+Match 1 (Video 3809): RIGHT FENCER wins the point (Confidence: 60.0%)
+Match 2 (Video 3810): LEFT FENCER wins the point (Confidence: 71.4%)
+
+ANALYSIS METHODOLOGY:
+----------------------------------------------------------------------------------------------------
+This comprehensive analysis employs advanced computer vision and biomechanical tracking
+to objectively assess fencing actions. The system evaluates multiple critical factors:
+
+1. ATTACK PRIORITY (Highest Weight - 4 points):
+   The fencer who initiates their attack first establishes right-of-way according to
+   fencing rules. Attack initiation is determined by the moment when arm extension
+   begins to increase significantly above baseline, indicating the start of an
+   offensive action. Timing precision down to individual frames (33ms intervals).
+
+2. TACTICAL AGGRESSION (2 points):
+   Measured by pause time analysis. Fencers who maintain continuous forward pressure
+   and minimize hesitation demonstrate superior tactical control and offensive intent.
+   Pause time is calculated as periods where movement speed drops below 50 pixels/second.
+
+3. ARM EXTENSION AT CONTACT (3 points):
+   At the moment of closest approach between fencers, the competitor with greater
+   arm extension has their weapon positioned to score. This is measured as the
+   shoulder-to-wrist distance at the critical frame.
+
+4. MAXIMUM ARM EXTENSION (1 point):
+   The ability to achieve full arm extension during a lunge indicates superior
+   reach, technique, and offensive capability.
+
+5. EXPLOSIVE SPEED (1 point):
+   Peak movement velocity demonstrates athletic ability and the capacity for
+   surprise attacks. Measured in pixels per second of total movement.
+
+TECHNICAL SPECIFICATIONS:
+----------------------------------------------------------------------------------------------------
+• Tracking System: YOLOv8x Pose Detection with 17 body keypoints
+• Segmentation: SAM (Segment Anything Model) ViT-H architecture
+• Frame Rate: 30 frames per second (33.3ms temporal resolution)
+• Spatial Resolution: Sub-pixel accuracy with Savitzky-Golay smoothing
+• Coordinate System: Normalized and scaled to pixel measurements
+• Motion Analysis: Gradient-based velocity and acceleration calculations
+
+IMPORTANT DISCLAIMERS:
+----------------------------------------------------------------------------------------------------
+• This analysis is based purely on biomechanical movement data extracted from video.
+• The system cannot detect actual blade contact, touches, or weapon interactions.
+• Fencing-specific rules such as right-of-way in foil/sabre, valid target areas,
+  and blade priority are approximated through movement analysis.
+• This analysis should be used as a supplementary tool in conjunction with
+  human referee judgment and video review.
+• All distance measurements are in pixels and depend on camera positioning.
+• The system assumes both fencers are attempting to score and does not account
+  for defensive actions, feints, or tactical retreats.
+
+====================================================================================================
+                                        END OF ANALYSIS REPORT
+====================================================================================================

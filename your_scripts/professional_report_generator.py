@@ -30,7 +30,7 @@ RESULTS_DIR = os.path.join(BASE_DIR, 'results')
 FENCER_PROFILE_DIR = os.path.join(BASE_DIR, 'fencer_profiles')
 
 if not os.getenv('GEMINI_API_KEY'):
-    os.environ['GEMINI_API_KEY'] = 'AIzaSyDy_RRq8hd8rTYILt_mYtMH8GtM41GFp6I'
+    os.environ['GEMINI_API_KEY'] = 'AIzaSyCAKZxJCnt7BKfsBH1ImvunKuaui-2L_9U'
 
 GEMINI_MODEL_ID = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash-lite')
 GEMINI_MIN_INTERVAL_S = float(os.getenv('GEMINI_MIN_INTERVAL_S', '2.5'))

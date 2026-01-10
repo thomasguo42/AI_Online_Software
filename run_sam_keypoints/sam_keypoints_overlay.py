@@ -198,6 +198,7 @@ def main():
             sam_model_type=args.sam_model_type,
             xmem_checkpoint=args.xmem_checkpoint,
             yolo_conf=args.yolo_csv_conf,
+            enable_stabilization=False,
         )
 
     left_x_df, left_y_df, right_x_df, right_y_df, c, _, _ = load_data_from_csv(csv_dir)

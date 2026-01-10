@@ -9,7 +9,7 @@ import sys
 def setup_environment():
     """Set up environment variables"""
     # Set Gemini API key
-    os.environ['GEMINI_API_KEY'] = 'AIzaSyDy_RRq8hd8rTYILt_mYtMH8GtM41GFp6I'
+    os.environ['GEMINI_API_KEY'] = 'AIzaSyCAKZxJCnt7BKfsBH1ImvunKuaui-2L_9U'
     
     print("🔑 Environment variables configured:")
     print(f"   GEMINI_API_KEY: {os.environ['GEMINI_API_KEY'][:10]}...")

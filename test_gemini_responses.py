@@ -10,7 +10,7 @@ sys.path.append('/workspace/Project')
 from your_scripts.video_view_analysis import call_gemini_api
 
 # Set API key
-os.environ['GEMINI_API_KEY'] = 'AIzaSyDy_RRq8hd8rTYILt_mYtMH8GtM41GFp6I'
+os.environ['GEMINI_API_KEY'] = 'AIzaSyCAKZxJCnt7BKfsBH1ImvunKuaui-2L_9U'
 
 def test_simple_prompt():
     """Test with a very simple prompt to see if it works"""

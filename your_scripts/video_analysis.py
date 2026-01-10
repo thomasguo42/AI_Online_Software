@@ -365,6 +365,7 @@ def main(
     xmem_checkpoint=None,
     e2fgvi_checkpoint=None,
     yolo_conf=0.7,
+    enable_stabilization=True,
 ):
     torch.cuda.empty_cache()
     os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
@@ -410,7 +411,7 @@ def main(
     if e2fgvi_checkpoint is None:
         e2fgvi_checkpoint = os.path.join(os.getcwd(), "your_scripts", "checkpoints", "E2FGVI-HQ-CVPR22.pth")
     tracker = TrackingAnything(sam_checkpoint, xmem_checkpoint, e2fgvi_checkpoint, args)
-    stabilizer = ImprovedCameraStabilizer(use_strip_detection=True)
+    stabilizer = ImprovedCameraStabilizer(use_strip_detection=True) if enable_stabilization else None
 
     # Process frames incrementally
     cap = cv2.VideoCapture(processing_path)
@@ -587,9 +588,10 @@ def main(
         label = track['label']
         if label in assigned_poses:
             track['keypoints'] = assigned_poses[label]['pose']['keypoints']
-    first_transform = stabilizer.process_frame(first_frame, [det['box'] for det in selected_detections])
-    for track in tracks:
-        _apply_transform_to_track(track, first_transform)
+    if stabilizer is not None:
+        first_transform = stabilizer.process_frame(first_frame, [det['box'] for det in selected_detections])
+        for track in tracks:
+            _apply_transform_to_track(track, first_transform)
     tracks_per_frame.append([track.copy() for track in tracks])
 
     # Process remaining frames
@@ -681,10 +683,11 @@ def main(
                     track_copy['box'] = track['box_history'][-1]
                     current_tracks.append(track_copy)
                 continue
-        boxes_for_stabilizer = [track_copy['box'] for track_copy in current_tracks if 'box' in track_copy]
-        frame_transform = stabilizer.process_frame(frame, boxes_for_stabilizer)
-        for track_copy in current_tracks:
-            _apply_transform_to_track(track_copy, frame_transform)
+        if stabilizer is not None:
+            boxes_for_stabilizer = [track_copy['box'] for track_copy in current_tracks if 'box' in track_copy]
+            frame_transform = stabilizer.process_frame(frame, boxes_for_stabilizer)
+            for track_copy in current_tracks:
+                _apply_transform_to_track(track_copy, frame_transform)
 
         tracks = current_tracks
         tracks_per_frame.append([track.copy() for track in tracks])
@@ -703,13 +706,14 @@ def main(
         except Exception as e:
             print(f"Warning: Could not delete temporary file {compressed_path}: {e}")
 
-    summary = stabilizer.get_debug_summary()
-    logging.info(
-        "Camera stabilization summary: frames=%s, successful_tracks=%s, total_motion=(%.2f, %.2f)",
-        summary.get('frames_processed'),
-        summary.get('successful_tracks'),
-        summary.get('total_motion_x', 0.0),
-        summary.get('total_motion_y', 0.0)
-    )
+    if stabilizer is not None:
+        summary = stabilizer.get_debug_summary()
+        logging.info(
+            "Camera stabilization summary: frames=%s, successful_tracks=%s, total_motion=(%.2f, %.2f)",
+            summary.get('frames_processed'),
+            summary.get('successful_tracks'),
+            summary.get('total_motion_x', 0.0),
+            summary.get('total_motion_y', 0.0)
+        )
 
     return left_xdata, left_ydata, right_xdata, right_ydata, c, checker_list, video_angle, None

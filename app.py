@@ -833,7 +833,7 @@ def create_app():
     app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # Increased to 500 MB
     app.config['ALLOWED_EXTENSIONS'] = {'mp4', 'avi', 'mov'}
     # Gemini API key (prefer environment variable)
-    app.config['GEMINI_API_KEY'] = os.getenv('GEMINI_API_KEY') or 'AIzaSyDy_RRq8hd8rTYILt_mYtMH8GtM41GFp6I'
+    app.config['GEMINI_API_KEY'] = os.getenv('GEMINI_API_KEY') or 'AIzaSyCAKZxJCnt7BKfsBH1ImvunKuaui-2L_9U'
     app.config['GEMINI_MODEL'] = os.getenv('GEMINI_MODEL') or DEFAULT_GEMINI_MODEL
     app.config['VIDEO_VIEW_REGEN_ASYNC'] = os.getenv('VIDEO_VIEW_REGEN_ASYNC', '1').lower() not in ('0', 'false', 'no')
 
